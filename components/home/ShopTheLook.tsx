@@ -21,6 +21,7 @@ export type ResolvedLook = {
   w: number;
   h: number;
   pins: { product: Product; x: number; y: number }[];
+  room?: string;
 };
 
 export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook[]; standalone?: boolean }) {
@@ -154,18 +155,29 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
                 </ul>
 
                 <div className="mt-auto pt-6">
-                  <div className="mb-4 flex items-baseline justify-between">
-                    <span className="text-[0.88rem] text-muted">{lang === "ar" ? `${picked.size} قطع مختارة` : `${picked.size} selected`}</span>
-                    <motion.span key={total} initial={{ opacity: 0.3, y: 6 }} animate={{ opacity: 1, y: 0 }} className="text-[1.3rem] font-semibold tabular-nums">{money(total, lang)}</motion.span>
-                  </div>
-                  <button onClick={addLook} disabled={picked.size === 0} className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink text-[0.92rem] font-medium text-white transition hover:bg-ink-2 disabled:opacity-40">
-                    <AnimatePresence mode="wait" initial={false}>
-                      <motion.span key={String(added)} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} className="flex items-center gap-2">
-                        {added ? <Check className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4 stroke-[1.5]" />}
-                        {added ? t("shop.added") : lang === "ar" ? "أضف الإطلالة للحقيبة" : "Add the look to bag"}
-                      </motion.span>
-                    </AnimatePresence>
-                  </button>
+                  {look.pins.some((p) => !p.product.priceOnRequest) ? (
+                    <>
+                      <div className="mb-4 flex items-baseline justify-between">
+                        <span className="text-[0.88rem] text-muted">{lang === "ar" ? `${picked.size} قطع مختارة` : `${picked.size} selected`}</span>
+                        <motion.span key={total} initial={{ opacity: 0.3, y: 6 }} animate={{ opacity: 1, y: 0 }} className="text-[1.3rem] font-semibold tabular-nums">{money(total, lang)}</motion.span>
+                      </div>
+                      <button onClick={addLook} disabled={picked.size === 0} className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink text-[0.92rem] font-medium text-white transition hover:bg-ink-2 disabled:opacity-40">
+                        <AnimatePresence mode="wait" initial={false}>
+                          <motion.span key={String(added)} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} className="flex items-center gap-2">
+                            {added ? <Check className="h-4 w-4" /> : <ShoppingBag className="h-4 w-4 stroke-[1.5]" />}
+                            {added ? t("shop.added") : lang === "ar" ? "أضف الإطلالة للحقيبة" : "Add the look to bag"}
+                          </motion.span>
+                        </AnimatePresence>
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <p className="mb-4 text-[0.88rem] text-muted">{lang === "ar" ? "مصنوع حسب المقاس · السعر عند الطلب" : "Made to measure · price on request"}</p>
+                      <Link href={`/quote?service=custom&product=${encodeURIComponent(tx(look.title, "en"))}`} className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink text-[0.92rem] font-medium text-white transition hover:bg-ink-2">
+                        {lang === "ar" ? "اطلب عرض سعر لهذه الغرفة" : "Request a quote for this room"}
+                      </Link>
+                    </>
+                  )}
                 </div>
               </motion.div>
             </AnimatePresence>

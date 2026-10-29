@@ -87,3 +87,11 @@ The client reviewed v1 (dark, very colourful, heavy 3D) and asked for **a totall
 | Tabby / Tamara | Product page instalment line + modal, checkout options with live schedule; stored as `payment: "tabby" \| "tamara"` on orders (UI only, no gateway integration yet) |
 
 **Adding a look:** generate a 16:9 room in Flow, process it to 2400px into `public/images/lifestyle/`, then add an entry to `LOOKS` in `lib/looks.ts` with the pin x/y percentages.
+
+## Full catalogue + intro (Oct 29)
+- All 38 products are live with studio shots in `public/images/products-v2/` (11 joinery/commercial pieces added).
+  Already-seeded databases pick this up through the `2026-10-29-full-catalogue` migration in `lib/db.ts`.
+- 19 room scenes in `lib/looks.ts`; every live piece appears in at least one. Home shows the six in `HOME_LOOKS`;
+  `/inspiration` has all of them with room filters. Rooms where everything is made to order show a quote button instead of a basket.
+- First-visit intro: `components/site/Preloader.tsx` + `.pl-*` styles in `app/globals.css`. Plays once per browser session;
+  reel images live in `public/images/intro/` (the last one should match the home hero).

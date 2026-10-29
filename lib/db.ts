@@ -31,12 +31,44 @@ async function d1(): Promise<D1Database | null> {
   }
 }
 
+// One-off data changes for databases seeded before the change landed in data/seed.json.
+// Each runs once (tracked in meta 'migrations') and must be safe to re-run.
+const MIGRATIONS: { id: string; sql: [string, ...unknown[]][] }[] = [
+  {
+    id: "2026-10-29-full-catalogue",
+    sql: [
+      [
+        "UPDATE docs SET data = json_set(data, '$.status', 'active') WHERE coll = 'products' AND json_extract(data, '$.slug') IN (SELECT value FROM json_each(?))",
+        JSON.stringify([
+          "blush-sliding-wardrobe", "understair-wine-storage", "walnut-vanity-console", "lumiere-vanity",
+          "floating-oak-staircase", "black-steel-balustrade", "barn-sliding-door", "slatted-partition-console",
+          "ceremony-retail-kiosk", "perfume-wall-display", "coffee-kiosk-pod",
+        ]),
+      ],
+    ],
+  },
+];
+
+async function migrate(db: D1Database) {
+  const row = await db.prepare("SELECT data FROM meta WHERE key = 'migrations'").first<{ data: string }>();
+  const done = new Set<string>(row ? JSON.parse(row.data) : []);
+  const pending = MIGRATIONS.filter((m) => !done.has(m.id));
+  if (!pending.length) return;
+  pending.forEach((m) => done.add(m.id));
+  await db.batch([
+    ...pending.flatMap((m) => m.sql.map(([q, ...args]) => db.prepare(q).bind(...args))),
+    db.prepare("INSERT OR REPLACE INTO meta (key, data) VALUES ('migrations', ?)").bind(JSON.stringify([...done])),
+    db.prepare("UPDATE meta SET data = CAST(data AS INTEGER) + 1 WHERE key = 'version'"),
+  ]);
+}
+
 let ready: Promise<void> | null = null;
 function ensure(db: D1Database) {
   ready ??= (async () => {
     await db.batch(SCHEMA.map((s) => db.prepare(s)));
     const seeded = await db.prepare("SELECT 1 FROM meta WHERE key = 'version'").first();
     if (!seeded) await db.batch(writeAll(db, seed as unknown as DB, 0));
+    await migrate(db);
   })().catch((e) => {
     ready = null;
     throw e;

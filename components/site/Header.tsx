@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
-import { useEffect, useState, useTransition } from "react";
+import { useEffect, useState, useTransition, useId } from "react";
 import { Heart, MapPin, Menu, Search, ShoppingBag, X, Phone } from "lucide-react";
 import clsx from "clsx";
 import { Logo } from "@/components/ui/Logo";
@@ -38,6 +38,7 @@ export function ModeSwitch({ className }: { className?: string }) {
   const { lang } = useSite();
   const pathname = usePathname();
   const biz = isBusinessPath(pathname);
+  const pill = `mode-pill-${useId()}`; // the switch appears in several places; each needs its own pill
   const items = [
     { href: "/", on: !biz, label: lang === "ar" ? "أثاث المنزل" : "Home furniture" },
     { href: "/business", on: biz, label: lang === "ar" ? "للأعمال" : "For business" },
@@ -46,7 +47,7 @@ export function ModeSwitch({ className }: { className?: string }) {
     <div className={clsx("relative inline-flex rounded-full bg-plate p-1 text-[0.8rem]", className)}>
       {items.map((it) => (
         <Link key={it.href} href={it.href} className={clsx("relative z-10 rounded-full px-3.5 py-1.5 transition-colors duration-300", it.on ? "text-white" : "text-ink/60 hover:text-ink")}>
-          {it.on && <motion.span layoutId="mode-pill" className="absolute inset-0 -z-10 rounded-full bg-ink" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
+          {it.on && <motion.span layoutId={pill} className="absolute inset-0 -z-10 rounded-full bg-ink" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
           {it.label}
         </Link>
       ))}
@@ -61,6 +62,7 @@ const CATS = [
   { slug: "media", en: "TV & media walls", ar: "جدران التلفاز" },
   { slug: "storage", en: "Wardrobes & storage", ar: "الخزائن" },
   { slug: "tables", en: "Tables & vanities", ar: "الطاولات والتسريحات" },
+  { slug: "joinery", en: "Stairs, doors & joinery", ar: "السلالم والأبواب والنجارة" },
   { slug: "commercial", en: "Retail & commercial", ar: "التجاري" },
 ];
 

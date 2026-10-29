@@ -2,7 +2,7 @@ import { Categories, Clients, Collections, Faq, HelpCTA, Hero, Heritage, Project
 import { getActiveProducts, getCategories, getProjects } from "@/lib/data";
 import { getLang } from "@/lib/lang";
 import { hasImage } from "@/lib/assets";
-import { resolveLooks } from "@/lib/looks";
+import { HOME_LOOKS, resolveLooks } from "@/lib/looks";
 import { ShopTheLook } from "@/components/home/ShopTheLook";
 
 // Prefer AI-regenerated studio / lifestyle imagery when it exists.
@@ -34,7 +34,7 @@ export default async function Home() {
     <>
       <Hero image={pick("/images/lifestyle/hero.jpg", "/images/projects/vox-cinema-theatre-1.jpg")} look={bySlug("cloud-curve-sofa")} />
       <Categories categories={categories} covers={covers} counts={counts} />
-      <ShopTheLook looks={resolveLooks(products).filter((l) => l.id !== "quiet")} />
+      <ShopTheLook looks={HOME_LOOKS.flatMap((id) => resolveLooks(products).filter((l) => l.id === id))} />
       <Spotlight products={pickMany(["velluto-tufted-sofa", "blush-couture-bed", "live-edge-walnut-table", "wingback-chesterfield-chair", "ember-fireplace-wall"])} />
       <Collections groups={groups} />
       <Tailored products={pickMany(["cloud-curve-sofa", "chesterfield-heritage-sofa", "velluto-tufted-sofa"])} />
