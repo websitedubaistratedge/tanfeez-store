@@ -83,6 +83,8 @@ export type OrderItem = {
   size?: string;
 };
 
+export type PaymentStatus = "unpaid" | "deposit" | "paid";
+
 export type Order = {
   id: string;
   number: string;
@@ -100,6 +102,9 @@ export type Order = {
   vat: number; // VAT portion included in total
   total: number;
   payment: "cod" | "bank" | "tabby" | "tamara";
+  /** Set from the admin; older orders without it are treated as unpaid (or paid once delivered). */
+  paymentStatus?: PaymentStatus;
+  amountPaid?: number;
   notes?: string;
   status: OrderStatus;
   history: { status: OrderStatus; at: string }[];

@@ -1,11 +1,12 @@
 "use server";
 
+import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { checkPassword, createSession, destroySession, isAdmin } from "./auth";
-import { mutate, resetDB, uid } from "./db";
-import { saveUpload } from "./uploads";
-import type { Category, OrderStatus, Product, Project, RequestStatus, Settings } from "./types";
+import { DEMO_ID, mutate, resetDB, uid } from "./db";
+import { saveUpload, uploadStore } from "./uploads";
+import type { Category, OrderStatus, PaymentStatus, Product, Project, RequestStatus, Settings } from "./types";
 
 async function guard() {
   if (!(await isAdmin())) throw new Error("Unauthorized");
@@ -23,12 +24,27 @@ const slugify = (s: string) =>
     .slice(0, 80) || uid();
 
 // ───────── Auth ─────────
+// After MAX_TRIES wrong passwords from one connection, sign-in pauses for LOCK_SECONDS.
+// Counters live in Workers KV and expire on their own.
+const MAX_TRIES = 5;
+const LOCK_SECONDS = 15 * 60;
+
 export async function login(_: unknown, fd: FormData) {
+  const h = await headers();
+  const ip = h.get("cf-connecting-ip") || h.get("x-forwarded-for")?.split(",")[0].trim() || "local";
+  const kv = await uploadStore();
+  const key = `login-fails:${ip}`;
+  const fails = Number((await kv?.get(key)) ?? 0);
+  if (fails >= MAX_TRIES) return { error: "Too many attempts. Please try again in 15 minutes." };
+
   const pw = String(fd.get("password") || "");
   if (!checkPassword(pw)) {
+    await kv?.put(key, String(fails + 1), { expirationTtl: LOCK_SECONDS });
     await new Promise((r) => setTimeout(r, 600));
-    return { error: "Incorrect password" };
+    const left = MAX_TRIES - fails - 1;
+    return { error: left > 0 ? `Incorrect password. ${left} ${left === 1 ? "try" : "tries"} left.` : "Too many attempts. Please try again in 15 minutes." };
   }
+  await kv?.delete(key);
   await createSession();
   redirect("/admin");
 }
@@ -262,5 +278,31 @@ export async function saveSettings(s: Settings) {
 export async function resetDemoData() {
   await guard();
   await resetDB();
+  refresh();
+}
+
+/** Before launch: drop the made-up orders, requests and messages, keep catalogue, projects and settings. */
+export async function clearDemoActivity() {
+  await guard();
+  const removed = await mutate((db) => {
+    const before = db.orders.length + db.requests.length + db.messages.length;
+    db.orders = db.orders.filter((o) => !DEMO_ID.test(o.id));
+    db.requests = db.requests.filter((r) => !DEMO_ID.test(r.id));
+    db.messages = db.messages.filter((m) => !DEMO_ID.test(m.id));
+    return before - (db.orders.length + db.requests.length + db.messages.length);
+  });
+  refresh();
+  return removed;
+}
+
+// ───────── Payments ─────────
+export async function setOrderPayment(id: string, status: PaymentStatus, amountPaid?: number) {
+  await guard();
+  await mutate((db) => {
+    const o = db.orders.find((x) => x.id === id);
+    if (!o) return;
+    o.paymentStatus = status;
+    o.amountPaid = status === "paid" ? o.total : status === "unpaid" ? 0 : Math.max(0, Math.min(o.total, Math.round(Number(amountPaid) || 0)));
+  });
   refresh();
 }

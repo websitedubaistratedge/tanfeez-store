@@ -24,7 +24,7 @@ function Delta({ cur, prev }: { cur: number; prev: number }) {
   const d = ((cur - prev) / prev) * 100;
   const up = d >= 0;
   return (
-    <span className={clsx("inline-flex items-center gap-0.5 text-xs font-bold", up ? "text-emerald-700" : "text-red-600")}>
+    <span className={clsx("inline-flex items-center gap-0.5 text-xs font-medium", up ? "text-emerald-700" : "text-red-600")}>
       {up ? <ArrowUpRight className="h-3.5 w-3.5" /> : <ArrowDownRight className="h-3.5 w-3.5" />}
       {Math.abs(d).toFixed(0)}% <span className="font-medium text-ink/40">vs prior 30d</span>
     </span>
@@ -35,7 +35,7 @@ const ChartTip = ({ active, payload, label, money }: { active?: boolean; payload
   active && payload?.length ? (
     <div className="rounded-xl bg-ink px-3 py-2 text-xs text-white shadow-xl">
       <p className="text-white/60">{label}</p>
-      <p className="mt-0.5 text-sm font-bold">{money ? aed(payload[0].value) : payload[0].value}</p>
+      <p className="mt-0.5 text-sm font-medium">{money ? aed(payload[0].value) : payload[0].value}</p>
     </div>
   ) : null;
 
@@ -52,26 +52,28 @@ export function Dashboard({ kpis, series, byStatus, latestOrders, latestRequests
     <div className="mx-auto max-w-7xl">
       <div className="mb-8 flex flex-wrap items-end justify-between gap-4">
         <div>
-          <p className="text-sm font-semibold text-ink/50">{new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}</p>
-          <h1 className="text-3xl font-black tracking-tight">{hello}, TANFEEZ</h1>
+          <p className="mb-2 font-serif text-[1.2rem] leading-none text-ink-2">{new Date().toLocaleDateString("en-GB", { weekday: "long", day: "numeric", month: "long" })}</p>
+          <h1 className="font-display text-[clamp(1.7rem,3vw,2.2rem)] font-semibold leading-none tracking-[-0.03em]">{hello}, TANFEEZ</h1>
         </div>
         <div className="flex gap-2">
-          <Link href="/admin/products/new" className="inline-flex h-10 items-center rounded-xl bg-brand px-4 text-sm font-bold">+ New product</Link>
-          <Link href="/admin/projects/new" className="inline-flex h-10 items-center rounded-xl bg-ink px-4 text-sm font-bold text-white">+ New project</Link>
+          <Link href="/admin/products/new" className="inline-flex h-10 items-center rounded-full bg-ink px-5 text-[0.88rem] font-medium text-white transition hover:bg-ink-2">+ New product</Link>
+          <Link href="/admin/projects/new" className="inline-flex h-10 items-center rounded-full border border-line bg-white px-5 text-[0.88rem] font-medium transition hover:border-ink">+ New project</Link>
         </div>
       </div>
 
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {tiles.map((t, i) => (
           <motion.div key={t.label} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.06, duration: 0.5 }}>
-            <Card className={clsx("relative h-full overflow-hidden", t.dark && "!bg-ink-950 text-white")}>
-              {t.dark && <div className="absolute -bottom-px -right-px h-20 w-20 bg-brand diag-tr" />}
+            <Card className={clsx("relative h-full overflow-hidden", t.dark && "!border-transparent !bg-band")}>
               <div className="flex items-center justify-between">
-                <p className={clsx("text-sm font-semibold", t.dark ? "text-white/60" : "text-ink/55")}>{t.label}</p>
-                <t.Icon className={clsx("h-5 w-5", t.dark ? "text-brand" : "text-ink/30")} />
+                <p className="flex items-center gap-2 text-[0.82rem] text-muted">
+                  {t.dark && <span className="h-1.5 w-1.5 rounded-full bg-brand" />}
+                  {t.label}
+                </p>
+                <t.Icon className="h-[18px] w-[18px] stroke-[1.6] text-ink/30" />
               </div>
-              <p className="mt-3 text-3xl font-black tracking-tight">{t.value}</p>
-              <div className={clsx("mt-2", t.dark && "[&_span]:!text-white/70")}>{t.delta}</div>
+              <p className="mt-3 font-display text-[2rem] font-semibold leading-none tracking-[-0.03em] tabular-nums">{t.value}</p>
+              <div className="mt-2.5">{t.delta}</div>
             </Card>
           </motion.div>
         ))}
@@ -80,7 +82,7 @@ export function Dashboard({ kpis, series, byStatus, latestOrders, latestRequests
       <div className="mt-4 grid gap-4 xl:grid-cols-3">
         <Card className="xl:col-span-2">
           <div className="mb-4 flex items-baseline justify-between">
-            <h2 className="font-extrabold">Revenue, last 30 days</h2>
+            <h2 className="font-display text-[1.05rem] font-semibold tracking-tight">Revenue, last 30 days</h2>
             <span className="text-xs font-semibold text-ink/45">AED, VAT incl. · excludes cancelled</span>
           </div>
           <div className="h-[260px]">
@@ -103,16 +105,16 @@ export function Dashboard({ kpis, series, byStatus, latestOrders, latestRequests
         </Card>
 
         <Card>
-          <h2 className="mb-4 font-extrabold">Orders by status</h2>
+          <h2 className="mb-4 font-display text-[1.05rem] font-semibold tracking-tight">Orders by status</h2>
           <div className="h-[260px]">
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={byStatus.map((s) => ({ ...s, label: ORDER_LABEL[s.status] }))} layout="vertical" margin={{ left: 0, right: 24 }}>
-                <XAxis type="number" hide />
-                <YAxis type="category" dataKey="label" width={108} tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "#231F20", fontWeight: 600 }} />
+                <XAxis type="number" dataKey="count" domain={[0, "dataMax"]} allowDecimals={false} hide />
+                <YAxis type="category" dataKey="label" width={108} tickLine={false} axisLine={false} tick={{ fontSize: 12, fill: "#3a3836", fontWeight: 400 }} />
                 <Tooltip content={<ChartTip />} cursor={{ fill: "#231F20", fillOpacity: 0.04 }} />
-                <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={18} label={{ position: "right", fontSize: 12, fill: "#231F20", fontWeight: 700 }}>
+                <Bar dataKey="count" radius={[0, 4, 4, 0]} barSize={18} label={{ position: "right", fontSize: 12, fill: "#1a1a1a", fontWeight: 500 }}>
                   {byStatus.map((s) => (
-                    <Cell key={s.status} fill={s.status === "new" ? "#FFCB06" : "#231F20"} fillOpacity={s.status === "cancelled" ? 0.3 : 1} />
+                    <Cell key={s.status} fill={s.status === "new" ? "#FFCB06" : "#1a1a1a"} fillOpacity={s.status === "cancelled" ? 0.3 : 1} />
                   ))}
                 </Bar>
               </BarChart>
@@ -124,19 +126,19 @@ export function Dashboard({ kpis, series, byStatus, latestOrders, latestRequests
       <div className="mt-4 grid gap-4 xl:grid-cols-3">
         <Card className="xl:col-span-2 !p-0">
           <div className="flex items-center justify-between p-5 pb-3">
-            <h2 className="font-extrabold">Latest orders</h2>
-            <Link href="/admin/orders" className="text-sm font-bold text-ink/50 hover:text-ink">View all</Link>
+            <h2 className="font-display text-[1.05rem] font-semibold tracking-tight">Latest orders</h2>
+            <Link href="/admin/orders" className="text-sm font-medium text-ink/50 hover:text-ink">View all</Link>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <tbody>
                 {latestOrders.map((o) => (
-                  <tr key={o.id} className="border-t border-ink/5 hover:bg-sand/60">
-                    <td className="px-5 py-3"><Link href={`/admin/orders/${o.id}`} className="font-bold hover:underline">{o.number}</Link></td>
+                  <tr key={o.id} className="border-t border-line/70 hover:bg-plate/70">
+                    <td className="px-5 py-3"><Link href={`/admin/orders/${o.id}`} className="font-medium hover:underline">{o.number}</Link></td>
                     <td className="px-3 py-3">{o.customer.name}<span className="block text-xs text-ink/45">{o.customer.emirate}</span></td>
                     <td className="px-3 py-3"><OrderBadge status={o.status} /></td>
                     <td className="px-3 py-3 text-ink/50">{ago(o.createdAt)}</td>
-                    <td className="px-5 py-3 text-right font-bold">{aed(o.total)}</td>
+                    <td className="px-5 py-3 text-right font-medium">{aed(o.total)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -146,16 +148,16 @@ export function Dashboard({ kpis, series, byStatus, latestOrders, latestRequests
 
         <Card className="!p-0">
           <div className="flex items-center justify-between p-5 pb-3">
-            <h2 className="font-extrabold">Newest requests</h2>
-            <Link href="/admin/requests" className="text-sm font-bold text-ink/50 hover:text-ink">Board</Link>
+            <h2 className="font-display text-[1.05rem] font-semibold tracking-tight">Newest requests</h2>
+            <Link href="/admin/requests" className="text-sm font-medium text-ink/50 hover:text-ink">Board</Link>
           </div>
           <ul>
             {latestRequests.map((r) => (
-              <li key={r.id} className="border-t border-ink/5">
-                <Link href={`/admin/requests?open=${r.id}`} className="flex items-center gap-3 px-5 py-3 hover:bg-sand/60">
+              <li key={r.id} className="border-t border-line/70">
+                <Link href={`/admin/requests?open=${r.id}`} className="flex items-center gap-3 px-5 py-3 hover:bg-plate/70">
                   <span className={clsx("h-2.5 w-2.5 shrink-0 rounded-full", REQ_TONE[r.status])} />
                   <span className="min-w-0 flex-1">
-                    <span className="block truncate text-sm font-bold">{r.contact.company || r.contact.name}</span>
+                    <span className="block truncate text-sm font-medium">{r.contact.company || r.contact.name}</span>
                     <span className="block truncate text-xs text-ink/50">{SERVICE_LABEL[r.service]} · {r.space} · {REQ_LABEL[r.status]}</span>
                   </span>
                   <ChevronRight className="h-4 w-4 text-ink/30" />
@@ -168,31 +170,31 @@ export function Dashboard({ kpis, series, byStatus, latestOrders, latestRequests
 
       <div className="mt-4 grid gap-4 xl:grid-cols-2">
         <Card>
-          <h2 className="mb-3 font-extrabold">Top sellers · 30 days</h2>
+          <h2 className="mb-3 font-display font-semibold tracking-tight">Top sellers · 30 days</h2>
           <ul className="space-y-3">
             {top.map((p, i) => (
               <li key={p.name} className="flex items-center gap-3">
-                <span className="w-4 text-xs font-black text-ink/30">{i + 1}</span>
-                <div className="relative h-10 w-10 overflow-hidden rounded-lg bg-sand"><Image src={p.image} alt="" fill sizes="40px" className="object-cover" /></div>
-                <span className="flex-1 truncate text-sm font-bold">{p.name}</span>
+                <span className="w-4 text-xs font-semibold text-ink/30">{i + 1}</span>
+                <div className="relative h-10 w-10 overflow-hidden rounded-lg bg-plate"><Image src={p.image} alt="" fill sizes="40px" className="object-cover" /></div>
+                <span className="flex-1 truncate text-sm font-medium">{p.name}</span>
                 <span className="text-xs text-ink/50">{p.qty} sold</span>
-                <span className="w-28 text-right text-sm font-bold">{aed(p.revenue)}</span>
+                <span className="w-28 text-right text-sm font-medium">{aed(p.revenue)}</span>
               </li>
             ))}
           </ul>
         </Card>
         <Card>
-          <h2 className="mb-3 flex items-center gap-2 font-extrabold"><AlertTriangle className="h-4 w-4 text-amber-500" /> Low stock</h2>
+          <h2 className="mb-3 flex items-center gap-2 font-display font-semibold tracking-tight"><AlertTriangle className="h-4 w-4 text-amber-500" /> Low stock</h2>
           {lowStock.length === 0 ? (
             <p className="text-sm text-ink/50">All stocked up.</p>
           ) : (
             <ul className="space-y-3">
               {lowStock.map((p) => (
                 <li key={p.id}>
-                  <Link href={`/admin/products/${p.id}`} className="flex items-center gap-3 rounded-xl hover:bg-sand/60">
-                    <div className="relative h-10 w-10 overflow-hidden rounded-lg bg-sand"><Image src={p.image} alt="" fill sizes="40px" className="object-cover" /></div>
-                    <span className="flex-1 truncate text-sm font-bold">{p.name}</span>
-                    <span className={clsx("rounded-full px-2.5 py-1 text-xs font-bold", p.stock === 0 ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-800")}>
+                  <Link href={`/admin/products/${p.id}`} className="flex items-center gap-3 rounded-xl hover:bg-plate/70">
+                    <div className="relative h-10 w-10 overflow-hidden rounded-lg bg-plate"><Image src={p.image} alt="" fill sizes="40px" className="object-cover" /></div>
+                    <span className="flex-1 truncate text-sm font-medium">{p.name}</span>
+                    <span className={clsx("rounded-full px-2.5 py-1 text-xs font-medium", p.stock === 0 ? "bg-red-100 text-red-700" : "bg-amber-100 text-amber-800")}>
                       {p.stock === 0 ? "Out of stock" : `${p.stock} left`}
                     </span>
                   </Link>

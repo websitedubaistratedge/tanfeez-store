@@ -8,6 +8,7 @@ import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { EMIRATES, emirateName } from "@/lib/i18n";
 import { submitQuote } from "@/lib/actions";
+import { shrinkImages } from "@/lib/resize-image";
 import { EASE } from "@/components/ui/motion";
 
 type Service = "fitout" | "furniture" | "technical" | "custom";
@@ -61,7 +62,8 @@ export function QuoteWizard({ initialService, product }: { initialService?: stri
 
   const addFiles = (list: FileList | null) => {
     if (!list) return;
-    const ok = Array.from(list).filter((f) => f.size <= 10 * 1024 * 1024);
+    // Photos are shrunk before upload, so larger phone pictures are fine; PDFs stay capped at 10 MB.
+    const ok = Array.from(list).filter((f) => f.size <= (f.type.startsWith("image/") ? 30 : 10) * 1024 * 1024);
     setFiles((prev) => [...prev, ...ok].slice(0, 5));
   };
 
@@ -76,8 +78,8 @@ export function QuoteWizard({ initialService, product }: { initialService?: stri
     fd.set("timeline", timeline);
     fd.set("details", details);
     if (product) fd.set("product", product);
-    files.forEach((f) => fd.append("files", f));
     start(async () => {
+      (await shrinkImages(files)).forEach((f) => fd.append("files", f));
       const r = await submitQuote(fd);
       if (r.ok) setDone(r.number);
       else setError(true);

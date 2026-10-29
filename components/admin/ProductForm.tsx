@@ -35,7 +35,7 @@ export function ProductForm({ product, categories }: { product: Product; categor
 
   return (
     <div className="mx-auto max-w-6xl">
-      <Link href="/admin/products" className="mb-4 inline-flex items-center gap-1.5 text-sm font-bold text-ink/50 hover:text-ink">
+      <Link href="/admin/products" className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink/50 hover:text-ink">
         <ArrowLeft className="h-4 w-4" /> Products
       </Link>
       <PageHeader
@@ -44,7 +44,7 @@ export function ProductForm({ product, categories }: { product: Product; categor
         actions={
           <>
             {!isNew && (
-              <a href={`/shop/${p.slug}`} target="_blank" className="inline-flex h-10 items-center gap-2 rounded-xl border border-ink/15 bg-white px-4 text-sm font-bold">
+              <a href={`/shop/${p.slug}`} target="_blank" className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white px-5 text-[0.88rem] font-medium transition hover:border-ink">
                 <ExternalLink className="h-4 w-4" /> View
               </a>
             )}
@@ -60,12 +60,12 @@ export function ProductForm({ product, categories }: { product: Product; categor
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <Card>
-            <h2 className="mb-4 font-extrabold">Images</h2>
+            <h2 className="mb-4 font-display font-semibold tracking-tight">Images</h2>
             <ImageUploader value={p.images} onChange={(v) => set("images", v)} />
           </Card>
 
           <Card className="space-y-4">
-            <h2 className="font-extrabold">Details</h2>
+            <h2 className="font-display font-semibold tracking-tight">Details</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Name (English)"><input className={inputCls} value={p.name.en} onChange={(e) => set("name", { ...p.name, en: e.target.value })} /></Field>
               <Field label="Name (Arabic)"><input dir="rtl" className={inputCls} value={p.name.ar} onChange={(e) => set("name", { ...p.name, ar: e.target.value })} /></Field>
@@ -80,7 +80,7 @@ export function ProductForm({ product, categories }: { product: Product; categor
 
           <Card>
             <div className="mb-4 flex items-center justify-between">
-              <h2 className="font-extrabold">Finishes &amp; colours</h2>
+              <h2 className="font-display font-semibold tracking-tight">Finishes &amp; colours</h2>
               <Btn variant="outline" type="button" onClick={() => set("finishes", [...p.finishes, { name: { en: "", ar: "" }, hex: "#C49A6C" }])}>
                 <Plus className="h-4 w-4" /> Add finish
               </Btn>
@@ -106,14 +106,14 @@ export function ProductForm({ product, categories }: { product: Product; categor
 
         <div className="space-y-4">
           <Card className="space-y-4">
-            <h2 className="font-extrabold">Visibility</h2>
+            <h2 className="font-display font-semibold tracking-tight">Visibility</h2>
             <Toggle checked={p.status === "active"} onChange={(v) => set("status", v ? "active" : "draft")} label={p.status === "active" ? "Live on store" : "Draft (hidden)"} />
             <Toggle checked={p.featured} onChange={(v) => set("featured", v)} label="Featured on home page" />
             <Toggle checked={p.isNew} onChange={(v) => set("isNew", v)} label="Show “New” badge" />
           </Card>
 
           <Card className="space-y-4">
-            <h2 className="font-extrabold">Pricing &amp; stock</h2>
+            <h2 className="font-display font-semibold tracking-tight">Pricing &amp; stock</h2>
             <Toggle checked={!!p.priceOnRequest} onChange={(v) => set("priceOnRequest", v)} label="Made to order (price on request)" />
             <div className={clsx("grid grid-cols-2 gap-3", p.priceOnRequest && "pointer-events-none opacity-40")}>
               <Field label="Price (AED)"><input type="number" min={0} className={inputCls} value={p.price} onChange={(e) => set("price", Number(e.target.value))} /></Field>
@@ -124,7 +124,7 @@ export function ProductForm({ product, categories }: { product: Product; categor
           </Card>
 
           <Card className="space-y-4">
-            <h2 className="font-extrabold">Organisation</h2>
+            <h2 className="font-display font-semibold tracking-tight">Organisation</h2>
             <Field label="Category">
               <select className={inputCls} value={p.category} onChange={(e) => set("category", e.target.value)}>
                 {categories.map((c) => (

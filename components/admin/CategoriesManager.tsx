@@ -23,17 +23,17 @@ export function CategoriesManager({ categories, counts }: { categories: Category
       <Card className="!p-0">
         <ul>
           {categories.map((c, i) => (
-            <motion.li layout key={c.id} className="flex items-center gap-4 border-t border-ink/5 p-4 first:border-0">
+            <motion.li layout key={c.id} className="flex items-center gap-4 border-t border-line/70 p-4 first:border-0">
               <div className="flex flex-col">
                 <button disabled={i === 0} onClick={() => start(() => moveCategory(c.id, -1))} className="rounded p-0.5 text-ink/40 hover:text-ink disabled:opacity-20" aria-label="Move up"><ArrowUp className="h-4 w-4" /></button>
                 <button disabled={i === categories.length - 1} onClick={() => start(() => moveCategory(c.id, 1))} className="rounded p-0.5 text-ink/40 hover:text-ink disabled:opacity-20" aria-label="Move down"><ArrowDown className="h-4 w-4" /></button>
               </div>
-              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-sand">{c.image && <Image src={c.image} alt="" fill sizes="56px" className="object-cover" />}</div>
+              <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-xl bg-plate">{c.image && <Image src={c.image} alt="" fill sizes="56px" className="object-cover" />}</div>
               <div className="min-w-0 flex-1">
-                <p className="font-bold">{c.name.en} <span className="font-[family-name:var(--font-tajawal)] font-medium text-ink/50" dir="rtl">· {c.name.ar}</span></p>
+                <p className="font-medium">{c.name.en} <span className="font-[family-name:var(--font-plex-ar)] font-medium text-ink/50" dir="rtl">· {c.name.ar}</span></p>
                 <p className="truncate text-sm text-ink/50">{c.blurb.en}</p>
               </div>
-              <span className="rounded-full bg-sand px-3 py-1 text-xs font-bold">{counts[c.slug] ?? 0} products</span>
+              <span className="rounded-full bg-plate px-3 py-1 text-xs font-medium">{counts[c.slug] ?? 0} products</span>
               <button onClick={() => setEdit(c)} className="rounded-lg p-2 text-ink/50 hover:bg-ink/5 hover:text-ink" aria-label="Edit"><Pencil className="h-4 w-4" /></button>
               <button
                 onClick={() =>
@@ -59,7 +59,7 @@ export function CategoriesManager({ categories, counts }: { categories: Category
             <motion.div className="absolute inset-0 bg-black/40" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setEdit(null)} />
             <motion.div initial={{ opacity: 0, y: 30, scale: 0.97 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0, y: 20 }} className="relative max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-3xl bg-white p-6 shadow-2xl">
               <button onClick={() => setEdit(null)} className="absolute right-4 top-4 rounded-full p-2 hover:bg-ink/5" aria-label="Close"><X className="h-4 w-4" /></button>
-              <h2 className="mb-5 text-xl font-black">{edit.id ? "Edit category" : "New category"}</h2>
+              <h2 className="mb-5 font-display text-xl font-semibold tracking-tight">{edit.id ? "Edit category" : "New category"}</h2>
               <div className="space-y-4">
                 <div className="grid grid-cols-2 gap-3">
                   <Field label="Name (EN)"><input className={inputCls} value={edit.name.en} onChange={(e) => setEdit({ ...edit, name: { ...edit.name, en: e.target.value } })} /></Field>
@@ -69,7 +69,7 @@ export function CategoriesManager({ categories, counts }: { categories: Category
                 <Field label="Short description (AR)"><input dir="rtl" className={inputCls} value={edit.blurb.ar} onChange={(e) => setEdit({ ...edit, blurb: { ...edit.blurb, ar: e.target.value } })} /></Field>
                 <Field label="URL slug" hint="auto from name"><input className={inputCls} value={edit.slug} onChange={(e) => setEdit({ ...edit, slug: e.target.value })} /></Field>
                 <div>
-                  <p className="mb-1.5 text-sm font-bold text-ink/80">Image</p>
+                  <p className="mb-1.5 text-sm font-medium text-ink/80">Image</p>
                   <ImageUploader value={edit.image ? [edit.image] : []} onChange={(v) => setEdit({ ...edit, image: v[v.length - 1] ?? "" })} />
                 </div>
               </div>

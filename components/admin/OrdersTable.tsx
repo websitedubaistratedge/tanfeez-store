@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { Search, Download } from "lucide-react";
 import clsx from "clsx";
-import { Card, PageHeader, inputCls, OrderBadge, ORDER_LABEL, PAYMENT_LABEL, aed, fmtDate, Btn } from "./ui";
+import { Card, PageHeader, inputCls, OrderBadge, ORDER_LABEL, PAYMENT_LABEL, PAYMENT_STATUS_LABEL, PaymentBadge, aed, fmtDate, Btn, paymentOf } from "./ui";
 import type { Order, OrderStatus } from "@/lib/types";
 
 const TABS: (OrderStatus | "all")[] = ["all", "new", "confirmed", "production", "delivery", "delivered", "cancelled"];
@@ -23,8 +23,11 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
   );
 
   const exportCsv = () => {
-    const rows = [["Order", "Date", "Customer", "Phone", "Emirate", "Items", "Total", "Payment", "Status"]].concat(
-      list.map((o) => [o.number, o.createdAt.slice(0, 10), o.customer.name, o.customer.phone, o.customer.emirate, o.items.map((i) => `${i.qty}x ${i.name}`).join("; "), String(o.total), o.payment, o.status])
+    const rows = [["Order", "Date", "Customer", "Phone", "Emirate", "Items", "Total", "Payment", "Paid", "Balance due", "Status"]].concat(
+      list.map((o) => {
+        const pay = paymentOf(o);
+        return [o.number, o.createdAt.slice(0, 10), o.customer.name, o.customer.phone, o.customer.emirate, o.items.map((i) => `${i.qty}x ${i.name}`).join("; "), String(o.total), PAYMENT_LABEL[o.payment], PAYMENT_STATUS_LABEL[pay.status], String(pay.due), ORDER_LABEL[o.status]];
+      })
     );
     const csv = rows.map((r) => r.map((c) => `"${String(c).replace(/"/g, '""')}"`).join(",")).join("\n");
     const a = document.createElement("a");
@@ -38,35 +41,62 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
       <PageHeader title="Orders" sub={`${orders.length} orders · ${aed(orders.filter((o) => o.status !== "cancelled").reduce((s, o) => s + o.total, 0))} lifetime`} actions={<Btn variant="outline" onClick={exportCsv}><Download className="h-4 w-4" /> Export CSV</Btn>} />
       <div className="no-scrollbar mb-4 flex gap-2 overflow-x-auto">
         {TABS.map((s) => (
-          <button key={s} onClick={() => setTab(s)} className={clsx("shrink-0 rounded-full px-4 py-2 text-sm font-bold", tab === s ? "bg-ink text-white" : "bg-white text-ink/60 hover:text-ink")}>
+          <button key={s} onClick={() => setTab(s)} className={clsx("shrink-0 rounded-full px-4 py-2 text-sm font-medium", tab === s ? "bg-ink text-white" : "bg-white text-ink/60 ring-1 ring-line hover:text-ink")}>
             {s === "all" ? "All" : ORDER_LABEL[s]} <span className="opacity-50">{s === "all" ? orders.length : orders.filter((o) => o.status === s).length}</span>
           </button>
         ))}
       </div>
       <Card className="!p-0">
-        <div className="border-b border-ink/5 p-4">
+        <div className="border-b border-line/70 p-3 md:p-4">
           <label className="relative block max-w-sm">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-ink/35" />
             <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Order #, name, phone…" className={clsx(inputCls, "pl-9")} />
           </label>
         </div>
-        <div className="overflow-x-auto">
+        {/* Phones: one card per order */}
+        <ul className="divide-y divide-line/70 md:hidden">
+          {list.map((o) => {
+            const pay = paymentOf(o);
+            return (
+              <li key={o.id}>
+                <Link href={`/admin/orders/${o.id}`} className="block px-4 py-3.5 active:bg-plate/70">
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-medium">{o.number}</span>
+                    <OrderBadge status={o.status} />
+                  </div>
+                  <div className="mt-1 flex items-center justify-between gap-3 text-[0.85rem]">
+                    <span className="truncate">{o.customer.name} <span className="text-muted">· {o.customer.emirate}</span></span>
+                    <span className="shrink-0 font-medium tabular-nums">{aed(o.total)}</span>
+                  </div>
+                  <div className="mt-1.5 flex items-center justify-between gap-3 text-[0.78rem] text-muted">
+                    <span>{fmtDate(o.createdAt)} · {PAYMENT_LABEL[o.payment]}</span>
+                    <PaymentBadge status={pay.status} />
+                  </div>
+                </Link>
+              </li>
+            );
+          })}
+        </ul>
+        <div className="hidden overflow-x-auto md:block">
           <table className="w-full min-w-[820px] text-sm">
             <thead>
-              <tr className="text-left text-xs font-bold uppercase tracking-wider text-ink/45">
+              <tr className="text-left text-[0.7rem] font-medium uppercase tracking-[0.12em] text-muted">
                 <th className="px-4 py-3">Order</th><th className="px-3 py-3">Date</th><th className="px-3 py-3">Customer</th><th className="px-3 py-3">Items</th><th className="px-3 py-3">Payment</th><th className="px-3 py-3">Status</th><th className="px-4 py-3 text-right">Total</th>
               </tr>
             </thead>
             <tbody>
               {list.map((o) => (
-                <tr key={o.id} className="border-t border-ink/5 hover:bg-sand/50">
-                  <td className="px-4 py-3"><Link href={`/admin/orders/${o.id}`} className="font-bold hover:underline">{o.number}</Link></td>
+                <tr key={o.id} className="border-t border-line/70 hover:bg-plate/70">
+                  <td className="px-4 py-3"><Link href={`/admin/orders/${o.id}`} className="font-medium hover:underline">{o.number}</Link></td>
                   <td className="px-3 py-3 text-ink/60">{fmtDate(o.createdAt)}</td>
-                  <td className="px-3 py-3"><span className="font-semibold">{o.customer.name}</span><span className="block text-xs text-ink/45">{o.customer.emirate} · {o.customer.phone}</span></td>
+                  <td className="px-3 py-3"><span className="font-medium">{o.customer.name}</span><span className="block text-xs text-ink/45">{o.customer.emirate} · {o.customer.phone}</span></td>
                   <td className="px-3 py-3 text-ink/70">{o.items.reduce((s, i) => s + i.qty, 0)} item(s)</td>
-                  <td className="px-3 py-3 text-ink/70">{PAYMENT_LABEL[o.payment]}</td>
+                  <td className="px-3 py-3 text-ink/70">
+                    <span className="block">{PAYMENT_LABEL[o.payment]}</span>
+                    <span className="mt-1 inline-block"><PaymentBadge status={paymentOf(o).status} /></span>
+                  </td>
                   <td className="px-3 py-3"><OrderBadge status={o.status} /></td>
-                  <td className="px-4 py-3 text-right font-bold">{aed(o.total)}</td>
+                  <td className="px-4 py-3 text-right font-medium">{aed(o.total)}</td>
                 </tr>
               ))}
             </tbody>

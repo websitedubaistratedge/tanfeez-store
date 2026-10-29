@@ -6,6 +6,7 @@ import { motion, Reorder } from "framer-motion";
 import { ImagePlus, Loader2, X, GripVertical } from "lucide-react";
 import clsx from "clsx";
 import { uploadImages } from "@/lib/admin-actions";
+import { shrinkImages } from "@/lib/resize-image";
 
 /** Drag-and-drop uploader with reorderable thumbnails. The first image is the cover. */
 export function ImageUploader({ value, onChange }: { value: string[]; onChange: (v: string[]) => void }) {
@@ -15,9 +16,10 @@ export function ImageUploader({ value, onChange }: { value: string[]; onChange: 
 
   const upload = (files: FileList | null) => {
     if (!files?.length) return;
-    const fd = new FormData();
-    Array.from(files).forEach((f) => fd.append("files", f));
+    const picked = Array.from(files);
     start(async () => {
+      const fd = new FormData();
+      (await shrinkImages(picked)).forEach((f) => fd.append("files", f));
       const urls = await uploadImages(fd);
       onChange([...value, ...urls]);
     });
@@ -27,9 +29,9 @@ export function ImageUploader({ value, onChange }: { value: string[]; onChange: 
     <div>
       <Reorder.Group axis="x" values={value} onReorder={onChange} className="flex flex-wrap gap-3">
         {value.map((src, i) => (
-          <Reorder.Item key={src} value={src} className="group relative h-28 w-28 cursor-grab overflow-hidden rounded-2xl bg-sand ring-1 ring-ink/10 active:cursor-grabbing">
+          <Reorder.Item key={src} value={src} className="group relative h-28 w-28 cursor-grab overflow-hidden rounded-2xl bg-plate ring-1 ring-ink/10 active:cursor-grabbing">
             <Image src={src} alt="" fill sizes="112px" className="pointer-events-none object-cover" />
-            {i === 0 && <span className="absolute left-1.5 top-1.5 rounded-full bg-brand px-2 py-0.5 text-[10px] font-black">COVER</span>}
+            {i === 0 && <span className="absolute left-1.5 top-1.5 rounded-full bg-white/95 px-2 py-0.5 text-[10px] font-medium tracking-wide">Cover</span>}
             <GripVertical className="absolute bottom-1.5 left-1.5 h-4 w-4 text-white opacity-0 drop-shadow group-hover:opacity-100" />
             <button
               type="button"
@@ -55,7 +57,7 @@ export function ImageUploader({ value, onChange }: { value: string[]; onChange: 
             setDrag(false);
             upload(e.dataTransfer.files);
           }}
-          className={clsx("flex h-28 w-28 flex-col items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed text-xs font-bold text-ink/50 transition", drag ? "border-ink bg-brand-50" : "border-ink/15 hover:border-ink/40")}
+          className={clsx("flex h-28 w-28 flex-col items-center justify-center gap-1.5 rounded-2xl border-2 border-dashed text-xs font-medium text-ink/50 transition", drag ? "border-ink bg-plate" : "border-ink/15 hover:border-ink/40")}
         >
           {pending ? <Loader2 className="h-6 w-6 animate-spin" /> : <ImagePlus className="h-6 w-6" />}
           {pending ? "Uploading" : "Add images"}

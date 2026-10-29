@@ -8,8 +8,8 @@ export function PageHeader({ title, sub, actions }: { title: string; sub?: strin
   return (
     <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
       <div>
-        <h1 className="text-3xl font-black tracking-tight">{title}</h1>
-        {sub && <p className="mt-1 text-ink/55">{sub}</p>}
+        <h1 className="font-display text-[clamp(1.7rem,3vw,2.2rem)] font-semibold leading-none tracking-[-0.03em]">{title}</h1>
+        {sub && <p className="mt-2 text-[0.9rem] text-muted">{sub}</p>}
       </div>
       {actions && <div className="flex flex-wrap gap-2">{actions}</div>}
     </div>
@@ -18,7 +18,7 @@ export function PageHeader({ title, sub, actions }: { title: string; sub?: strin
 
 export function Card({ children, className, ...rest }: React.HTMLAttributes<HTMLDivElement>) {
   return (
-    <div {...rest} className={clsx("rounded-[20px] bg-white p-5 shadow-[0_1px_2px_rgba(0,0,0,0.04)] ring-1 ring-ink/5", className)}>
+    <div {...rest} className={clsx("rounded-2xl border border-line bg-white p-5", className)}>
       {children}
     </div>
   );
@@ -33,11 +33,10 @@ export function Btn({
     <button
       {...rest}
       className={clsx(
-        "inline-flex h-10 items-center justify-center gap-2 rounded-xl px-4 text-sm font-bold transition disabled:opacity-50",
-        variant === "dark" && "bg-ink text-white hover:bg-ink-700",
-        variant === "brand" && "bg-brand text-ink hover:bg-brand-600",
-        variant === "ghost" && "text-ink/70 hover:bg-ink/5 hover:text-ink",
-        variant === "outline" && "border border-ink/15 bg-white hover:border-ink/40",
+        "inline-flex h-10 items-center justify-center gap-2 rounded-full px-5 text-[0.88rem] font-medium transition disabled:opacity-50",
+        (variant === "dark" || variant === "brand") && "bg-ink text-white hover:bg-ink-2",
+        variant === "ghost" && "text-ink/70 hover:bg-plate hover:text-ink",
+        variant === "outline" && "border border-line bg-white hover:border-ink",
         variant === "danger" && "bg-red-50 text-red-700 hover:bg-red-100",
         className
       )}
@@ -48,9 +47,9 @@ export function Btn({
 export function Field({ label, hint, children, className }: { label: string; hint?: string; children: React.ReactNode; className?: string }) {
   return (
     <label className={clsx("block", className)}>
-      <span className="mb-1.5 flex items-baseline justify-between text-sm font-bold text-ink/80">
+      <span className="mb-1.5 flex items-baseline justify-between text-[0.8rem] font-medium text-muted">
         {label}
-        {hint && <span className="text-xs font-medium text-ink/40">{hint}</span>}
+        {hint && <span className="text-[0.72rem] font-normal text-faint">{hint}</span>}
       </span>
       {children}
     </label>
@@ -58,13 +57,13 @@ export function Field({ label, hint, children, className }: { label: string; hin
 }
 
 export const inputCls =
-  "w-full rounded-xl border border-ink/12 bg-white px-3.5 py-2.5 text-sm outline-none transition focus:border-ink focus:ring-4 focus:ring-brand/30";
+  "w-full rounded-xl border border-line bg-white px-3.5 py-2.5 text-sm outline-none transition placeholder:text-faint focus:border-ink";
 
 export function Toggle({ checked, onChange, label }: { checked: boolean; onChange: (v: boolean) => void; label?: string }) {
   return (
-    <button type="button" onClick={() => onChange(!checked)} className="inline-flex items-center gap-2.5 text-sm font-semibold" aria-pressed={checked}>
+    <button type="button" onClick={() => onChange(!checked)} className="inline-flex items-center gap-2.5 text-sm" aria-pressed={checked}>
       <span className={clsx("relative h-6 w-11 rounded-full transition", checked ? "bg-ink" : "bg-ink/15")}>
-        <motion.span layout className={clsx("absolute top-1 h-4 w-4 rounded-full", checked ? "end-1 bg-brand" : "start-1 bg-white")} transition={{ type: "spring", stiffness: 500, damping: 30 }} />
+        <motion.span layout className={clsx("absolute top-1 h-4 w-4 rounded-full bg-white shadow-sm", checked ? "end-1" : "start-1")} transition={{ type: "spring", stiffness: 500, damping: 30 }} />
       </span>
       {label}
     </button>
@@ -72,12 +71,12 @@ export function Toggle({ checked, onChange, label }: { checked: boolean; onChang
 }
 
 const ORDER_TONE: Record<OrderStatus, string> = {
-  new: "bg-brand text-ink",
-  confirmed: "bg-sky-100 text-sky-800",
-  production: "bg-violet-100 text-violet-800",
-  delivery: "bg-amber-100 text-amber-800",
-  delivered: "bg-emerald-100 text-emerald-800",
-  cancelled: "bg-red-100 text-red-700",
+  new: "bg-brand/25 text-ink",
+  confirmed: "bg-sky-50 text-sky-800",
+  production: "bg-violet-50 text-violet-800",
+  delivery: "bg-amber-50 text-amber-800",
+  delivered: "bg-emerald-50 text-emerald-800",
+  cancelled: "bg-red-50 text-red-700",
 };
 export const ORDER_LABEL: Record<OrderStatus, string> = {
   new: "New",
@@ -88,7 +87,12 @@ export const ORDER_LABEL: Record<OrderStatus, string> = {
   cancelled: "Cancelled",
 };
 export function OrderBadge({ status }: { status: OrderStatus }) {
-  return <span className={clsx("inline-flex items-center rounded-full px-2.5 py-1 text-xs font-bold", ORDER_TONE[status])}>{ORDER_LABEL[status]}</span>;
+  return (
+    <span className={clsx("inline-flex items-center gap-1.5 whitespace-nowrap rounded-full px-2.5 py-1 text-[0.72rem] font-medium", ORDER_TONE[status])}>
+      <span className="h-1.5 w-1.5 rounded-full bg-current opacity-60" />
+      {ORDER_LABEL[status]}
+    </span>
+  );
 }
 
 export const REQ_LABEL: Record<RequestStatus, string> = {
@@ -122,3 +126,15 @@ export function ago(s: string) {
 }
 
 export const PAYMENT_LABEL = { cod: "Pay on delivery", bank: "Bank transfer", tabby: "Tabby · pay in 4", tamara: "Tamara · pay in 3" } as const;
+
+/** An order's payment state; orders saved before payment tracking count as paid once delivered. */
+export function paymentOf(o: { paymentStatus?: "unpaid" | "deposit" | "paid"; amountPaid?: number; status: string; total: number }) {
+  const status = o.paymentStatus ?? (o.status === "delivered" ? "paid" : "unpaid");
+  const paid = status === "paid" ? o.total : status === "unpaid" ? 0 : (o.amountPaid ?? 0);
+  return { status, paid, due: Math.max(0, o.total - paid) };
+}
+export const PAYMENT_STATUS_LABEL = { unpaid: "Unpaid", deposit: "Deposit paid", paid: "Paid" } as const;
+const PAYMENT_TONE = { unpaid: "bg-red-50 text-red-700", deposit: "bg-amber-50 text-amber-800", paid: "bg-emerald-50 text-emerald-800" } as const;
+export function PaymentBadge({ status }: { status: keyof typeof PAYMENT_TONE }) {
+  return <span className={clsx("inline-flex whitespace-nowrap rounded-full px-2 py-0.5 text-[0.7rem] font-medium", PAYMENT_TONE[status])}>{PAYMENT_STATUS_LABEL[status]}</span>;
+}

@@ -22,6 +22,27 @@ const SCHEMA = [
 
 const clone = <T>(v: T): T => JSON.parse(JSON.stringify(v));
 
+// ── Demo data that never goes stale ──
+// The seed's orders, requests and messages are dated around SEED_NOW (see scripts/seed.mjs).
+// Whenever demo data is written we slide those dates forward to "now", so the dashboard's
+// last-30-days figures always have something in them. Demo records keep their seed ids.
+const SEED_NOW = Date.parse("2026-10-01T09:00:00Z");
+export const DEMO_ID = /^(ord|req|msg)_\d+$/;
+const shiftIso = (iso: string, ms: number) => new Date(Date.parse(iso) + ms).toISOString();
+function shiftRecord(coll: "orders" | "requests" | "messages", doc: Record<string, unknown>, ms: number) {
+  doc.createdAt = shiftIso(doc.createdAt as string, ms);
+  if (coll === "orders") for (const h of doc.history as { at: string }[]) h.at = shiftIso(h.at, ms);
+  if (coll === "requests") for (const n of doc.notes as { at: string }[]) n.at = shiftIso(n.at, ms);
+}
+/** A copy of the seed with its activity re-dated to the present. */
+function freshSeed(): DB {
+  const store = clone(seed as unknown as DB);
+  const ms = Math.max(0, Date.now() - SEED_NOW);
+  for (const coll of ["orders", "requests", "messages"] as const)
+    for (const doc of store[coll] as unknown as Record<string, unknown>[]) shiftRecord(coll, doc, ms);
+  return store;
+}
+
 async function d1(): Promise<D1Database | null> {
   try {
     const { env } = await getCloudflareContext({ async: true });
@@ -33,7 +54,8 @@ async function d1(): Promise<D1Database | null> {
 
 // One-off data changes for databases seeded before the change landed in data/seed.json.
 // Each runs once (tracked in meta 'migrations') and must be safe to re-run.
-const MIGRATIONS: { id: string; sql: [string, ...unknown[]][] }[] = [
+type Migration = { id: string; sql?: [string, ...unknown[]][]; run?: (db: D1Database) => Promise<D1PreparedStatement[]> };
+const MIGRATIONS: Migration[] = [
   {
     id: "2026-10-29-full-catalogue",
     sql: [
@@ -47,6 +69,21 @@ const MIGRATIONS: { id: string; sql: [string, ...unknown[]][] }[] = [
       ],
     ],
   },
+  {
+    // Databases seeded before demo dates were kept fresh: slide their demo activity to now.
+    id: "2026-10-29-fresh-demo-dates",
+    run: async (db) => {
+      const { results } = await db.prepare("SELECT coll, id, data FROM docs WHERE coll IN ('orders', 'requests', 'messages')").all<Row>();
+      const demo = results.filter((r) => DEMO_ID.test(r.id));
+      const newest = Math.max(...demo.map((r) => Date.parse(JSON.parse(r.data).createdAt)));
+      const ms = Math.max(0, Date.now() - 2 * 864e5 - newest); // newest demo order lands two days ago
+      return demo.map((r) => {
+        const doc = JSON.parse(r.data);
+        shiftRecord(r.coll as "orders", doc, ms);
+        return db.prepare("UPDATE docs SET data = ? WHERE coll = ? AND id = ?").bind(JSON.stringify(doc), r.coll, r.id);
+      });
+    },
+  },
 ];
 
 async function migrate(db: D1Database) {
@@ -55,8 +92,13 @@ async function migrate(db: D1Database) {
   const pending = MIGRATIONS.filter((m) => !done.has(m.id));
   if (!pending.length) return;
   pending.forEach((m) => done.add(m.id));
+  const stmts: D1PreparedStatement[] = [];
+  for (const m of pending) {
+    for (const [q, ...args] of m.sql ?? []) stmts.push(db.prepare(q).bind(...args));
+    if (m.run) stmts.push(...(await m.run(db)));
+  }
   await db.batch([
-    ...pending.flatMap((m) => m.sql.map(([q, ...args]) => db.prepare(q).bind(...args))),
+    ...stmts,
     db.prepare("INSERT OR REPLACE INTO meta (key, data) VALUES ('migrations', ?)").bind(JSON.stringify([...done])),
     db.prepare("UPDATE meta SET data = CAST(data AS INTEGER) + 1 WHERE key = 'version'"),
   ]);
@@ -67,7 +109,7 @@ function ensure(db: D1Database) {
   ready ??= (async () => {
     await db.batch(SCHEMA.map((s) => db.prepare(s)));
     const seeded = await db.prepare("SELECT 1 FROM meta WHERE key = 'version'").first();
-    if (!seeded) await db.batch(writeAll(db, seed as unknown as DB, 0));
+    if (!seeded) await db.batch(writeAll(db, freshSeed(), 0));
     await migrate(db);
   })().catch((e) => {
     ready = null;
@@ -87,7 +129,12 @@ function writeAll(db: D1Database, store: DB, version: number) {
     db.prepare("DELETE FROM docs"),
     db.prepare("DELETE FROM meta"),
     ...rowsOf(store).map((r) => db.prepare("INSERT INTO docs (coll, id, pos, data) VALUES (?, ?, ?, ?)").bind(r.coll, r.id, r.pos, r.data)),
-    db.prepare("INSERT INTO meta (key, data) VALUES ('settings', ?), ('counters', ?), ('version', ?)").bind(JSON.stringify(store.settings), JSON.stringify(store.counters), String(version)),
+    db.prepare("INSERT INTO meta (key, data) VALUES ('settings', ?), ('counters', ?), ('version', ?), ('migrations', ?)").bind(
+      JSON.stringify(store.settings),
+      JSON.stringify(store.counters),
+      String(version),
+      JSON.stringify(MIGRATIONS.map((m) => m.id)), // freshly written data already reflects every migration
+    ),
   ];
 }
 
@@ -112,7 +159,7 @@ let memory: DB | null = null;
 let generation = 0;
 const readAt = cache(async (_generation: number): Promise<DB> => {
   const db = await d1();
-  if (!db) return clone((memory ??= clone(seed as unknown as DB)));
+  if (!db) return clone((memory ??= freshSeed()));
   return (await load(db)).store;
 });
 
@@ -121,7 +168,7 @@ export const readDB = () => readAt(generation);
 
 export async function mutate<T>(fn: (db: DB) => T | Promise<T>): Promise<T> {
   const db = await d1();
-  if (!db) return fn((memory ??= clone(seed as unknown as DB)));
+  if (!db) return fn((memory ??= freshSeed()));
 
   for (let attempt = 0; ; attempt++) {
     const { store, version } = await load(db);
@@ -163,12 +210,12 @@ export async function mutate<T>(fn: (db: DB) => T | Promise<T>): Promise<T> {
 export async function resetDB() {
   const db = await d1();
   if (!db) {
-    memory = clone(seed as unknown as DB);
+    memory = freshSeed();
     return;
   }
   await ensure(db);
   const v = await db.prepare("SELECT data FROM meta WHERE key = 'version'").first<{ data: string }>();
-  await db.batch(writeAll(db, seed as unknown as DB, Number(v?.data ?? 0) + 1));
+  await db.batch(writeAll(db, freshSeed(), Number(v?.data ?? 0) + 1));
   generation++;
 }
 

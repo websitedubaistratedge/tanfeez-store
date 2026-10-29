@@ -65,7 +65,7 @@ export function ProjectForm({ project }: { project: Project }) {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <Link href="/admin/projects" className="mb-4 inline-flex items-center gap-1.5 text-sm font-bold text-ink/50 hover:text-ink">
+      <Link href="/admin/projects" className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-ink/50 hover:text-ink">
         <ArrowLeft className="h-4 w-4" /> Projects
       </Link>
       <PageHeader
@@ -74,7 +74,7 @@ export function ProjectForm({ project }: { project: Project }) {
         actions={
           <>
             {!isNew && (
-              <a href={`/projects/${p.slug}`} target="_blank" className="inline-flex h-10 items-center gap-2 rounded-xl border border-ink/15 bg-white px-4 text-sm font-bold">
+              <a href={`/projects/${p.slug}`} target="_blank" className="inline-flex h-10 items-center gap-2 rounded-full border border-line bg-white px-5 text-[0.88rem] font-medium transition hover:border-ink">
                 <ExternalLink className="h-4 w-4" /> View
               </a>
             )}
@@ -90,11 +90,11 @@ export function ProjectForm({ project }: { project: Project }) {
       <div className="grid gap-4 lg:grid-cols-3">
         <div className="space-y-4 lg:col-span-2">
           <Card>
-            <h2 className="mb-4 font-extrabold">Photos</h2>
+            <h2 className="mb-4 font-display font-semibold tracking-tight">Photos</h2>
             <ImageUploader value={p.images.map((i) => i.src)} onChange={setImages} />
           </Card>
           <Card className="space-y-4">
-            <h2 className="font-extrabold">Story</h2>
+            <h2 className="font-display font-semibold tracking-tight">Story</h2>
             <div className="grid gap-4 sm:grid-cols-2">
               <Field label="Client / brand"><input className={inputCls} value={p.client} onChange={(e) => set("client", e.target.value)} /></Field>
               <Field label="URL slug" hint="auto from client"><input className={inputCls} value={p.slug} onChange={(e) => set("slug", e.target.value)} /></Field>
@@ -107,11 +107,11 @@ export function ProjectForm({ project }: { project: Project }) {
         </div>
         <div className="space-y-4">
           <Card className="space-y-4">
-            <h2 className="font-extrabold">Visibility</h2>
+            <h2 className="font-display font-semibold tracking-tight">Visibility</h2>
             <Toggle checked={p.featured} onChange={(v) => set("featured", v)} label="Feature on home page" />
           </Card>
           <Card className="space-y-4">
-            <h2 className="font-extrabold">Classification</h2>
+            <h2 className="font-display font-semibold tracking-tight">Classification</h2>
             <Field label="Sector">
               <select className={inputCls} value={p.sector} onChange={(e) => set("sector", e.target.value as Sector)}>
                 {SECTORS.map((s) => <option key={s.v} value={s.v}>{s.l}</option>)}
