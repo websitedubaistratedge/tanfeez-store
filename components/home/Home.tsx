@@ -83,9 +83,9 @@ export function Hero({ image, look }: { image: string; look?: Product }) {
   ];
 
   return (
-    <section ref={ref} className="relative h-[calc(100svh-340px)] max-h-[680px] min-h-[470px] overflow-hidden md:h-[calc(100svh-150px)] md:max-h-none md:min-h-[600px]">
+    <section ref={ref} className="relative h-[calc(100svh-340px)] max-h-[680px] min-h-[470px] overflow-hidden lg:h-[calc(100svh-150px)] lg:max-h-none lg:min-h-[600px]">
       {/* Mobile: one screen, the room fills the top and fades into the copy. Desktop: copy over the calm left side. */}
-      <div ref={frame} className="absolute inset-x-0 bottom-[30%] top-0 overflow-hidden bg-plate md:bottom-0">
+      <div ref={frame} className="absolute inset-x-0 bottom-[30%] top-0 overflow-hidden bg-plate lg:bottom-0">
         <motion.div className="absolute inset-0" style={{ y }}>
           <div className="hero-zoom absolute inset-0">
             {/* slow, endless drift after the entrance zoom */}
@@ -93,9 +93,9 @@ export function Hero({ image, look }: { image: string; look?: Product }) {
               <Image src={image} alt="" fill priority sizes="100vw" className="object-cover object-[72%_60%]" />
             </motion.div>
           </div>
-          <div className="absolute inset-0 hidden bg-gradient-to-r from-white/80 via-white/30 to-transparent md:block rtl:bg-gradient-to-l" />
+          <div className="absolute inset-0 hidden bg-gradient-to-r from-white/80 via-white/30 to-transparent lg:block rtl:bg-gradient-to-l" />
         </motion.div>
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-white via-white/70 to-transparent md:hidden" />
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-white via-white/70 to-transparent lg:hidden" />
 
         {/* Shop-the-look hotspot */}
         {look && spot && (
@@ -141,27 +141,27 @@ export function Hero({ image, look }: { image: string; look?: Product }) {
         )}
       </div>
 
-      <motion.div style={{ opacity: fade }} className="absolute inset-x-0 bottom-0 mx-auto flex max-w-[1440px] flex-col px-5 pb-6 text-ink md:relative md:inset-auto md:h-full md:justify-center md:px-10 md:py-0">
-        <p className="fade-up mb-3 flex md:mb-4 items-center gap-2 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink/60" style={{ animationDelay: "0.15s" }}>
+      <motion.div style={{ opacity: fade }} className="absolute inset-x-0 bottom-0 mx-auto flex max-w-[1440px] flex-col px-5 pb-6 text-ink lg:relative lg:inset-auto lg:h-full lg:justify-center lg:px-10 lg:py-0">
+        <p className="fade-up mb-3 flex lg:mb-4 items-center gap-2 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink/60" style={{ animationDelay: "0.15s" }}>
           <span className="h-1.5 w-1.5 rounded-full bg-brand" />
           {lang === "ar" ? "تنفيذ · منذ 2021" : "TANFEEZ · Est. 2021"}
         </p>
-        <p className="font-serif text-[1.35rem] leading-tight text-ink-2 md:text-[2.3rem]">
+        <p className="font-serif text-[1.35rem] leading-tight text-ink-2 lg:text-[2.3rem]">
           <WordsRise text={t("v2.heroSerif")} delay={0.3} />
         </p>
         <h1 className="mt-1 max-w-[48rem] font-display text-[clamp(2.15rem,4.7vw,4.6rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
           <WordsRise text={t("v2.heroTitle")} delay={0.55} />
         </h1>
-        <div className="fade-up mt-6 grid grid-cols-[1fr_auto] gap-2 md:mt-9 md:flex md:flex-wrap md:gap-3" style={{ animationDelay: "1.05s" }}>
-          <PillLink href="/shop" className="whitespace-nowrap px-4 md:px-7">{t("v2.heroShop")}</PillLink>
-          <OutlineLink href="/quote" className="gap-2 whitespace-nowrap bg-white/60 px-4 backdrop-blur md:gap-3 md:px-6">{t("v2.heroProject")}</OutlineLink>
+        <div className="fade-up mt-6 grid grid-cols-[1fr_auto] gap-2 lg:mt-9 lg:flex lg:flex-wrap lg:gap-3" style={{ animationDelay: "1.05s" }}>
+          <PillLink href="/shop" className="whitespace-nowrap px-4 lg:px-7">{t("v2.heroShop")}</PillLink>
+          <OutlineLink href="/quote" className="gap-2 whitespace-nowrap bg-white/60 px-4 backdrop-blur lg:gap-3 lg:px-6">{t("v2.heroProject")}</OutlineLink>
         </div>
       </motion.div>
 
       {/* Trust strip */}
       <ul
         style={{ animationDelay: "1.4s" }}
-        className="fade-up absolute inset-x-0 bottom-0 z-10 mx-auto hidden max-w-[1440px] items-center gap-8 px-10 pb-7 text-[0.8rem] text-ink/70 md:flex"
+        className="fade-up absolute inset-x-0 bottom-0 z-10 mx-auto hidden max-w-[1440px] items-center gap-8 px-10 pb-7 text-[0.8rem] text-ink/70 lg:flex"
       >
         {usps.map((u) => (
           <li key={u} className="flex items-center gap-2">
@@ -271,7 +271,7 @@ export function QuickShop({ categories, covers }: { categories: Category[]; cove
     { href: "/inspiration", label: ar ? "إلهام" : "Rooms", img: "/images/lifestyle/look-emerald.jpg" },
   ];
   return (
-    <section className="border-b border-line pb-5 pt-2 md:hidden">
+    <section className="border-b border-line pb-5 pt-2 lg:hidden">
       <div className="no-scrollbar flex gap-4 overflow-x-auto px-5">
         {items.map((it, i) => (
           <Link key={it.href} href={it.href} className="fade-up group flex w-[68px] shrink-0 flex-col items-center gap-2" style={{ animationDelay: `${1.1 + i * 0.05}s` }}>
@@ -290,7 +290,7 @@ export function Categories({ categories, covers, counts }: { categories: Categor
   const { t, lang } = useSite();
   const five = categories.slice(0, 5);
   return (
-    <section className="hidden py-16 md:block md:py-24">
+    <section className="hidden py-16 lg:block lg:py-24">
       <div className="mx-auto mb-8 flex max-w-[1440px] items-end justify-between gap-6 px-5 md:mb-10 md:px-10">
         <div>
           <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{lang === "ar" ? "تسوّق حسب الغرفة" : "Shop by room"}</p></Reveal>
@@ -302,13 +302,25 @@ export function Categories({ categories, covers, counts }: { categories: Categor
       </div>
 
       {/* Desktop bento */}
-      <div className="mx-auto hidden max-w-[1440px] grid-cols-4 grid-rows-2 gap-2 px-10 lg:grid" style={{ height: "min(78vh, 760px)" }}>
+      {/* One trigger for the whole bento, so every tile arrives on the same short, even beat */}
+      <motion.div
+        className="mx-auto hidden max-w-[1440px] grid-cols-4 grid-rows-2 gap-2 px-10 lg:grid"
+        style={{ height: "min(78vh, 760px)" }}
+        initial="hidden"
+        whileInView="show"
+        viewport={{ once: true, amount: 0.25 }}
+        variants={{ show: { transition: { staggerChildren: 0.06 } } }}
+      >
         {five.map((c, i) => (
-          <Reveal key={c.id} delay={i * 0.08} className={i === 0 ? "col-span-2 row-span-2" : ""} y={40}>
+          <motion.div
+            key={c.id}
+            className={i === 0 ? "col-span-2 row-span-2" : ""}
+            variants={{ hidden: { opacity: 0, y: 28 }, show: { opacity: 1, y: 0, transition: { duration: 0.8, ease: EASE } } }}
+          >
             <CategoryTile c={c} cover={covers[c.slug] ?? c.image} count={counts[c.slug] ?? 0} big={i === 0} />
-          </Reveal>
+          </motion.div>
         ))}
-      </div>
+      </motion.div>
 
       {/* Mobile / tablet rail */}
       <div className="lg:hidden">
@@ -375,9 +387,9 @@ export function Spotlight({ products }: { products: Product[] }) {
           </div>
         </div>
 
-        <div className="grid items-center gap-5 lg:grid-cols-12 lg:gap-14">
+        <div className="grid items-center gap-5 md:grid-cols-12 md:gap-10 lg:gap-14">
           {/* Image stage: new piece wipes in over the old */}
-          <div className="relative aspect-square overflow-hidden bg-plate lg:col-span-7 lg:aspect-[5/4]">
+          <div className="relative aspect-square overflow-hidden bg-plate md:col-span-6 lg:col-span-7 lg:aspect-[5/4]">
             <AnimatePresence initial={false} custom={dir}>
               <motion.div
                 key={p.id}
@@ -402,7 +414,7 @@ export function Spotlight({ products }: { products: Product[] }) {
           </div>
 
           {/* Details */}
-          <div className="lg:col-span-5">
+          <div className="md:col-span-6 lg:col-span-5">
             <AnimatePresence mode="wait">
               <motion.div key={p.id} initial="hidden" animate="show" exit="out" variants={{ show: { transition: { staggerChildren: 0.07 } } }}>
                 {[
@@ -724,8 +736,8 @@ export function HelpCTA() {
   const { t } = useSite();
   return (
     <section className="py-12 md:py-28">
-      <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 md:px-10 lg:grid-cols-2 lg:gap-16">
-        <Reveal className="relative hidden aspect-[4/3] overflow-hidden bg-plate md:block lg:order-2">
+      <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 md:grid-cols-2 md:px-10 lg:gap-16">
+        <Reveal className="relative hidden aspect-[4/5] overflow-hidden bg-plate md:order-2 md:block lg:aspect-[4/3]">
           <ParallaxImg src="/images/craft/craftsman.jpg" />
         </Reveal>
         <div className="max-w-xl rounded-2xl bg-band p-6 md:rounded-none md:bg-transparent md:p-0">
@@ -767,7 +779,7 @@ export function Heritage({ projectCount }: { projectCount: number }) {
   ];
   return (
     <section className="pb-12 md:pb-28">
-      <div className="relative h-[34vh] min-h-[230px] overflow-hidden bg-plate md:h-[72vh]">
+      <div className="relative h-[34vh] min-h-[230px] overflow-hidden bg-plate md:h-[46vh] lg:h-[72vh]">
         <ParallaxImg src="/images/craft/gloves-wide.jpg" />
       </div>
       <div className="mx-auto mt-12 grid max-w-[1100px] gap-12 px-5 md:mt-16 md:px-10 lg:grid-cols-[1.2fr_1fr]">

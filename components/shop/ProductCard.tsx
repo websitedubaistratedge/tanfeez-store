@@ -125,23 +125,23 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
 
       </div>
 
-      {/* Info — phones stack name over price; wider screens set them side by side */}
-      <div className="pt-3 md:pt-4">
-        <div className="flex flex-col gap-1 md:flex-row md:items-start md:justify-between md:gap-3">
-          <Link href={`/shop/${p.slug}`} className="line-clamp-2 text-[0.88rem] leading-snug transition-colors hover:text-ink-2 md:line-clamp-none md:text-[0.95rem]">
+      {/* Info — phones and tablets stack name over price; desktop sets them side by side */}
+      <div className="pt-3 lg:pt-4">
+        <div className="flex flex-col gap-1 lg:flex-row lg:items-start lg:justify-between lg:gap-3">
+          <Link href={`/shop/${p.slug}`} className="line-clamp-2 text-[0.88rem] leading-snug transition-colors hover:text-ink-2 lg:line-clamp-none lg:text-[0.95rem]">
             {tx(p.name, lang)}
           </Link>
-          <span className="flex items-baseline gap-2 text-[0.85rem] font-medium tabular-nums md:shrink-0 md:text-[0.9rem]">
+          <span className="flex items-baseline gap-2 text-[0.85rem] font-medium tabular-nums lg:shrink-0 lg:text-[0.9rem]">
             {p.priceOnRequest ? <span className="font-normal text-muted">{t("shop.onRequest")}</span> : money(price, lang)}
-            {p.salePrice && <span className="text-[0.75rem] font-normal text-faint line-through md:hidden">{money(p.price, lang)}</span>}
+            {p.salePrice && <span className="text-[0.75rem] font-normal text-faint line-through lg:hidden">{money(p.price, lang)}</span>}
           </span>
         </div>
         <div className="mt-1 flex items-start justify-between gap-3">
-          <p className="truncate text-[0.75rem] text-muted md:whitespace-normal md:text-[0.8rem]">{materialTags(p, lang)}</p>
-          {p.salePrice && <span className="hidden shrink-0 text-[0.78rem] text-faint line-through tabular-nums md:inline">{money(p.price, lang)}</span>}
+          <p className="truncate text-[0.75rem] text-muted lg:whitespace-normal lg:text-[0.8rem]">{materialTags(p, lang)}</p>
+          {p.salePrice && <span className="hidden shrink-0 text-[0.78rem] text-faint line-through tabular-nums lg:inline">{money(p.price, lang)}</span>}
         </div>
         {p.finishes.length > 0 && (
-          <div className="mt-2.5 flex items-center gap-1.5 md:mt-3">
+          <div className="mt-2.5 flex items-center gap-1.5 lg:mt-3">
             {p.finishes.slice(0, 5).map((f, i) => (
               <button
                 key={i}

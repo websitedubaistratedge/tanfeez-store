@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useState, useTransition, useId } from "react";
-import { Heart, MapPin, Menu, Search, ShoppingBag, X, Phone } from "lucide-react";
+import { Building2, Heart, MapPin, Menu, Search, ShoppingBag, Sofa, X, Phone } from "lucide-react";
 import clsx from "clsx";
 import { Logo } from "@/components/ui/Logo";
 import { EASE } from "@/components/ui/motion";
@@ -32,6 +32,37 @@ const BUSINESS_LINKS: NavLink[] = [
   { href: "/contact", en: "Contact", ar: "تواصل" },
 ];
 export const isBusinessPath = (p: string) => /^\/(business|projects|services)/.test(p);
+
+/** Phones and tablets: the Home / Business switch as a slim tab strip with a gliding underline. */
+function ModeTabs() {
+  const { lang } = useSite();
+  const pathname = usePathname();
+  const biz = isBusinessPath(pathname);
+  const line = `mode-line-${useId()}`;
+  const items = [
+    { href: "/", on: !biz, label: lang === "ar" ? "أثاث المنزل" : "Home furniture", Icon: Sofa },
+    { href: "/business", on: biz, label: lang === "ar" ? "للأعمال" : "For business", Icon: Building2 },
+  ];
+  return (
+    <nav className="relative flex h-[42px] border-t border-line" aria-label={lang === "ar" ? "القسم" : "Section"}>
+      {items.map(({ href, on, label, Icon }) => (
+        <Link
+          key={href}
+          href={href}
+          className={clsx(
+            "relative flex flex-1 items-center justify-center gap-2 text-[0.7rem] font-medium uppercase tracking-[0.16em] transition-colors duration-300",
+            on ? "text-ink" : "text-ink/40 active:text-ink/70"
+          )}
+        >
+          <Icon className="h-[15px] w-[15px] stroke-[1.6]" />
+          {label}
+          {on && <motion.span layoutId={line} className="absolute inset-x-6 bottom-0 h-[2px] rounded-full bg-ink" transition={{ type: "spring", stiffness: 420, damping: 36 }} />}
+        </Link>
+      ))}
+      <span className="pointer-events-none absolute start-1/2 my-3 h-[18px] w-px bg-line" aria-hidden />
+    </nav>
+  );
+}
 
 /** The Home / Business switch: a sliding pill between two worlds. */
 export function ModeSwitch({ className }: { className?: string }) {
@@ -241,13 +272,11 @@ export function Header() {
           {/* Mobile / tablet: the Home | Business switch gets its own slim row */}
           <motion.div
             initial={false}
-            animate={{ height: collapsed ? 0 : 46, opacity: collapsed ? 0 : 1 }}
+            animate={{ height: collapsed ? 0 : 42, opacity: collapsed ? 0 : 1 }}
             transition={{ duration: 0.45, ease: EASE }}
-            className="overflow-hidden lg:hidden"
+            className="-mx-5 overflow-hidden md:-mx-10 lg:hidden"
           >
-            <div className="flex h-[46px] items-start justify-center">
-              <ModeSwitch className="w-full max-w-sm [&>a]:flex-1 [&>a]:text-center" />
-            </div>
+            <ModeTabs />
           </motion.div>
         </div>
       </motion.header>
