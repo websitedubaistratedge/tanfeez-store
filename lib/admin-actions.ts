@@ -6,7 +6,8 @@ import { revalidatePath } from "next/cache";
 import { checkPassword, createSession, destroySession, isAdmin } from "./auth";
 import { DEMO_ID, mutate, resetDB, uid } from "./db";
 import { saveUpload, uploadStore } from "./uploads";
-import type { Category, L10n, Look, MaterialCatalog, OrderStatus, PaymentStatus, Product, Project, RequestStatus, Settings } from "./types";
+import { EMPTY_NOTIFY, sendTest, telegramChat, type Channel } from "./notify";
+import type { Category, L10n, Look, MaterialCatalog, NotifyConfig, OrderStatus, PaymentStatus, Product, Project, RequestStatus, Settings } from "./types";
 
 async function guard() {
   if (!(await isAdmin())) throw new Error("Unauthorized");
@@ -269,6 +270,7 @@ export async function saveSettings(s: Settings) {
     db.settings = {
       ...s,
       materials: db.settings.materials, // edited separately in Admin → Fabrics
+      notify: db.settings.notify, // edited separately in the Order alerts card
       freeDeliveryOver: Math.max(0, Number(s.freeDeliveryOver) || 0),
       deliveryFees: Object.fromEntries(Object.entries(s.deliveryFees).map(([k, v]) => [k, Math.max(0, Number(v) || 0)])),
     };
@@ -408,4 +410,45 @@ export async function saveMaterials(input: MaterialCatalog) {
     db.settings.materials = { upholstery: family(input.upholstery), wood: family(input.wood) };
   });
   refresh();
+}
+
+// ───────── Order alerts ─────────
+const str = (v: unknown, max = 300) => String(v ?? "").trim().slice(0, max);
+function cleanNotify(c: Partial<NotifyConfig>): NotifyConfig {
+  const e = EMPTY_NOTIFY;
+  return {
+    events: {
+      orders: c.events?.orders ?? e.events.orders,
+      quotes: c.events?.quotes ?? e.events.quotes,
+      samples: c.events?.samples ?? e.events.samples,
+      messages: c.events?.messages ?? e.events.messages,
+    },
+    telegram: { on: !!c.telegram?.on, token: str(c.telegram?.token, 120), chatId: str(c.telegram?.chatId, 40) },
+    whatsapp: { on: !!c.whatsapp?.on, phone: str(c.whatsapp?.phone, 40), apiKey: str(c.whatsapp?.apiKey, 80) },
+    email: {
+      on: !!c.email?.on,
+      apiKey: str(c.email?.apiKey, 120),
+      from: str(c.email?.from, 160),
+      to: str(c.email?.to, 400),
+      receipts: !!c.email?.receipts,
+    },
+  };
+}
+
+export async function saveNotifications(input: NotifyConfig) {
+  await guard();
+  await mutate((db) => {
+    db.settings.notify = cleanNotify(input);
+  });
+  revalidatePath("/admin/settings");
+}
+
+export async function testNotification(channel: Channel, input: NotifyConfig) {
+  await guard();
+  return sendTest(channel, cleanNotify(input));
+}
+
+export async function findTelegramChat(token: string) {
+  await guard();
+  return telegramChat(str(token, 120));
 }

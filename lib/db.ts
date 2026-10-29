@@ -238,3 +238,27 @@ export async function resetDB() {
 }
 
 export const uid = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+
+export type Activity = { coll: "orders" | "requests" | "messages"; doc: Record<string, unknown> };
+
+/**
+ * Change feed for the admin's live alerts: orders, requests and messages created after `since`.
+ * Costs a single row read while nothing has been written since `version`.
+ */
+export async function activitySince(version: number, since: string): Promise<{ version: number; items: Activity[] }> {
+  const pick = (store: DB): Activity[] =>
+    (["orders", "requests", "messages"] as const).flatMap((coll) =>
+      (store[coll] as unknown as Record<string, unknown>[]).filter((d) => (d.createdAt as string) > since).map((doc) => ({ coll, doc }))
+    );
+  const db = await d1();
+  if (!db) return { version: generation, items: generation === version ? [] : pick((memory ??= freshSeed())) };
+
+  await ensure(db);
+  const v = Number((await db.prepare("SELECT data FROM meta WHERE key = 'version'").first<{ data: string }>())?.data ?? 0);
+  if (v === version) return { version: v, items: [] };
+  const { results } = await db
+    .prepare("SELECT coll, data FROM docs WHERE coll IN ('orders', 'requests', 'messages') AND json_extract(data, '$.createdAt') > ?")
+    .bind(since)
+    .all<{ coll: Activity["coll"]; data: string }>();
+  return { version: v, items: results.map((r) => ({ coll: r.coll, doc: JSON.parse(r.data) })) };
+}

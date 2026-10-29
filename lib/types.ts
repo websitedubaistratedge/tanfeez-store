@@ -167,6 +167,14 @@ export type Look = {
   createdAt: string;
 };
 
+// ── Order alerts (Admin → Settings → Order alerts). Admin-only: never part of public settings. ──
+export type NotifyConfig = {
+  events: { orders: boolean; quotes: boolean; samples: boolean; messages: boolean };
+  telegram: { on: boolean; token: string; chatId: string };
+  whatsapp: { on: boolean; phone: string; apiKey: string }; // via CallMeBot
+  email: { on: boolean; apiKey: string; from: string; to: string; receipts: boolean }; // via Resend
+};
+
 export type Settings = {
   phone: string;
   mobile: string;
@@ -180,6 +188,7 @@ export type Settings = {
   deliveryFees: Record<string, number>;
   bank: { name: string; iban: string; account: string };
   materials?: MaterialCatalog;
+  notify?: NotifyConfig;
 };
 
 export type DB = {

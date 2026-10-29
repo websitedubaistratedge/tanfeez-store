@@ -3,10 +3,11 @@
 import { useState, useTransition } from "react";
 import { Check, Eraser, Loader2, RotateCcw } from "lucide-react";
 import { Btn, Card, Field, inputCls, PageHeader } from "./ui";
+import { AlertsCard } from "./AlertsCard";
 import { clearDemoActivity, resetDemoData, saveSettings } from "@/lib/admin-actions";
-import type { Settings } from "@/lib/types";
+import type { NotifyConfig, Settings } from "@/lib/types";
 
-export function SettingsForm({ settings }: { settings: Settings }) {
+export function SettingsForm({ settings, notify }: { settings: Settings; notify: NotifyConfig }) {
   const [s, setS] = useState(settings);
   const [saved, setSaved] = useState(false);
   const [pending, start] = useTransition();
@@ -22,10 +23,11 @@ export function SettingsForm({ settings }: { settings: Settings }) {
     <div className="mx-auto max-w-5xl">
       <PageHeader
         title="Settings"
-        sub="Contact details, delivery fees and store messaging shown across the website."
+        sub="Order alerts, contact details, delivery fees and store messaging."
         actions={<Btn variant="brand" onClick={save} disabled={pending}>{pending ? <Loader2 className="h-4 w-4 animate-spin" /> : saved && <Check className="h-4 w-4" />}{saved ? "Saved" : "Save settings"}</Btn>}
       />
       <div className="grid gap-4 lg:grid-cols-2">
+        <AlertsCard initial={notify} />
         <Card className="space-y-4">
           <h2 className="font-display font-semibold tracking-tight">Contact</h2>
           <div className="grid gap-3 sm:grid-cols-2">

@@ -4,8 +4,9 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { mutate, readDB, uid } from "./db";
 import { saveUpload } from "./uploads";
-import type { Lang, Order, QuoteRequest } from "./types";
+import type { Lang, Message, Order, QuoteRequest } from "./types";
 import { configPrice, DEFAULT_MATERIALS, describeConfig } from "./configurator";
+import { notify } from "./notify";
 
 export async function setLang(lang: Lang) {
   (await cookies()).set("lang", lang, { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
@@ -29,7 +30,7 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
     return { ok: false, error: "missing" };
   if (!input.items?.length) return { ok: false, error: "empty" };
 
-  const number = await mutate((db) => {
+  const order = await mutate((db) => {
     const fabrics = db.settings.materials ?? DEFAULT_MATERIALS;
     const lines = input.items
       .map((it) => {
@@ -62,7 +63,7 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
       const p = db.products.find((x) => x.id === l.productId)!;
       p.stock = Math.max(0, p.stock - l.qty);
     }
-    db.orders.unshift({
+    const order: Order = {
       id: uid(),
       number: n,
       customer: {
@@ -83,13 +84,15 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
       status: "new",
       history: [{ status: "new", at }],
       createdAt: at,
-    });
-    return n;
+    };
+    db.orders.unshift(order);
+    return order;
   }).catch(() => null);
 
-  if (!number) return { ok: false, error: "invalid" };
+  if (!order) return { ok: false, error: "invalid" };
   revalidatePath("/admin", "layout");
-  return { ok: true, number };
+  await notify({ kind: "order", order });
+  return { ok: true, number: order.number };
 }
 
 export async function trackOrder(number: string, phone: string) {
@@ -123,9 +126,9 @@ export async function submitQuote(fd: FormData): Promise<{ ok: true; number: str
     }
   }
   const service = clean(fd.get("service"), 20) as QuoteRequest["service"];
-  const number = await mutate((db) => {
+  const req = await mutate((db) => {
     const n = `RQ-${db.counters.request++}`;
-    db.requests.unshift({
+    const req: QuoteRequest = {
       id: uid(),
       number: n,
       service: ["fitout", "furniture", "technical", "custom"].includes(service) ? service : "fitout",
@@ -141,11 +144,13 @@ export async function submitQuote(fd: FormData): Promise<{ ok: true; number: str
       status: "new",
       notes: [],
       createdAt: new Date().toISOString(),
-    });
-    return n;
+    };
+    db.requests.unshift(req);
+    return req;
   });
   revalidatePath("/admin", "layout");
-  return { ok: true, number };
+  await notify({ kind: req.service === "samples" ? "samples" : "quote", req });
+  return { ok: true, number: req.number };
 }
 
 // ───────── Fabric samples ─────────
@@ -162,9 +167,9 @@ export async function requestSamples(input: {
   const phone = clean(input.phone, 40);
   const swatches = (input.swatches || []).slice(0, 4).map((s) => clean(s, 60)).filter(Boolean);
   if (!name || digits(phone).length < 8 || !swatches.length || !clean(input.address)) return { ok: false };
-  const number = await mutate((db) => {
+  const req = await mutate((db) => {
     const n = `RQ-${db.counters.request++}`;
-    db.requests.unshift({
+    const req: QuoteRequest = {
       id: uid(),
       number: n,
       service: "samples",
@@ -179,11 +184,13 @@ export async function requestSamples(input: {
       status: "new",
       notes: [],
       createdAt: new Date().toISOString(),
-    });
-    return n;
+    };
+    db.requests.unshift(req);
+    return req;
   });
   revalidatePath("/admin", "layout");
-  return { ok: true, number };
+  await notify({ kind: req.service === "samples" ? "samples" : "quote", req });
+  return { ok: true, number: req.number };
 }
 
 // ───────── Contact & newsletter ─────────
@@ -192,19 +199,21 @@ export async function sendMessage(fd: FormData): Promise<{ ok: boolean }> {
   const email = clean(fd.get("email"), 160);
   const message = clean(fd.get("message"), 4000);
   if (!name || !email.includes("@") || !message) return { ok: false };
+  const msg: Message = {
+    id: uid(),
+    name,
+    email,
+    phone: clean(fd.get("phone"), 40),
+    subject: clean(fd.get("subject"), 160) || "Website enquiry",
+    message,
+    read: false,
+    createdAt: new Date().toISOString(),
+  };
   await mutate((db) => {
-    db.messages.unshift({
-      id: uid(),
-      name,
-      email,
-      phone: clean(fd.get("phone"), 40),
-      subject: clean(fd.get("subject"), 160) || "Website enquiry",
-      message,
-      read: false,
-      createdAt: new Date().toISOString(),
-    });
+    db.messages.unshift(msg);
   });
   revalidatePath("/admin", "layout");
+  await notify({ kind: "message", msg });
   return { ok: true };
 }
 
