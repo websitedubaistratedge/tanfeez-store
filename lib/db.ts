@@ -3,13 +3,15 @@ import { cache } from "react";
 import { getCloudflareContext } from "@opennextjs/cloudflare";
 import seed from "@/data/seed.json";
 import type { DB } from "./types";
+import { defaultLooks } from "./looks";
+import { DEFAULT_MATERIALS } from "./configurator";
 
 // Persistence lives in Cloudflare D1. Each catalogue/order/request record is one
 // row (JSON) in `docs`, keyed by collection + id; settings and counters live in
 // `meta`. The rest of the app only talks to readDB() and mutate(), which load
 // the whole (small) store and write back just the rows that changed.
 
-const COLLECTIONS = ["categories", "products", "projects", "orders", "requests", "messages"] as const;
+const COLLECTIONS = ["categories", "products", "projects", "orders", "requests", "messages", "looks"] as const;
 type Coll = (typeof COLLECTIONS)[number];
 type Row = { coll: Coll; id: string; pos: number; data: string };
 
@@ -34,9 +36,11 @@ function shiftRecord(coll: "orders" | "requests" | "messages", doc: Record<strin
   if (coll === "orders") for (const h of doc.history as { at: string }[]) h.at = shiftIso(h.at, ms);
   if (coll === "requests") for (const n of doc.notes as { at: string }[]) n.at = shiftIso(n.at, ms);
 }
-/** A copy of the seed with its activity re-dated to the present. */
+/** A copy of the seed with its activity re-dated to the present, plus the default rooms and fabrics. */
 function freshSeed(): DB {
   const store = clone(seed as unknown as DB);
+  store.looks ??= defaultLooks(store.products);
+  store.settings.materials ??= clone(DEFAULT_MATERIALS);
   const ms = Math.max(0, Date.now() - SEED_NOW);
   for (const coll of ["orders", "requests", "messages"] as const)
     for (const doc of store[coll] as unknown as Record<string, unknown>[]) shiftRecord(coll, doc, ms);
@@ -68,6 +72,20 @@ const MIGRATIONS: Migration[] = [
         ]),
       ],
     ],
+  },
+  {
+    // Rooms and fabrics used to live in code: give existing databases the same starting set.
+    id: "2026-10-29-editable-rooms-fabrics",
+    run: async (db) => {
+      const { results } = await db.prepare("SELECT data FROM docs WHERE coll = 'products'").all<{ data: string }>();
+      const looks = defaultLooks(results.map((r) => JSON.parse(r.data)));
+      return [
+        ...looks.map((l, pos) => db.prepare("INSERT OR IGNORE INTO docs (coll, id, pos, data) VALUES ('looks', ?, ?, ?)").bind(l.id, pos, JSON.stringify(l))),
+        db
+          .prepare("UPDATE meta SET data = json_set(data, '$.materials', json(?)) WHERE key = 'settings' AND json_extract(data, '$.materials') IS NULL")
+          .bind(JSON.stringify(DEFAULT_MATERIALS)),
+      ];
+    },
   },
   {
     // Databases seeded before demo dates were kept fresh: slide their demo activity to now.

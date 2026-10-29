@@ -6,7 +6,7 @@ import { Check, Info, Loader2, Package, X } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { EMIRATES, emirateName, money } from "@/lib/i18n";
-import { configPrice, materialsFor, sizeDelta, type Material, type Swatch } from "@/lib/configurator";
+import { configPrice, isUpholstered, materialsFor, sizeDelta, type Material, type Swatch } from "@/lib/configurator";
 import { requestSamples } from "@/lib/actions";
 import { EASE } from "@/components/ui/motion";
 import { lockScroll } from "@/components/site/SmoothScroll";
@@ -120,13 +120,13 @@ export function Installments({ price }: { price: number }) {
 export type Config = { material: string; colour: string; size: number };
 
 export function Configurator({ product: p, cfg, setCfg }: { product: Product; cfg: Config; setCfg: (c: Config) => void }) {
-  const { lang, t } = useSite();
+  const { lang, t, settings } = useSite();
   const ar = lang === "ar";
-  const mats = materialsFor(p);
+  const mats = materialsFor(p, settings.materials);
   const mat = mats.find((m) => m.id === cfg.material) ?? mats[0];
-  const colour = mat.colours.find((c) => c.id === cfg.colour) ?? mat.colours[0];
-  const price = configPrice(p, cfg);
-  const wood = mats[0].id === "oak";
+  const colour = mat?.colours.find((c) => c.id === cfg.colour) ?? mat?.colours[0];
+  const price = configPrice(p, cfg, settings.materials);
+  const wood = !isUpholstered(p);
   const [samples, setSamples] = useState(false);
 
   return (

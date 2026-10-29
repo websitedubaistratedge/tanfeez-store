@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useMemo } from "react";
 import { t as translate, type TKey } from "@/lib/i18n";
-import type { Lang } from "@/lib/types";
+import type { Lang, MaterialCatalog } from "@/lib/types";
 
 export type PublicSettings = {
   phone: string;
@@ -15,6 +15,7 @@ export type PublicSettings = {
   announcement: string;
   freeDeliveryOver: number;
   deliveryFees: Record<string, number>;
+  materials: MaterialCatalog;
 };
 
 type Ctx = {

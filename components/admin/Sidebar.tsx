@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { LayoutDashboard, Package, Layers, FolderKanban, ShoppingCart, ClipboardList, Inbox, Settings, LogOut, ExternalLink, Menu, X } from "lucide-react";
+import { LayoutDashboard, Package, Layers, FolderKanban, ShoppingCart, ClipboardList, Inbox, Settings, LogOut, ExternalLink, Menu, X, Sparkles, Palette } from "lucide-react";
 import clsx from "clsx";
 import { Logo } from "@/components/ui/Logo";
 import { logout } from "@/lib/admin-actions";
@@ -14,7 +14,9 @@ const NAV = [
   { href: "/admin/orders", label: "Orders", Icon: ShoppingCart, badge: "orders" },
   { href: "/admin/requests", label: "Quote requests", Icon: ClipboardList, badge: "requests" },
   { href: "/admin/products", label: "Products", Icon: Package },
+  { href: "/admin/fabrics", label: "Fabrics & finishes", Icon: Palette },
   { href: "/admin/categories", label: "Categories", Icon: Layers },
+  { href: "/admin/inspiration", label: "Inspiration", Icon: Sparkles },
   { href: "/admin/projects", label: "Projects", Icon: FolderKanban },
   { href: "/admin/messages", label: "Messages", Icon: Inbox, badge: "messages" },
   { href: "/admin/settings", label: "Settings", Icon: Settings },

@@ -1,9 +1,9 @@
 // Product configurator: material → colour → size, with live pricing.
 // Pure functions shared by the client UI and the server (placeOrder recomputes prices).
-import type { L10n, Product } from "./types";
+// The fabric catalogue itself is editable in Admin → Fabrics; the lists below are its defaults.
+import type { Material, MaterialCatalog, Product, Swatch } from "./types";
 
-export type Swatch = { id: string; name: L10n; hex: string };
-export type Material = { id: string; name: L10n; note: L10n; delta: number; colours: Swatch[] };
+export type { Material, MaterialCatalog, Swatch };
 
 const sw = (id: string, en: string, ar: string, hex: string): Swatch => ({ id, name: { en, ar }, hex });
 
@@ -69,15 +69,20 @@ export const WOOD: Material[] = [
   },
 ];
 
-const UPHOLSTERED = new Set(["sofas", "armchairs", "beds"]);
+export const DEFAULT_MATERIALS: MaterialCatalog = { upholstery: UPHOLSTERY, wood: WOOD };
 
-export function materialsFor(p: Pick<Product, "category">): Material[] {
-  return UPHOLSTERED.has(p.category) ? UPHOLSTERY : WOOD;
+const UPHOLSTERED = new Set(["sofas", "armchairs", "beds"]);
+export const isUpholstered = (p: Pick<Product, "category">) => UPHOLSTERED.has(p.category);
+
+export function materialsFor(p: Pick<Product, "category">, cat: MaterialCatalog = DEFAULT_MATERIALS): Material[] {
+  const list = isUpholstered(p) ? cat.upholstery : cat.wood;
+  return list.filter((m) => m.colours.length > 0);
 }
 
 /** Best-guess starting configuration from the product's own description and first finish. */
-export function defaultConfig(p: Product): { material: string; colour: string; size: number } {
-  const mats = materialsFor(p);
+export function defaultConfig(p: Product, cat: MaterialCatalog = DEFAULT_MATERIALS): { material: string; colour: string; size: number } {
+  const mats = materialsFor(p, cat);
+  if (!mats.length) return { material: "", colour: "", size: 0 };
   const text = `${p.materials.en} ${p.finishes.map((f) => f.name.en).join(" ")}`.toLowerCase();
   const order = ["leather", "velvet", "bouclé", "boucle", "linen", "walnut", "lacquer", "ash", "oak"];
   const hit = order.find((k) => text.includes(k));
@@ -105,16 +110,16 @@ export function sizeDelta(p: Pick<Product, "price" | "salePrice">, i: number) {
   return i <= 0 ? 0 : round((p.salePrice || p.price) * 0.14 * i, 50);
 }
 
-export function configPrice(p: Product, cfg: { material?: string; size?: number }) {
+export function configPrice(p: Product, cfg: { material?: string; size?: number }, cat: MaterialCatalog = DEFAULT_MATERIALS) {
   const base = p.salePrice || p.price;
-  const m = materialsFor(p).find((x) => x.id === cfg.material);
+  const m = materialsFor(p, cat).find((x) => x.id === cfg.material);
   const materialAdd = m ? round(base * m.delta, 50) : 0;
   const sizeAdd = sizeDelta(p, cfg.size ?? 0);
   return { base, materialAdd, sizeAdd, total: base + materialAdd + sizeAdd };
 }
 
-export function describeConfig(p: Product, cfg: { material?: string; colour?: string }, lang: "en" | "ar" = "en") {
-  const m = materialsFor(p).find((x) => x.id === cfg.material);
+export function describeConfig(p: Product, cfg: { material?: string; colour?: string }, lang: "en" | "ar" = "en", cat: MaterialCatalog = DEFAULT_MATERIALS) {
+  const m = materialsFor(p, cat).find((x) => x.id === cfg.material);
   const c = m?.colours.find((x) => x.id === cfg.colour);
   return [m?.name[lang], c?.name[lang]].filter(Boolean).join(" · ");
 }

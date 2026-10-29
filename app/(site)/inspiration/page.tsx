@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getActiveProducts } from "@/lib/data";
+import { getActiveProducts, getLooks } from "@/lib/data";
 import { resolveLooks } from "@/lib/looks";
 import { InspirationView } from "@/components/pages/InspirationView";
 
@@ -9,5 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default async function InspirationPage() {
-  return <InspirationView looks={resolveLooks(await getActiveProducts())} />;
+  const [products, looks] = await Promise.all([getActiveProducts(), getLooks()]);
+  return <InspirationView looks={resolveLooks(products, looks)} />;
 }

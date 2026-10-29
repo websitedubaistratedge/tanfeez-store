@@ -14,16 +14,17 @@ import { EASE, Reveal } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
 import { ProductCard } from "./ProductCard";
 import { AnimatedPrice, Configurator, Installments, fabricStyle, type Config } from "./Configurator";
-import { configPrice, defaultConfig, describeConfig, materialsFor } from "@/lib/configurator";
+import { configPrice, defaultConfig, describeConfig, isUpholstered, materialsFor } from "@/lib/configurator";
 
 export function ProductView({ product: p, related, category, rooms = [] }: { product: Product; related: Product[]; category?: Category; rooms?: { image: string; title: string; x: number; y: number }[] }) {
-  const { t, lang } = useSite();
+  const { t, lang, settings } = useSite();
+  const cat = settings.materials;
   const add = useCart((s) => s.add);
   const setCart = useUI((s) => s.setCart);
   const wish = useWishlist();
   const hydrated = useHydrated();
   const [img, setImg] = useState(0);
-  const [cfg, setCfg] = useState<Config>(() => defaultConfig(p));
+  const [cfg, setCfg] = useState<Config>(() => defaultConfig(p, cat));
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [zoom, setZoom] = useState<{ x: number; y: number } | null>(null);
@@ -34,9 +35,9 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
   const { scrollY } = useScroll();
   useMotionValueEvent(scrollY, "change", (y) => setScrolled(y > 500));
 
-  const price = configPrice(p, cfg).total;
-  const cfgLabel = describeConfig(p, cfg, lang);
-  const mat = materialsFor(p).find((m) => m.id === cfg.material);
+  const price = configPrice(p, cfg, cat).total;
+  const cfgLabel = describeConfig(p, cfg, lang, cat);
+  const mat = materialsFor(p, cat).find((m) => m.id === cfg.material);
   const swatch = mat?.colours.find((c) => c.id === cfg.colour);
   // Gallery: studio shot, then the piece in real rooms, then the original workshop photos.
   const gallery = [p.images[0], ...rooms.map((r) => r.image), ...p.images.slice(1)];
@@ -58,7 +59,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
   const studio = (src: string) => src.includes("/products-v2/");
 
   const onAdd = () => {
-    add({ productId: p.id, slug: p.slug, name: p.name, image: p.images[0], price, finish: describeConfig(p, cfg, "en"), size: p.sizes[cfg.size], material: cfg.material, colour: cfg.colour }, qty);
+    add({ productId: p.id, slug: p.slug, name: p.name, image: p.images[0], price, finish: describeConfig(p, cfg, "en", cat), size: p.sizes[cfg.size], material: cfg.material, colour: cfg.colour }, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 1600);
     setTimeout(() => setCart(true), 350);
@@ -135,7 +136,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
               <div className="mt-3 flex items-center justify-between px-5">
                 {!p.priceOnRequest && swatch ? (
                   <span className="flex min-w-0 items-center gap-2 text-[0.8rem] text-ink/80">
-                    <span className="h-5 w-5 shrink-0 rounded-full ring-1 ring-black/10" style={fabricStyle(swatch.hex, materialsFor(p)[0].id === "oak")} />
+                    <span className="h-5 w-5 shrink-0 rounded-full ring-1 ring-black/10" style={fabricStyle(swatch.hex, !isUpholstered(p))} />
                     <span className="truncate">{cfgLabel}</span>
                   </span>
                 ) : (
@@ -200,7 +201,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
                         transition={{ duration: 0.45, ease: EASE }}
                         className="pointer-events-none absolute bottom-4 start-4 flex items-center gap-3 bg-white/95 py-2 pe-4 ps-2 shadow-[0_10px_30px_-12px_rgba(0,0,0,0.25)] backdrop-blur"
                       >
-                        <span className="h-10 w-10 rounded-full ring-1 ring-black/10" style={fabricStyle(swatch.hex, materialsFor(p)[0].id === "oak")} />
+                        <span className="h-10 w-10 rounded-full ring-1 ring-black/10" style={fabricStyle(swatch.hex, !isUpholstered(p))} />
                         <span>
                           <span className="block text-[0.68rem] uppercase tracking-[0.14em] text-muted">{lang === "ar" ? "اختيارك" : "Your finish"}</span>
                           <span className="block text-[0.85rem] font-medium">{cfgLabel}</span>
@@ -236,7 +237,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
               {!p.priceOnRequest && <Installments price={price} />}
             </Reveal>
 
-            {!p.priceOnRequest && <Configurator product={p} cfg={cfg} setCfg={setCfg} />}
+            {!p.priceOnRequest && materialsFor(p, cat).length > 0 && <Configurator product={p} cfg={cfg} setCfg={setCfg} />}
 
             <div ref={buyRef} className="mt-6 space-y-3 md:mt-8">
               <div className="flex gap-3">

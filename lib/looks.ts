@@ -1,21 +1,15 @@
-import type { L10n, Product } from "./types";
+import type { Look, Product, RoomKind } from "./types";
 
 /**
- * Styled room scenes. Each pin is a percentage of the image (0–100) pointing at the
- * piece in the photo; `slug` must match a live product or the pin is dropped.
- * To add a look: drop a landscape photo in public/images/lifestyle/ and list it here.
+ * Inspiration rooms ("shop the look"). The live list is stored in the database and edited in
+ * Admin → Inspiration; DEFAULT_LOOKS below is only the starting set used to seed it.
+ * Pins are percentages of the image (0–100); seeds refer to products by slug.
  */
-export type Look = {
-  id: string;
-  title: L10n;
-  mood: L10n;
-  image: string;
-  w: number;
-  h: number;
-  pins: { slug: string; x: number; y: number }[];
-};
+type SeedLook = Omit<Look, "pins" | "room" | "home" | "live" | "createdAt"> & { pins: { slug: string; x: number; y: number }[] };
 
-export const LOOKS: Look[] = [
+export type { RoomKind };
+
+const DEFAULT_LOOKS: SeedLook[] = [
   {
     id: "emerald",
     title: { en: "Emerald Hour", ar: "ساعة الزمرّد" },
@@ -230,7 +224,6 @@ export const LOOKS: Look[] = [
   },
 ];
 
-export type RoomKind = "living" | "bedroom" | "dining" | "kids" | "hall";
 export const ROOM_KINDS: { id: RoomKind; en: string; ar: string }[] = [
   { id: "living", en: "Living", ar: "المعيشة" },
   { id: "bedroom", en: "Bedrooms", ar: "غرف النوم" },
@@ -244,26 +237,42 @@ const ROOM_OF: Record<string, RoomKind> = {
   blush: "bedroom", walnut: "bedroom", oak: "bedroom", atelier: "bedroom", guest: "bedroom", dressing: "bedroom",
   supper: "dining", petal: "kids", study: "kids", staircase: "hall", reading: "hall",
 };
+const HOME_LOOKS = new Set(["emerald", "supper", "library", "walnut", "sahara", "staircase"]);
 
-/** The rooms featured on the home page; the rest live on /inspiration. */
-export const HOME_LOOKS = ["emerald", "supper", "library", "walnut", "sahara", "staircase"];
-
-export function resolveLooks(products: Product[]) {
-  const bySlug = new Map(products.map((p) => [p.slug, p]));
-  return LOOKS.map(({ pins, ...look }) => ({
+/** The starting rooms, with pins pointed at the given catalogue's product ids. */
+export function defaultLooks(products: Pick<Product, "id" | "slug">[], at = new Date().toISOString()): Look[] {
+  const idOf = new Map(products.map((p) => [p.slug, p.id]));
+  return DEFAULT_LOOKS.map(({ pins, ...look }) => ({
     ...look,
+    pins: pins.flatMap((p) => (idOf.has(p.slug) ? [{ productId: idOf.get(p.slug)!, x: p.x, y: p.y }] : [])),
     room: ROOM_OF[look.id] ?? "living",
-    pins: pins.flatMap((pin) => {
-      const product = bySlug.get(pin.slug);
-      return product ? [{ product, x: pin.x, y: pin.y }] : [];
-    }),
-  })).filter((l) => l.pins.length > 0);
+    home: HOME_LOOKS.has(look.id),
+    live: true,
+    createdAt: at,
+  }));
+}
+
+export type ResolvedLook = Omit<Look, "pins"> & { pins: { product: Product; x: number; y: number }[] };
+
+/** Live rooms with their pins resolved to live products (rooms left without pieces are skipped). */
+export function resolveLooks(products: Product[], looks: Look[]): ResolvedLook[] {
+  const byId = new Map(products.map((p) => [p.id, p]));
+  return looks
+    .filter((l) => l.live)
+    .map(({ pins, ...look }) => ({
+      ...look,
+      pins: pins.flatMap((pin) => {
+        const product = byId.get(pin.productId);
+        return product ? [{ product, x: pin.x, y: pin.y }] : [];
+      }),
+    }))
+    .filter((l) => l.pins.length > 0);
 }
 
 /** Room photos featuring a given product, for its gallery. */
-export function roomsFor(slug: string, lang: "en" | "ar") {
-  return LOOKS.flatMap((l) => {
-    const pin = l.pins.find((p) => p.slug === slug);
+export function roomsFor(productId: string, looks: Look[], lang: "en" | "ar") {
+  return looks.flatMap((l) => {
+    const pin = l.live ? l.pins.find((p) => p.productId === productId) : undefined;
     return pin ? [{ image: l.image, title: l.title[lang], x: pin.x, y: pin.y }] : [];
   });
 }

@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { getActiveProducts, getCategories } from "@/lib/data";
+import { getActiveProducts, getCategories, getLooks } from "@/lib/data";
 import { ProductView } from "@/components/shop/ProductView";
 import { roomsFor } from "@/lib/looks";
 import { getLang } from "@/lib/lang";
@@ -16,10 +16,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function ProductPage({ params }: Props) {
   const { slug } = await params;
-  const [products, categories, lang] = await Promise.all([getActiveProducts(), getCategories(), getLang()]);
+  const [products, categories, lang, looks] = await Promise.all([getActiveProducts(), getCategories(), getLang(), getLooks()]);
   const product = products.find((p) => p.slug === slug);
   if (!product) notFound();
   const related = products.filter((p) => p.category === product.category && p.id !== product.id).concat(products.filter((p) => p.featured && p.category !== product.category)).slice(0, 4);
   const category = categories.find((c) => c.slug === product.category);
-  return <ProductView product={product} related={related} category={category} rooms={roomsFor(product.slug, lang)} />;
+  return <ProductView product={product} related={related} category={category} rooms={roomsFor(product.id, looks, lang)} />;
 }

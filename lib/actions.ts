@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { mutate, readDB, uid } from "./db";
 import { saveUpload } from "./uploads";
 import type { Lang, Order, QuoteRequest } from "./types";
-import { configPrice, describeConfig } from "./configurator";
+import { configPrice, DEFAULT_MATERIALS, describeConfig } from "./configurator";
 
 export async function setLang(lang: Lang) {
   (await cookies()).set("lang", lang, { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
@@ -30,14 +30,15 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
   if (!input.items?.length) return { ok: false, error: "empty" };
 
   const number = await mutate((db) => {
+    const fabrics = db.settings.materials ?? DEFAULT_MATERIALS;
     const lines = input.items
       .map((it) => {
         const p = db.products.find((x) => x.id === it.productId && x.status === "active");
         if (!p || p.priceOnRequest) return null;
         // Price is always recomputed on the server from the chosen configuration.
         const sizeIndex = it.size ? Math.max(0, p.sizes.indexOf(it.size)) : 0;
-        const price = it.material ? configPrice(p, { material: it.material, size: sizeIndex }).total : p.salePrice || p.price;
-        const finish = it.material ? describeConfig(p, { material: it.material, colour: it.colour }) : clean(it.finish, 80);
+        const price = it.material ? configPrice(p, { material: it.material, size: sizeIndex }, fabrics).total : p.salePrice || p.price;
+        const finish = it.material ? describeConfig(p, { material: it.material, colour: it.colour }, "en", fabrics) : clean(it.finish, 80);
         return {
           productId: p.id,
           slug: p.slug,

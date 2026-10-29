@@ -81,12 +81,12 @@ The client reviewed v1 (dark, very colourful, heavy 3D) and asked for **a totall
 | Ask | Where it lives |
 |---|---|
 | Lifestyle room photos | `public/images/lifestyle/look-*.jpg` (Emerald Hour, Library Majlis, Blush Suite, Fireside Majlis + hero) |
-| Shop the look | `lib/looks.ts` (pins as % of the image) → `components/home/ShopTheLook.tsx` on the home page, `/inspiration` stacked lookbook, and "In the room" shots in each product gallery (cropped around the product's pin) |
-| Customise fabric / colour / size, live price, free samples | `lib/configurator.ts` (pricing, also re-checked on the server in `placeOrder`) + `components/shop/Configurator.tsx`; sample requests land in Admin → Requests as "Fabric samples" |
+| Shop the look | Admin → Inspiration (rooms + pins, stored in D1; `lib/looks.ts` holds the seed set) → `components/home/ShopTheLook.tsx` on the home page, `/inspiration` stacked lookbook, and "In the room" shots in each product gallery (cropped around the product's pin) |
+| Customise fabric / colour / size, live price, free samples | Admin → Fabrics & finishes (stored in settings; `lib/configurator.ts` has the pricing and the default catalogue, re-checked on the server in `placeOrder`) + `components/shop/Configurator.tsx`; sample requests land in Admin → Requests as "Fabric samples" |
 | Home vs Business | Header `ModeSwitch` (desktop row + mobile row); nav changes by path; `/business` page (sector hover list, process timeline, project reel) |
 | Tabby / Tamara | Product page instalment line + modal, checkout options with live schedule; stored as `payment: "tabby" \| "tamara"` on orders (UI only, no gateway integration yet) |
 
-**Adding a look:** generate a 16:9 room in Flow, process it to 2400px into `public/images/lifestyle/`, then add an entry to `LOOKS` in `lib/looks.ts` with the pin x/y percentages.
+**Adding a room:** Admin → Inspiration → New room: upload the photo, tap each piece to pin it, save.
 
 ## Full catalogue + intro (Oct 29)
 - All 38 products are live with studio shots in `public/images/products-v2/` (11 joinery/commercial pieces added).

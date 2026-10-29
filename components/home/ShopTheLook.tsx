@@ -11,18 +11,9 @@ import { useCart, useQuickView, useUI } from "@/lib/store";
 import { money, tx } from "@/lib/i18n";
 import { EASE, Reveal, SplitLines } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
-import type { L10n, Product } from "@/lib/types";
+import type { ResolvedLook } from "@/lib/looks";
 
-export type ResolvedLook = {
-  id: string;
-  title: L10n;
-  mood: L10n;
-  image: string;
-  w: number;
-  h: number;
-  pins: { product: Product; x: number; y: number }[];
-  room?: string;
-};
+export type { ResolvedLook };
 
 export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook[]; standalone?: boolean }) {
   const { t, lang } = useSite();

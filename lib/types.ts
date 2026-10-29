@@ -143,6 +143,30 @@ export type Message = {
   createdAt: string;
 };
 
+// ── Fabrics & finishes (edited in Admin → Fabrics) ──
+export type Swatch = { id: string; name: L10n; hex: string };
+export type Material = { id: string; name: L10n; note: L10n; delta: number; colours: Swatch[] };
+/** Upholstery applies to sofas, armchairs and beds; wood & lacquer to everything else. */
+export type MaterialCatalog = { upholstery: Material[]; wood: Material[] };
+
+// ── Inspiration rooms (edited in Admin → Inspiration) ──
+export type RoomKind = "living" | "bedroom" | "dining" | "kids" | "hall";
+/** A product pinned on a room photo; x/y are percentages of the image. */
+export type LookPin = { productId: string; x: number; y: number };
+export type Look = {
+  id: string;
+  title: L10n;
+  mood: L10n;
+  image: string;
+  w: number;
+  h: number;
+  pins: LookPin[];
+  room: RoomKind;
+  home: boolean; // featured in "Shop the look" on the home page
+  live: boolean;
+  createdAt: string;
+};
+
 export type Settings = {
   phone: string;
   mobile: string;
@@ -155,6 +179,7 @@ export type Settings = {
   freeDeliveryOver: number;
   deliveryFees: Record<string, number>;
   bank: { name: string; iban: string; account: string };
+  materials?: MaterialCatalog;
 };
 
 export type DB = {
@@ -164,6 +189,7 @@ export type DB = {
   orders: Order[];
   requests: QuoteRequest[];
   messages: Message[];
+  looks: Look[];
   settings: Settings;
   counters: { order: number; request: number };
 };

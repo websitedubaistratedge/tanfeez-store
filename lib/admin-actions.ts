@@ -6,7 +6,7 @@ import { revalidatePath } from "next/cache";
 import { checkPassword, createSession, destroySession, isAdmin } from "./auth";
 import { DEMO_ID, mutate, resetDB, uid } from "./db";
 import { saveUpload, uploadStore } from "./uploads";
-import type { Category, OrderStatus, PaymentStatus, Product, Project, RequestStatus, Settings } from "./types";
+import type { Category, L10n, Look, MaterialCatalog, OrderStatus, PaymentStatus, Product, Project, RequestStatus, Settings } from "./types";
 
 async function guard() {
   if (!(await isAdmin())) throw new Error("Unauthorized");
@@ -268,6 +268,7 @@ export async function saveSettings(s: Settings) {
   await mutate((db) => {
     db.settings = {
       ...s,
+      materials: db.settings.materials, // edited separately in Admin → Fabrics
       freeDeliveryOver: Math.max(0, Number(s.freeDeliveryOver) || 0),
       deliveryFees: Object.fromEntries(Object.entries(s.deliveryFees).map(([k, v]) => [k, Math.max(0, Number(v) || 0)])),
     };
@@ -303,6 +304,108 @@ export async function setOrderPayment(id: string, status: PaymentStatus, amountP
     if (!o) return;
     o.paymentStatus = status;
     o.amountPaid = status === "paid" ? o.total : status === "unpaid" ? 0 : Math.max(0, Math.min(o.total, Math.round(Number(amountPaid) || 0)));
+  });
+  refresh();
+}
+
+// ───────── Inspiration rooms ─────────
+const cleanL10n = (v: L10n | undefined, max = 120): L10n => ({ en: String(v?.en ?? "").trim().slice(0, max), ar: String(v?.ar ?? "").trim().slice(0, max) });
+const pct = (n: number) => Math.round(Math.max(0, Math.min(100, Number(n) || 0)) * 10) / 10;
+
+export async function saveLook(input: Look): Promise<{ ok: true; id: string } | { ok: false; error: string }> {
+  await guard();
+  if (!input.image) return { ok: false, error: "Add a room photo first." };
+  if (!input.title?.en?.trim()) return { ok: false, error: "Give the room an English title." };
+  const id = await mutate((db) => {
+    const products = new Set(db.products.map((p) => p.id));
+    const look: Look = {
+      id: input.id || slugify(input.title.en) || uid(),
+      title: cleanL10n(input.title),
+      mood: cleanL10n(input.mood, 160),
+      image: String(input.image),
+      w: Math.max(1, Math.round(Number(input.w) || 1600)),
+      h: Math.max(1, Math.round(Number(input.h) || 900)),
+      pins: (input.pins ?? []).filter((p) => products.has(p.productId)).slice(0, 12).map((p) => ({ productId: p.productId, x: pct(p.x), y: pct(p.y) })),
+      room: (["living", "bedroom", "dining", "kids", "hall"] as const).find((r) => r === input.room) ?? "living",
+      home: Boolean(input.home),
+      live: input.live !== false,
+      createdAt: input.createdAt || new Date().toISOString(),
+    };
+    const i = db.looks.findIndex((l) => l.id === input.id);
+    if (i >= 0) db.looks[i] = look;
+    else {
+      while (db.looks.some((l) => l.id === look.id)) look.id = `${look.id}-${uid().slice(-4)}`;
+      db.looks.unshift(look); // new rooms lead the lookbook
+    }
+    return look.id;
+  });
+  refresh();
+  return { ok: true, id };
+}
+
+export async function patchLook(id: string, patch: Partial<Pick<Look, "home" | "live">>) {
+  await guard();
+  await mutate((db) => {
+    const l = db.looks.find((x) => x.id === id);
+    if (l) Object.assign(l, { ...(patch.home !== undefined && { home: Boolean(patch.home) }), ...(patch.live !== undefined && { live: Boolean(patch.live) }) });
+  });
+  refresh();
+}
+
+export async function moveLook(id: string, dir: -1 | 1) {
+  await guard();
+  await mutate((db) => {
+    const i = db.looks.findIndex((l) => l.id === id);
+    const j = i + dir;
+    if (i < 0 || j < 0 || j >= db.looks.length) return;
+    [db.looks[i], db.looks[j]] = [db.looks[j], db.looks[i]];
+  });
+  refresh();
+}
+
+export async function deleteLook(id: string) {
+  await guard();
+  await mutate((db) => {
+    db.looks = db.looks.filter((l) => l.id !== id);
+  });
+  refresh();
+}
+
+// ───────── Fabrics & finishes ─────────
+export async function saveMaterials(input: MaterialCatalog) {
+  await guard();
+  const used = new Set<string>();
+  const id = (base: string) => {
+    let v = slugify(base) || uid();
+    while (used.has(v)) v = `${v}-${uid().slice(-3)}`;
+    used.add(v);
+    return v;
+  };
+  const family = (list: MaterialCatalog["upholstery"]) =>
+    (list ?? [])
+      .filter((m) => m.name?.en?.trim())
+      .slice(0, 12)
+      .map((m) => {
+        const mid = m.id && !used.has(m.id) ? (used.add(m.id), m.id) : id(m.name.en);
+        const colourIds = new Set<string>();
+        return {
+          id: mid,
+          name: cleanL10n(m.name, 60),
+          note: cleanL10n(m.note, 120),
+          delta: Math.max(0, Math.min(2, Math.round((Number(m.delta) || 0) * 1000) / 1000)),
+          colours: (m.colours ?? [])
+            .filter((c) => c.name?.en?.trim() && /^#[0-9a-f]{6}$/i.test(c.hex))
+            .slice(0, 16)
+            .map((c) => {
+              let cid = c.id || slugify(c.name.en) || uid();
+              while (colourIds.has(cid)) cid = `${cid}-${uid().slice(-3)}`;
+              colourIds.add(cid);
+              return { id: cid, name: cleanL10n(c.name, 40), hex: c.hex.toLowerCase() };
+            }),
+        };
+      });
+  await mutate((db) => {
+    db.settings.materials = { upholstery: family(input.upholstery), wood: family(input.wood) };
   });
   refresh();
 }

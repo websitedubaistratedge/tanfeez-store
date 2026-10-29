@@ -1,8 +1,8 @@
 import { Categories, Clients, QuickShop, Collections, Faq, HelpCTA, Hero, Heritage, ProjectsShowcase, Spotlight, Tailored } from "@/components/home/Home";
-import { getActiveProducts, getCategories, getProjects } from "@/lib/data";
+import { getActiveProducts, getCategories, getLooks, getProjects } from "@/lib/data";
 import { getLang } from "@/lib/lang";
 import { hasImage } from "@/lib/assets";
-import { HOME_LOOKS, resolveLooks } from "@/lib/looks";
+import { resolveLooks } from "@/lib/looks";
 import { ShopTheLook } from "@/components/home/ShopTheLook";
 
 // Prefer AI-regenerated studio / lifestyle imagery when it exists.
@@ -12,7 +12,7 @@ function pick(...candidates: string[]) {
 }
 
 export default async function Home() {
-  const [products, categories, projects, lang] = await Promise.all([getActiveProducts(), getCategories(), getProjects(), getLang()]);
+  const [products, categories, projects, lang, looks] = await Promise.all([getActiveProducts(), getCategories(), getProjects(), getLang(), getLooks()]);
   const ar = lang === "ar";
   const bySlug = (s: string) => products.find((p) => p.slug === s);
   const pickMany = (slugs: string[]) => slugs.map(bySlug).filter((p): p is NonNullable<typeof p> => !!p);
@@ -35,7 +35,7 @@ export default async function Home() {
       <Hero image={pick("/images/lifestyle/hero.jpg", "/images/projects/vox-cinema-theatre-1.jpg")} look={bySlug("cloud-curve-sofa")} />
       <QuickShop categories={categories} covers={covers} />
       <Categories categories={categories} covers={covers} counts={counts} />
-      <ShopTheLook looks={HOME_LOOKS.flatMap((id) => resolveLooks(products).filter((l) => l.id === id))} />
+      <ShopTheLook looks={resolveLooks(products, looks).filter((l) => l.home)} />
       <Spotlight products={pickMany(["velluto-tufted-sofa", "blush-couture-bed", "live-edge-walnut-table", "wingback-chesterfield-chair", "ember-fireplace-wall"])} />
       <Collections groups={groups} />
       <Tailored products={pickMany(["cloud-curve-sofa", "chesterfield-heritage-sofa", "velluto-tufted-sofa"])} />

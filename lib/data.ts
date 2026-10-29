@@ -1,5 +1,6 @@
 import "server-only";
 import { readDB } from "./db";
+import { DEFAULT_MATERIALS } from "./configurator";
 import { hasImage } from "./assets";
 import { tx } from "./i18n";
 import type { Lang } from "./types";
@@ -18,7 +19,13 @@ export async function getPublicSettings(lang: Lang): Promise<PublicSettings> {
     announcement: tx(s.announcement, lang),
     freeDeliveryOver: s.freeDeliveryOver,
     deliveryFees: s.deliveryFees,
+    materials: s.materials ?? DEFAULT_MATERIALS,
   };
+}
+
+/** Inspiration rooms in their admin order. */
+export async function getLooks() {
+  return (await readDB()).looks ?? [];
 }
 
 /** Use the regenerated square studio shot as the cover when one exists for the product. */
