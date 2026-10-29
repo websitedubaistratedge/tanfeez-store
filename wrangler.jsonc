@@ -1,0 +1,13 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tanfeez-store",
+  "main": ".open-next/worker.js",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
+  "assets": { "directory": ".open-next/assets", "binding": "ASSETS" },
+  "observability": { "enabled": true },
+  // Catalogue, orders, requests and settings (see lib/db.ts). Tables are created and seeded on first request.
+  "d1_databases": [{ "binding": "DB", "database_name": "tanfeez-db", "database_id": "34b9fc12-3d77-4366-ad6b-ecdc0043b72c" }],
+  // Photos and files uploaded through the admin and quote forms (see lib/uploads.ts).
+  "kv_namespaces": [{ "binding": "UPLOADS", "id": "09b60336300647b99278505ae8f94909" }]
+}

@@ -1,14 +1,13 @@
-import fs from "node:fs";
-import path from "node:path";
 import { Categories, Clients, Collections, Faq, HelpCTA, Hero, Heritage, ProjectsShowcase, Spotlight, Tailored } from "@/components/home/Home";
 import { getActiveProducts, getCategories, getProjects } from "@/lib/data";
 import { getLang } from "@/lib/lang";
+import { hasImage } from "@/lib/assets";
 import { resolveLooks } from "@/lib/looks";
 import { ShopTheLook } from "@/components/home/ShopTheLook";
 
 // Prefer AI-regenerated studio / lifestyle imagery when it exists.
 function pick(...candidates: string[]) {
-  for (const c of candidates) if (c && fs.existsSync(path.join(process.cwd(), "public", c))) return c;
+  for (const c of candidates) if (c && hasImage(c)) return c;
   return candidates[candidates.length - 1];
 }
 

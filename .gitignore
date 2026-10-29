@@ -11,3 +11,8 @@ next-env.d.ts
 # Local tooling and business documents (not part of the site)
 .claude/
 *.pdf
+
+# Cloudflare build output and local state
+.open-next/
+.wrangler/
+.dev.vars*

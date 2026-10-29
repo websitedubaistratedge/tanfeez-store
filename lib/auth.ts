@@ -6,12 +6,19 @@ import { redirect } from "next/navigation";
 const COOKIE = "tz_admin";
 const TTL = 60 * 60 * 24 * 7; // 7 days
 
-const secret = () => process.env.SESSION_SECRET || "dev-secret-change-me";
+// Locally the demo password works out of the box. A deployed site has no fallback:
+// admin stays locked until ADMIN_PASSWORD is set as a secret on the host.
+const isProd = process.env.NODE_ENV === "production";
+const adminPassword = () => process.env.ADMIN_PASSWORD || (isProd ? "" : "tanfeez-admin");
+const secret = () =>
+  process.env.SESSION_SECRET ||
+  (isProd ? crypto.createHash("sha256").update(`tanfeez-session:${adminPassword()}`).digest("hex") : "dev-secret-change-me");
 const sign = (v: string) =>
   crypto.createHmac("sha256", secret()).update(v).digest("base64url");
 
 export function checkPassword(pw: string) {
-  const expected = process.env.ADMIN_PASSWORD || "tanfeez-admin";
+  const expected = adminPassword();
+  if (!expected) return false;
   const a = Buffer.from(pw);
   const b = Buffer.from(expected);
   return a.length === b.length && crypto.timingSafeEqual(a, b);

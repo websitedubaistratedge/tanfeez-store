@@ -1,7 +1,6 @@
 import "server-only";
-import fs from "node:fs";
-import path from "node:path";
 import { readDB } from "./db";
+import { hasImage } from "./assets";
 import { tx } from "./i18n";
 import type { Lang } from "./types";
 import type { PublicSettings } from "@/components/providers";
@@ -22,12 +21,10 @@ export async function getPublicSettings(lang: Lang): Promise<PublicSettings> {
   };
 }
 
-const STUDIO_DIR = path.join(process.cwd(), "public/images/products-v2");
-
 /** Use the regenerated square studio shot as the cover when one exists for the product. */
 function withStudio<T extends { slug: string; images: string[] }>(p: T): T {
   const studio = `/images/products-v2/${p.slug}.jpg`;
-  if (p.images[0] === studio || !fs.existsSync(path.join(STUDIO_DIR, `${p.slug}.jpg`))) return p;
+  if (p.images[0] === studio || !hasImage(studio)) return p;
   return { ...p, images: [studio, ...p.images.filter((i) => i !== studio)] };
 }
 
