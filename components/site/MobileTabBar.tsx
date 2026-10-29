@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion } from "framer-motion";
-import { Home, LayoutGrid, Menu, ShoppingBag, Sparkles } from "lucide-react";
+import { Briefcase, FileText, Home, LayoutGrid, Menu, ShoppingBag, Sparkles, Wrench } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { cartCount, useCart, useHydrated, useUI } from "@/lib/store";
+import { isBusinessPath } from "@/components/site/Header";
 
 /** Phone/tablet tab bar: the shop is always one thumb-tap away. */
 export function MobileTabBar() {
@@ -17,13 +18,22 @@ export function MobileTabBar() {
   const hydrated = useHydrated();
   const { setCart, setMenu, cartOpen, menuOpen } = useUI();
   const count = hydrated ? cartCount(items) : 0;
-  if (pathname.startsWith("/admin") || pathname.startsWith("/checkout")) return null;
+  // Product pages have their own sticky "Add to cart" bar in this spot.
+  if (pathname.startsWith("/admin") || pathname.startsWith("/checkout") || /^\/shop\/[^/]+/.test(pathname)) return null;
 
-  const tabs = [
-    { id: "home", href: "/", label: ar ? "الرئيسية" : "Home", Icon: Home, on: pathname === "/" },
-    { id: "shop", href: "/shop", label: ar ? "المتجر" : "Shop", Icon: LayoutGrid, on: pathname.startsWith("/shop") },
-    { id: "rooms", href: "/inspiration", label: ar ? "الغرف" : "Rooms", Icon: Sparkles, on: pathname.startsWith("/inspiration") },
-  ];
+  // The bar follows the Home / Business switch, like the header nav.
+  const biz = isBusinessPath(pathname);
+  const tabs = biz
+    ? [
+        { id: "biz", href: "/business", label: ar ? "نظرة عامة" : "Overview", Icon: Briefcase, on: pathname === "/business" },
+        { id: "projects", href: "/projects", label: ar ? "المشاريع" : "Projects", Icon: LayoutGrid, on: pathname.startsWith("/projects") },
+        { id: "services", href: "/services", label: ar ? "الخدمات" : "Services", Icon: Wrench, on: pathname.startsWith("/services") },
+      ]
+    : [
+        { id: "home", href: "/", label: ar ? "الرئيسية" : "Home", Icon: Home, on: pathname === "/" },
+        { id: "shop", href: "/shop", label: ar ? "المتجر" : "Shop", Icon: LayoutGrid, on: pathname.startsWith("/shop") },
+        { id: "rooms", href: "/inspiration", label: ar ? "الغرف" : "Rooms", Icon: Sparkles, on: pathname.startsWith("/inspiration") },
+      ];
   const cls = (on: boolean) =>
     clsx("relative flex flex-1 flex-col items-center justify-center gap-1 pt-2 text-[0.66rem] font-medium transition-colors", on ? "text-ink" : "text-ink/45");
   const dot = <motion.span layoutId="tab-dot" className="absolute top-0 h-[2px] w-6 rounded-full bg-brand" transition={{ type: "spring", stiffness: 500, damping: 36 }} />;
@@ -39,6 +49,12 @@ export function MobileTabBar() {
               {label}
             </Link>
           ))}
+          {biz ? (
+            <Link href="/quote?service=fitout" className={cls(pathname.startsWith("/quote"))}>
+              <FileText className="h-[19px] w-[19px] stroke-[1.6]" />
+              {ar ? "عرض سعر" : "Proposal"}
+            </Link>
+          ) : (
           <button onClick={() => setCart(true)} className={cls(cartOpen)}>
             {cartOpen && dot}
             <span className="relative">
@@ -51,6 +67,7 @@ export function MobileTabBar() {
             </span>
             {ar ? "الحقيبة" : "Bag"}
           </button>
+          )}
           <button onClick={() => setMenu(true)} className={cls(menuOpen)}>
             {menuOpen && dot}
             <Menu className="h-[19px] w-[19px] stroke-[1.6]" />

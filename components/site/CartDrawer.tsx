@@ -10,6 +10,7 @@ import { cartTotal, useCart, useHydrated, useUI } from "@/lib/store";
 import { money } from "@/lib/i18n";
 import { EASE } from "@/components/ui/motion";
 import { CircleArrow } from "@/components/ui/buttons";
+import { TabbyBadge } from "@/components/shop/Configurator";
 import { lockScroll } from "./SmoothScroll";
 
 export function CartDrawer() {
@@ -95,10 +96,13 @@ export function CartDrawer() {
 
             {list.length > 0 && (
               <footer className="border-t border-line px-6 py-5">
-                <div className="mb-4 flex items-baseline justify-between">
+                <div className="flex items-baseline justify-between">
                   <span className="text-[0.92rem] text-muted">{t("cart.subtotal")}</span>
                   <span className="text-[1.3rem] font-semibold">{money(subtotal, lang)}</span>
                 </div>
+                <p className="mb-4 mt-1.5 flex flex-wrap items-center justify-end gap-1.5 text-[0.78rem] text-muted">
+                  {lang === "ar" ? "أو 4 دفعات بقيمة" : "or 4 payments of"} <span className="font-medium text-ink tabular-nums">{money(Math.ceil(subtotal / 4), lang)}</span> {lang === "ar" ? "مع" : "with"} <TabbyBadge />
+                </p>
                 <Link href="/checkout" onClick={() => setCart(false)} className="flex h-[52px] items-center justify-center gap-3 rounded-full bg-ink text-[0.95rem] font-medium text-white transition hover:bg-ink-2">
                   {t("cart.checkout")} <CircleArrow />
                 </Link>

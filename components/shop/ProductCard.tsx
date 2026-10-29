@@ -65,7 +65,7 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
       </Link>
 
       {/* Badges */}
-      <div className="pointer-events-none absolute start-3 top-3 flex flex-wrap gap-1.5">
+      <div className="pointer-events-none absolute start-2 top-2 flex flex-wrap gap-1.5 md:start-3 md:top-3">
         {p.isNew && <Tag>{t("shop.new")}</Tag>}
         {p.salePrice && <Tag>−{Math.round((1 - p.salePrice / p.price) * 100)}%</Tag>}
         {p.featured && !p.isNew && !p.salePrice && <Tag>{lang === "ar" ? "الأكثر طلباً" : "Bestseller"}</Tag>}
@@ -75,7 +75,7 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
       <button
         onClick={() => wish.toggle(p.id)}
         className={clsx(
-          "absolute end-3 top-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-sm backdrop-blur transition-all duration-500",
+          "absolute end-2 top-2 flex h-8 w-8 items-center md:end-3 md:top-3 md:h-9 md:w-9 justify-center rounded-full bg-white/90 shadow-sm backdrop-blur transition-all duration-500",
           liked ? "scale-100 opacity-100" : "scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 max-md:scale-100 max-md:opacity-100"
         )}
         aria-label="Wishlist"
@@ -118,29 +118,30 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
 
       {/* Mobile: compact add button */}
       {!p.priceOnRequest && (
-        <button onClick={quickAdd} className="absolute bottom-3 end-3 flex h-9 w-9 items-center justify-center rounded-full bg-white/95 shadow-sm md:hidden" aria-label={t("v2.quickAdd")}>
+        <button onClick={quickAdd} className="absolute bottom-2 end-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/95 shadow-sm md:hidden" aria-label={t("v2.quickAdd")}>
           {added ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
         </button>
       )}
 
       </div>
 
-      {/* Info */}
-      <div className="pt-4">
-        <div className="flex items-start justify-between gap-3">
-          <Link href={`/shop/${p.slug}`} className="text-[0.95rem] leading-snug transition-colors hover:text-ink-2">
+      {/* Info — phones stack name over price; wider screens set them side by side */}
+      <div className="pt-3 md:pt-4">
+        <div className="flex flex-col gap-1 md:flex-row md:items-start md:justify-between md:gap-3">
+          <Link href={`/shop/${p.slug}`} className="line-clamp-2 text-[0.88rem] leading-snug transition-colors hover:text-ink-2 md:line-clamp-none md:text-[0.95rem]">
             {tx(p.name, lang)}
           </Link>
-          <span className="shrink-0 text-[0.9rem] font-medium tabular-nums">
+          <span className="flex items-baseline gap-2 text-[0.85rem] font-medium tabular-nums md:shrink-0 md:text-[0.9rem]">
             {p.priceOnRequest ? <span className="font-normal text-muted">{t("shop.onRequest")}</span> : money(price, lang)}
+            {p.salePrice && <span className="text-[0.75rem] font-normal text-faint line-through md:hidden">{money(p.price, lang)}</span>}
           </span>
         </div>
         <div className="mt-1 flex items-start justify-between gap-3">
-          <p className="text-[0.8rem] text-muted">{materialTags(p, lang)}</p>
-          {p.salePrice && <span className="shrink-0 text-[0.78rem] text-faint line-through tabular-nums">{money(p.price, lang)}</span>}
+          <p className="truncate text-[0.75rem] text-muted md:whitespace-normal md:text-[0.8rem]">{materialTags(p, lang)}</p>
+          {p.salePrice && <span className="hidden shrink-0 text-[0.78rem] text-faint line-through tabular-nums md:inline">{money(p.price, lang)}</span>}
         </div>
         {p.finishes.length > 0 && (
-          <div className="mt-3 flex items-center gap-1.5">
+          <div className="mt-2.5 flex items-center gap-1.5 md:mt-3">
             {p.finishes.slice(0, 5).map((f, i) => (
               <button
                 key={i}
@@ -160,5 +161,5 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
 }
 
 function Tag({ children }: { children: React.ReactNode }) {
-  return <span className="bg-white/90 px-2 py-1 text-[0.7rem] font-medium tracking-wide text-ink backdrop-blur">{children}</span>;
+  return <span className="bg-white/90 px-1.5 py-0.5 text-[0.64rem] font-medium tracking-wide text-ink backdrop-blur md:px-2 md:py-1 md:text-[0.7rem]">{children}</span>;
 }

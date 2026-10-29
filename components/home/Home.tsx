@@ -702,7 +702,21 @@ export function Clients() {
   return (
     <section className="border-y border-line py-10 md:py-16">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-        <Eyebrow className="mb-8 justify-center">{t("v2.clients")}</Eyebrow>
+        <Eyebrow className="mb-6 justify-center md:mb-8">{t("v2.clients")}</Eyebrow>
+      </div>
+      {/* Phones: two rows of names drifting in opposite directions */}
+      <div className="marquee-mask space-y-3 md:hidden" dir="ltr">
+        {[CLIENTS.slice(0, 6), CLIENTS.slice(6)].map((row, r) => (
+          <div key={r} className="flex w-max">
+            <div className={clsx("flex shrink-0 gap-8 pe-8", r ? "marquee-rev" : "marquee")}>
+              {[...row, ...row].map((c, i) => (
+                <span key={i} className="whitespace-nowrap font-serif text-[1.15rem] text-ink/55">{c}</span>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mx-auto hidden max-w-[1440px] px-5 md:block md:px-10">
         <ul className="grid grid-cols-3 gap-x-4 gap-y-4 text-center lg:grid-cols-6" dir="ltr">
           {CLIENTS.map((c, i) => (
             <Reveal as="li" key={c} delay={(i % 6) * 0.04} className="font-serif text-[1rem] leading-tight text-ink/55 transition-colors hover:text-ink md:text-[1.4rem]">
@@ -724,7 +738,7 @@ export function HelpCTA() {
         <Reveal className="relative hidden aspect-[4/3] overflow-hidden bg-plate md:block lg:order-2">
           <ParallaxImg src="/images/craft/craftsman.jpg" />
         </Reveal>
-        <div className="max-w-xl">
+        <div className="max-w-xl rounded-2xl bg-band p-6 md:rounded-none md:bg-transparent md:p-0">
           <h2 className="font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
             <SplitLines lines={[t("v2.helpTitle")]} />
           </h2>

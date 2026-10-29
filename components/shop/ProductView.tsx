@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion, useInView, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { Check, Clock, Heart, Minus, Plus, Ruler, ShieldCheck, Truck, ChevronLeft, ChevronRight } from "lucide-react";
+import { Check, Clock, Heart, Minus, Plus, Ruler, ShieldCheck, Truck } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { useCart, useHydrated, useUI, useWishlist } from "@/lib/store";
@@ -64,8 +64,6 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
     setTimeout(() => setCart(true), 350);
   };
 
-  const step = (d: number) => setImg((i) => (i + d + gallery.length) % gallery.length);
-
   const BuyButton = ({ compact = false }: { compact?: boolean }) =>
     p.priceOnRequest ? (
       <Link href={quoteHref} className={clsx("flex items-center justify-center rounded-full bg-ink font-medium text-white transition hover:bg-ink-2", compact ? "h-11 px-6 text-[0.88rem]" : "h-[52px] w-full text-[0.95rem]")}>
@@ -76,7 +74,14 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
         <AnimatePresence mode="wait" initial={false}>
           <motion.span key={String(added)} initial={{ y: 14, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -14, opacity: 0 }} className="flex items-center gap-2 whitespace-nowrap">
             {added && <Check className="h-4 w-4" />}
-            {added ? t("shop.added") : `${t("shop.add")}${compact ? "" : ` · ${money(price * qty, lang)}`}`}
+            {added ? (
+              t("shop.added")
+            ) : (
+              <>
+                {t("shop.add")}
+                {!compact && <span className="hidden sm:inline"> · {money(price * qty, lang)}</span>}
+              </>
+            )}
           </motion.span>
         </AnimatePresence>
       </button>
@@ -91,8 +96,8 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
 
   return (
     <>
-      <section className="mx-auto max-w-[1440px] px-5 pb-16 pt-6 md:px-10 md:pt-8">
-        <nav className="mb-6 flex items-center gap-2 text-[0.82rem] text-muted">
+      <section className="mx-auto max-w-[1440px] px-5 pb-12 pt-0 md:px-10 md:pb-16 md:pt-8">
+        <nav className="mb-6 hidden items-center gap-2 text-[0.82rem] text-muted md:flex">
           <Link href="/shop" className="hover:text-ink">{t("nav.shop")}</Link>
           <span>/</span>
           {category && (
@@ -104,10 +109,49 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
           <span className="truncate text-ink">{tx(p.name, lang)}</span>
         </nav>
 
-        <div className="grid gap-10 lg:grid-cols-12 lg:gap-14">
+        <div className="grid gap-6 md:gap-10 lg:grid-cols-12 lg:gap-14">
           {/* Gallery */}
-          <div className="lg:col-span-7">
-            <div className="flex gap-3 lg:sticky lg:top-24">
+          <div className="min-w-0 lg:col-span-7">
+            {/* Phones: full-bleed, swipe between photos */}
+            <div className="-mx-5 md:hidden">
+              <div
+                className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto"
+                onScroll={(e) => {
+                  const el = e.currentTarget;
+                  setImg(Math.round(Math.abs(el.scrollLeft) / el.clientWidth));
+                }}
+              >
+                {gallery.map((src, i) => (
+                  <div key={src} className="relative aspect-square w-full shrink-0 snap-center bg-plate">
+                    <Image src={src} alt={tx(p.name, lang)} fill priority={i === 0} sizes="100vw" className={studio(src) ? "object-contain" : "object-cover"} style={focus(src)} />
+                    {!studio(src) && (
+                      <span className="absolute start-4 top-4 bg-white/90 px-2.5 py-1 text-[0.7rem]">
+                        {roomTitle(src) ? `${lang === "ar" ? "في الغرفة" : "In the room"} · ${roomTitle(src)}` : lang === "ar" ? "صورة من مشروع منفّذ" : "As delivered to a client"}
+                      </span>
+                    )}
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 flex items-center justify-between px-5">
+                {!p.priceOnRequest && swatch ? (
+                  <span className="flex min-w-0 items-center gap-2 text-[0.8rem] text-ink/80">
+                    <span className="h-5 w-5 shrink-0 rounded-full ring-1 ring-black/10" style={fabricStyle(swatch.hex, materialsFor(p)[0].id === "oak")} />
+                    <span className="truncate">{cfgLabel}</span>
+                  </span>
+                ) : (
+                  <span />
+                )}
+                {gallery.length > 1 && (
+                  <span className="flex shrink-0 gap-1.5">
+                    {gallery.map((_, i) => (
+                      <span key={i} className={clsx("h-1 rounded-full transition-all", img === i ? "w-6 bg-ink" : "w-1.5 bg-line")} />
+                    ))}
+                  </span>
+                )}
+              </div>
+            </div>
+
+            <div className="hidden gap-3 md:flex lg:sticky lg:top-24">
               {gallery.length > 1 && (
                 <div className="no-scrollbar hidden max-h-[680px] w-20 shrink-0 flex-col gap-2 overflow-y-auto md:flex">
                   {gallery.map((src, i) => (
@@ -140,12 +184,6 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
                       />
                     </motion.div>
                   </AnimatePresence>
-                  {gallery.length > 1 && (
-                    <div className="absolute bottom-4 end-4 flex gap-2 md:hidden">
-                      <button onClick={() => step(-1)} className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90" aria-label="Previous"><ChevronLeft className="h-4 w-4 rtl:rotate-180" /></button>
-                      <button onClick={() => step(1)} className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90" aria-label="Next"><ChevronRight className="h-4 w-4 rtl:rotate-180" /></button>
-                    </div>
-                  )}
                   {img > 0 && !studio(gallery[img]) && (
                     <span className="absolute start-4 top-4 bg-white/90 px-2.5 py-1 text-[0.72rem]">
                       {roomTitle(gallery[img]) ? `${lang === "ar" ? "في الغرفة" : "In the room"} · ${roomTitle(gallery[img])}` : lang === "ar" ? "صورة من مشروع منفّذ" : "As delivered to a client"}
@@ -171,13 +209,6 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
                     </AnimatePresence>
                   )}
                 </div>
-                {gallery.length > 1 && (
-                  <div className="mt-3 flex justify-center gap-1.5 md:hidden">
-                    {gallery.map((_, i) => (
-                      <span key={i} className={clsx("h-1 rounded-full transition-all", img === i ? "w-6 bg-ink" : "w-1.5 bg-line")} />
-                    ))}
-                  </div>
-                )}
               </div>
             </div>
           </div>
@@ -189,7 +220,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
                 {p.isNew && <span className="border border-ink/15 px-2 py-0.5 text-[0.72rem]">{t("shop.new")}</span>}
                 {p.priceOnRequest && <span className="border border-ink/15 px-2 py-0.5 text-[0.72rem]">{t("shop.madeToOrder")}</span>}
               </div>
-              <h1 className="mt-3 font-display text-[clamp(1.9rem,3vw,2.6rem)] font-semibold leading-[1.05] tracking-[-0.025em]">{tx(p.name, lang)}</h1>
+              <h1 className="mt-1 font-display text-[clamp(1.75rem,3vw,2.6rem)] md:mt-3 font-semibold leading-[1.05] tracking-[-0.025em]">{tx(p.name, lang)}</h1>
               <p className="mt-2 text-[0.88rem] text-muted">{tx(p.materials, lang)}</p>
               <div className="mt-5 flex items-baseline gap-3">
                 {p.priceOnRequest ? (
@@ -207,7 +238,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
 
             {!p.priceOnRequest && <Configurator product={p} cfg={cfg} setCfg={setCfg} />}
 
-            <div ref={buyRef} className="mt-8 space-y-3">
+            <div ref={buyRef} className="mt-6 space-y-3 md:mt-8">
               <div className="flex gap-3">
                 {!p.priceOnRequest && (
                   <div className="flex h-[52px] items-center rounded-full border border-line">
@@ -275,7 +306,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
       </section>
 
       {/* Editorial spec sheet */}
-      <section className="bg-band py-16 md:py-24">
+      <section className="hidden bg-band py-16 md:block md:py-24">
         <div className="mx-auto grid max-w-[1440px] gap-12 px-5 md:px-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-6">
             <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{lang === "ar" ? "صُنع ليدوم" : "Made to last"}</p></Reveal>
@@ -305,13 +336,13 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
       </section>
 
       {related.length > 0 && (
-        <section className="border-t border-line py-16 md:py-24">
-          <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-            <div className="mb-10 flex items-end justify-between gap-4">
+        <section className="border-t border-line py-12 md:py-24">
+          <div className="mx-auto max-w-[1440px] px-4 md:px-10">
+            <div className="mb-6 flex items-end justify-between gap-4 md:mb-10">
               <h2 className="font-display text-[clamp(1.6rem,2.6vw,2.2rem)] font-semibold tracking-[-0.02em]">{t("shop.related")}</h2>
               <ArrowLink href={`/shop?c=${p.category}`}>{t("common.viewAll")}</ArrowLink>
             </div>
-            <div className="grid grid-cols-2 gap-x-2 gap-y-10 lg:grid-cols-4">
+            <div className="grid grid-cols-2 gap-x-3 gap-y-7 md:gap-x-2 md:gap-y-10 lg:grid-cols-4">
               {related.map((r, i) => (
                 <Reveal key={r.id} delay={i * 0.06}>
                   <ProductCard product={r} />
@@ -329,7 +360,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
             animate={{ y: 0 }}
             exit={{ y: 100 }}
             transition={{ duration: 0.45, ease: EASE }}
-            className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 backdrop-blur-xl"
+            className="fixed inset-x-0 bottom-0 z-40 border-t border-line bg-white/95 pb-[env(safe-area-inset-bottom)] backdrop-blur-xl"
           >
             <div className="mx-auto flex max-w-[1440px] items-center gap-4 px-5 py-3 md:px-10">
               <div className="relative hidden h-12 w-12 shrink-0 overflow-hidden bg-plate sm:block">

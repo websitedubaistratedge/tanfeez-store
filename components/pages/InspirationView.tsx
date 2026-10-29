@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion, useScroll, useTransform, type MotionValue } from "framer-motion";
 import { Check, ShoppingBag } from "lucide-react";
 import clsx from "clsx";
@@ -109,6 +109,8 @@ function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: 
   // Each card settles back over the next few cards' scroll, however long the stack is.
   const last = i === n - 1;
   const scale = useTransform(progress, [i / n, Math.min(1, (i + 3) / n)], [1, last ? 1 : 0.9]);
+  // The stacking effect needs room; phones get a plain list of cards instead.
+  const stack = useWide();
   const shade = useTransform(progress, [i / n, Math.min(1, (i + 1) / n)], [0, i === n - 1 ? 0 : 0.18]);
 
   const activePin = look.pins.find((p) => p.product.id === active);
@@ -126,14 +128,14 @@ function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: 
   };
 
   return (
-    <div className="sticky flex min-h-svh items-center py-24 md:py-28" style={{ top: Math.min(i, 3) * 14 }}>
+    <div className="py-2.5 md:sticky md:flex md:min-h-svh md:items-center md:py-28" style={stack ? { top: Math.min(i, 3) * 14 } : undefined}>
       <motion.article
-        style={{ scale }}
+        style={stack ? { scale } : undefined}
         initial={{ y: 60, opacity: 0 }}
         whileInView={{ y: 0, opacity: 1 }}
         viewport={{ once: true, margin: "-10%" }}
         transition={{ duration: 1, ease: EASE }}
-        className="relative grid w-full origin-top overflow-hidden bg-white shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)] ring-1 ring-ink/5 lg:grid-cols-12"
+        className="relative grid w-full origin-top overflow-hidden rounded-2xl bg-white md:rounded-none shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)] ring-1 ring-ink/5 lg:grid-cols-12"
       >
         {/* Room */}
         <div className={clsx("relative lg:col-span-8", flip && "lg:order-2")}>
@@ -153,15 +155,15 @@ function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: 
         </div>
 
         {/* Story */}
-        <div className="flex flex-col p-6 md:p-8 lg:col-span-4 lg:p-10" style={{ background: TINT[look.id] ?? "#F3F2F0" }}>
+        <div className="flex flex-col p-5 md:p-8 lg:col-span-4 lg:p-10" style={{ background: TINT[look.id] ?? "#F3F2F0" }}>
           <div className="flex items-baseline justify-between">
-            <span className="font-serif text-[2.6rem] leading-none text-ink/80 md:text-[3.4rem]" dir="ltr">{String(i + 1).padStart(2, "0")}</span>
+            <span className="font-serif text-[2rem] leading-none text-ink/80 md:text-[3.4rem]" dir="ltr">{String(i + 1).padStart(2, "0")}</span>
             <span className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted" dir="ltr">{String(i + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}</span>
           </div>
-          <h2 className="mt-4 font-display text-[clamp(1.6rem,2.4vw,2.3rem)] font-semibold leading-[1.05] tracking-[-0.025em]">{tx(look.title, lang)}</h2>
+          <h2 className="mt-3 font-display text-[clamp(1.5rem,2.4vw,2.3rem)] md:mt-4 font-semibold leading-[1.05] tracking-[-0.025em]">{tx(look.title, lang)}</h2>
           <p className="mt-2 font-serif text-[1.1rem] leading-relaxed text-ink-2">{tx(look.mood, lang)}</p>
 
-          <ul className="mt-6 space-y-1">
+          <ul className="mt-4 space-y-1 md:mt-6">
             {look.pins.map(({ product: p }) => (
               <li key={p.id} onPointerEnter={() => setActive(p.id)} onPointerLeave={() => setActive(null)}>
                 <Link href={`/shop/${p.slug}`} className={clsx("group flex items-center gap-3 rounded-lg p-1.5 transition-colors", active === p.id ? "bg-white" : "hover:bg-white/70")}>
@@ -197,8 +199,21 @@ function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: 
           </div>
         </div>
 
-        <motion.div style={{ opacity: shade }} className="pointer-events-none absolute inset-0 bg-ink" />
+        {stack && <motion.div style={{ opacity: shade }} className="pointer-events-none absolute inset-0 bg-ink" />}
       </motion.article>
     </div>
   );
+}
+
+/** True from the md breakpoint up (where the stacked-cards effect has room). */
+function useWide() {
+  const [wide, setWide] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 768px)");
+    const on = () => setWide(mq.matches);
+    on();
+    mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
+  return wide;
 }

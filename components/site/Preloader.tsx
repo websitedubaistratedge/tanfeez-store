@@ -11,8 +11,11 @@ const WORD = "TANFEEZ".split("");
 const HOLD_MS = 280; // a beat on the finished logo before lifting
 const MAX_MS = 4000; // never hold the site longer than this
 
-/** Runs inline before first paint: skip the intro for the rest of the browser session. */
-export const INTRO_SCRIPT = `(function(){var d=document.documentElement;try{d.dataset.intro=sessionStorage.getItem("tz-intro")?"seen":"playing"}catch(e){d.dataset.intro="seen"}})()`;
+/**
+ * Runs inline before first paint. The intro plays whenever the home page is freshly loaded;
+ * deep links (a product shared on Instagram, say) and in-site navigation skip straight to content.
+ */
+export const INTRO_SCRIPT = `document.documentElement.dataset.intro=location.pathname==="/"?"playing":"seen"`;
 
 export function Preloader() {
   const { lang } = useSite();
@@ -37,9 +40,6 @@ export function Preloader() {
       window.scrollTo(0, 0);
       ref.current?.classList.add("pl-exit");
       root.dataset.intro = "done"; // the page's own entrance animations start as the curtain lifts
-      try {
-        sessionStorage.setItem("tz-intro", "1");
-      } catch {}
       timer = setTimeout(() => setGone(true), reduced ? 300 : 1300);
     });
     return () => clearTimeout(timer);

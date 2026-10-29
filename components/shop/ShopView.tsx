@@ -117,6 +117,27 @@ export function ShopView({
 
   return (
     <>
+      {/* Phones: a compact title and story-style category circles instead of the tall band */}
+      <div className="pt-5 md:hidden">
+        <div className="flex items-end justify-between gap-4 px-5">
+          <h1 className="font-display text-[1.9rem] font-semibold leading-none tracking-[-0.03em]">
+            {onlyWish ? (ar ? "المفضلة" : "Your wishlist") : current ? tx(current.name, lang) : ar ? "المتجر" : "Shop"}
+          </h1>
+          <span className="pb-0.5 text-[0.8rem] text-muted tabular-nums">{list.length} {t("v2.items")}</span>
+        </div>
+        <div className="no-scrollbar mt-5 flex gap-4 overflow-x-auto px-5 pb-1">
+          {[{ id: "all", slug: "all", name: { en: "All", ar: "الكل" }, image: "/images/lifestyle/hero.jpg" }, ...categories].map((c) => (
+            <button key={c.slug} onClick={() => selectCat(c.slug)} className="flex w-[64px] shrink-0 flex-col items-center gap-1.5">
+              <span className={clsx("relative block h-[60px] w-[60px] overflow-hidden rounded-full bg-plate ring-offset-2 transition", cat === c.slug ? "ring-[1.5px] ring-ink" : "ring-1 ring-line")}>
+                <Image src={c.image} alt="" fill sizes="60px" className="object-cover" />
+              </span>
+              <span className={clsx("w-full truncate text-center text-[0.72rem] leading-tight", cat === c.slug ? "font-medium text-ink" : "text-ink/60")}>{tx(c.name, lang).replace(/ & .*/, "")}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
+      <div className="hidden md:block">
       <PageHero
         overlap
         back={{ href: "/", label: t("nav.home") }}
@@ -145,9 +166,11 @@ export function ShopView({
         </div>
       </div>
 
+      </div>
+
       {/* Sticky filter bar */}
-      <div className="sticky top-0 z-30 mt-10 border-y border-line bg-white/95 backdrop-blur">
-        <div className="mx-auto flex max-w-[1440px] items-center gap-2 px-5 py-3 md:px-10">
+      <div className="sticky top-0 z-30 mt-4 border-y border-line bg-white/95 backdrop-blur md:mt-10">
+        <div className="mx-auto flex max-w-[1440px] items-center gap-2 px-5 py-2.5 md:px-10 md:py-3">
           <button onClick={() => setSheet(true)} className="inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-ink px-5 text-[0.88rem] font-medium text-white">
             <SlidersHorizontal className="h-4 w-4 stroke-[1.5]" />
             {t("v2.allFilters")}
@@ -175,7 +198,7 @@ export function ShopView({
         </div>
       </div>
 
-      <section className="mx-auto max-w-[1440px] px-5 pb-24 pt-8 md:px-10">
+      <section className="mx-auto max-w-[1440px] px-4 pb-16 pt-5 md:px-10 md:pb-24 md:pt-8">
         {q && (
           <p className="mb-6 text-[0.95rem] text-muted">
             “{q}” · <button onClick={() => setQ("")} className="underline">{t("v2.clear")}</button>
@@ -190,7 +213,7 @@ export function ShopView({
             </div>
           </div>
         ) : (
-          <motion.div layout className="grid grid-cols-2 gap-x-2 gap-y-10 md:grid-cols-3 xl:grid-cols-4">
+          <motion.div layout className="grid grid-cols-2 gap-x-3 gap-y-7 md:grid-cols-3 md:gap-x-2 md:gap-y-10 xl:grid-cols-4">
             <AnimatePresence mode="popLayout">
               {cells.map((c) =>
                 c.kind === "p" ? (
@@ -198,7 +221,7 @@ export function ShopView({
                     <ProductCard product={c.p} priority={c.i < 4} />
                   </motion.div>
                 ) : (
-                  <motion.div key={`e-${c.e.id}`} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="col-span-2 md:col-span-2 xl:row-span-1">
+                  <motion.div key={`e-${c.e.id}`} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="col-span-2 hidden md:col-span-2 md:block xl:row-span-1">
                     <Link href={`/projects/${c.e.slug}`} className="group relative block h-full min-h-[280px] overflow-hidden bg-plate">
                       <Image src={c.e.images[0]?.src} alt={c.e.client} fill sizes="50vw" className="object-cover transition duration-[1.4s] group-hover:scale-105" />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />

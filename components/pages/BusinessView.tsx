@@ -58,12 +58,12 @@ export function BusinessView({ projects }: { projects: Project[] }) {
 
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-          <h2 className="mb-10 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+          <h2 className="mb-6 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em] md:mb-10">
             <SplitLines lines={[ar ? "قدرات تحت سقف واحد" : "Capabilities under one roof"]} />
           </h2>
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0">
             {CAPS.map((c, i) => (
-              <Reveal key={c.en} delay={i * 0.08}>
+              <Reveal key={c.en} delay={i * 0.08} className="w-[78vw] shrink-0 snap-start md:w-auto">
                 <Link href={c.href} className="group block">
                   <div className="relative aspect-[4/3.3] overflow-hidden bg-plate">
                     <Image src={c.img} alt="" fill sizes="(min-width:768px) 33vw, 100vw" className="object-cover transition duration-[1600ms] ease-out group-hover:scale-[1.06]" />
