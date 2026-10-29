@@ -1,4 +1,4 @@
-import { Categories, Clients, Collections, Faq, HelpCTA, Hero, Heritage, ProjectsShowcase, Spotlight, Tailored } from "@/components/home/Home";
+import { Categories, Clients, QuickShop, Collections, Faq, HelpCTA, Hero, Heritage, ProjectsShowcase, Spotlight, Tailored } from "@/components/home/Home";
 import { getActiveProducts, getCategories, getProjects } from "@/lib/data";
 import { getLang } from "@/lib/lang";
 import { hasImage } from "@/lib/assets";
@@ -33,6 +33,7 @@ export default async function Home() {
   return (
     <>
       <Hero image={pick("/images/lifestyle/hero.jpg", "/images/projects/vox-cinema-theatre-1.jpg")} look={bySlug("cloud-curve-sofa")} />
+      <QuickShop categories={categories} covers={covers} />
       <Categories categories={categories} covers={covers} counts={counts} />
       <ShopTheLook looks={HOME_LOOKS.flatMap((id) => resolveLooks(products).filter((l) => l.id === id))} />
       <Spotlight products={pickMany(["velluto-tufted-sofa", "blush-couture-bed", "live-edge-walnut-table", "wingback-chesterfield-chair", "ember-fireplace-wall"])} />

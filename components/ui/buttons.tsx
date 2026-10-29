@@ -1,5 +1,6 @@
 import Link from "next/link";
 import clsx from "clsx";
+import { twMerge } from "tailwind-merge";
 
 /** Circled arrow used on links and outlined buttons (mirrors in RTL). */
 export function CircleArrow({ className }: { className?: string }) {
@@ -18,11 +19,11 @@ export function PillLink({ href, children, className, invert }: Common) {
   return (
     <Link
       href={href}
-      className={clsx(
+      className={twMerge(clsx(
         "group inline-flex h-12 items-center justify-center gap-2.5 rounded-full px-7 text-[0.92rem] font-medium transition-colors duration-300",
         invert ? "bg-white text-ink hover:bg-plate" : "bg-ink text-white hover:bg-ink-2",
         className
-      )}
+      ))}
     >
       {children}
     </Link>
@@ -34,11 +35,11 @@ export function OutlineLink({ href, children, className, invert }: Common) {
   return (
     <Link
       href={href}
-      className={clsx(
+      className={twMerge(clsx(
         "group inline-flex h-12 items-center justify-center gap-3 rounded-full border px-6 text-[0.92rem] font-medium transition-colors duration-300",
         invert ? "border-white/60 text-white hover:bg-white hover:text-ink" : "border-ink/25 text-ink hover:border-ink hover:bg-ink hover:text-white",
         className
-      )}
+      ))}
     >
       {children}
       <CircleArrow className="transition-transform duration-500 group-hover:translate-x-0.5 rtl:group-hover:-translate-x-0.5" />

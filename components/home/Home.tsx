@@ -83,9 +83,9 @@ export function Hero({ image, look }: { image: string; look?: Product }) {
   ];
 
   return (
-    <section ref={ref} className="relative overflow-hidden md:h-[calc(100svh-150px)] md:min-h-[600px]">
-      {/* Mobile: photo on top, copy below on white. Desktop: copy over the calm left side of the photo. */}
-      <div ref={frame} className="relative h-[54svh] min-h-[330px] overflow-hidden bg-plate md:absolute md:inset-0 md:h-auto">
+    <section ref={ref} className="relative h-[calc(100svh-340px)] max-h-[680px] min-h-[470px] overflow-hidden md:h-[calc(100svh-150px)] md:max-h-none md:min-h-[600px]">
+      {/* Mobile: one screen, the room fills the top and fades into the copy. Desktop: copy over the calm left side. */}
+      <div ref={frame} className="absolute inset-x-0 bottom-[30%] top-0 overflow-hidden bg-plate md:bottom-0">
         <motion.div className="absolute inset-0" style={{ y }}>
           <div className="hero-zoom absolute inset-0">
             {/* slow, endless drift after the entrance zoom */}
@@ -95,6 +95,7 @@ export function Hero({ image, look }: { image: string; look?: Product }) {
           </div>
           <div className="absolute inset-0 hidden bg-gradient-to-r from-white/80 via-white/30 to-transparent md:block rtl:bg-gradient-to-l" />
         </motion.div>
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[45%] bg-gradient-to-t from-white via-white/70 to-transparent md:hidden" />
 
         {/* Shop-the-look hotspot */}
         {look && spot && (
@@ -119,7 +120,9 @@ export function Hero({ image, look }: { image: string; look?: Product }) {
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: 6, scale: 0.98 }}
                   transition={{ duration: 0.45, ease: EASE }}
-                  className={clsx("absolute bottom-5 w-60", spot.left + 252 > spot.w ? "right-2" : "left-2")}
+                  className="absolute bottom-5 w-60"
+                  // keep the card fully on screen whatever side of the frame the hotspot is on
+                  style={{ left: Math.min(Math.max(12 - spot.left, -120), spot.w - spot.left - 252) }}
                 >
                   <Link href={`/shop/${look.slug}`} className="group flex items-center gap-3 bg-white p-2.5 pe-3 shadow-[0_20px_50px_-15px_rgba(0,0,0,0.35)]">
                     <span className="relative h-14 w-14 shrink-0 overflow-hidden bg-plate">
@@ -138,20 +141,20 @@ export function Hero({ image, look }: { image: string; look?: Product }) {
         )}
       </div>
 
-      <motion.div style={{ opacity: fade }} className="relative mx-auto flex max-w-[1440px] flex-col px-5 pb-12 pt-8 text-ink md:h-full md:justify-center md:px-10 md:py-0">
-        <p className="fade-up mb-4 flex items-center gap-2 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink/60" style={{ animationDelay: "0.15s" }}>
+      <motion.div style={{ opacity: fade }} className="absolute inset-x-0 bottom-0 mx-auto flex max-w-[1440px] flex-col px-5 pb-6 text-ink md:relative md:inset-auto md:h-full md:justify-center md:px-10 md:py-0">
+        <p className="fade-up mb-3 flex md:mb-4 items-center gap-2 text-[0.72rem] font-medium uppercase tracking-[0.2em] text-ink/60" style={{ animationDelay: "0.15s" }}>
           <span className="h-1.5 w-1.5 rounded-full bg-brand" />
           {lang === "ar" ? "تنفيذ · منذ 2021" : "TANFEEZ · Est. 2021"}
         </p>
-        <p className="font-serif text-[1.6rem] leading-tight text-ink-2 md:text-[2.3rem]">
+        <p className="font-serif text-[1.35rem] leading-tight text-ink-2 md:text-[2.3rem]">
           <WordsRise text={t("v2.heroSerif")} delay={0.3} />
         </p>
-        <h1 className="mt-1 max-w-[48rem] font-display text-[clamp(2.4rem,4.7vw,4.6rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+        <h1 className="mt-1 max-w-[48rem] font-display text-[clamp(2.15rem,4.7vw,4.6rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
           <WordsRise text={t("v2.heroTitle")} delay={0.55} />
         </h1>
-        <div className="fade-up mt-9 flex flex-wrap gap-3" style={{ animationDelay: "1.05s" }}>
-          <PillLink href="/shop">{t("v2.heroShop")}</PillLink>
-          <OutlineLink href="/quote" className="bg-white/60 backdrop-blur">{t("v2.heroProject")}</OutlineLink>
+        <div className="fade-up mt-6 grid grid-cols-[1fr_auto] gap-2 md:mt-9 md:flex md:flex-wrap md:gap-3" style={{ animationDelay: "1.05s" }}>
+          <PillLink href="/shop" className="whitespace-nowrap px-4 md:px-7">{t("v2.heroShop")}</PillLink>
+          <OutlineLink href="/quote" className="gap-2 whitespace-nowrap bg-white/60 px-4 backdrop-blur md:gap-3 md:px-6">{t("v2.heroProject")}</OutlineLink>
         </div>
       </motion.div>
 
@@ -214,7 +217,7 @@ function Rail({ children, className, itemClass }: { children: React.ReactNode[];
           </div>
         ))}
       </div>
-      <div className="mx-auto mt-8 flex max-w-[1440px] items-center gap-6 px-5 md:px-10">
+      <div className="mx-auto mt-5 flex max-w-[1440px] items-center gap-6 px-5 md:mt-8 md:px-10">
         <div className="relative h-px flex-1 bg-line">
           <motion.div
             className="absolute inset-y-0 start-0 bg-ink"
@@ -258,11 +261,46 @@ function CategoryTile({ c, cover, count, big = false, priority = false }: { c: C
   );
 }
 
+/** Mobile: one-tap shortcuts into the shop, story-style, right under the hero. */
+export function QuickShop({ categories, covers }: { categories: Category[]; covers: Record<string, string> }) {
+  const { lang } = useSite();
+  const ar = lang === "ar";
+  const items = [
+    { href: "/shop", label: ar ? "الكل" : "Shop all", img: "/images/lifestyle/hero.jpg" },
+    ...categories.map((c) => ({ href: `/shop?c=${c.slug}`, label: SHORT[c.slug]?.[ar ? 1 : 0] ?? tx(c.name, lang), img: covers[c.slug] ?? c.image })),
+    { href: "/inspiration", label: ar ? "إلهام" : "Rooms", img: "/images/lifestyle/look-emerald.jpg" },
+  ];
+  return (
+    <section className="border-b border-line pb-5 pt-2 md:hidden">
+      <div className="no-scrollbar flex gap-4 overflow-x-auto px-5">
+        {items.map((it, i) => (
+          <Link key={it.href} href={it.href} className="fade-up group flex w-[68px] shrink-0 flex-col items-center gap-2" style={{ animationDelay: `${1.1 + i * 0.05}s` }}>
+            <span className={clsx("relative block h-[64px] w-[64px] overflow-hidden rounded-full bg-plate ring-1 ring-offset-2", i === 0 ? "ring-brand" : "ring-line")}>
+              <Image src={it.img} alt="" fill sizes="64px" className="object-cover transition duration-500 group-active:scale-95" />
+            </span>
+            <span className="w-full truncate text-center text-[0.74rem] leading-tight text-ink/80">{it.label}</span>
+          </Link>
+        ))}
+      </div>
+    </section>
+  );
+}
+const SHORT: Record<string, [string, string]> = {
+  sofas: ["Sofas", "الكنب"],
+  armchairs: ["Armchairs", "الكراسي"],
+  beds: ["Beds", "الأسرّة"],
+  media: ["Media walls", "التلفاز"],
+  storage: ["Wardrobes", "الخزائن"],
+  tables: ["Tables", "الطاولات"],
+  joinery: ["Joinery", "النجارة"],
+  commercial: ["Retail", "التجاري"],
+};
+
 export function Categories({ categories, covers, counts }: { categories: Category[]; covers: Record<string, string>; counts: Record<string, number> }) {
   const { t, lang } = useSite();
   const five = categories.slice(0, 5);
   return (
-    <section className="py-16 md:py-24">
+    <section className="hidden py-16 md:block md:py-24">
       <div className="mx-auto mb-8 flex max-w-[1440px] items-end justify-between gap-6 px-5 md:mb-10 md:px-10">
         <div>
           <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{lang === "ar" ? "تسوّق حسب الغرفة" : "Shop by room"}</p></Reveal>
@@ -323,9 +361,9 @@ export function Spotlight({ products }: { products: Product[] }) {
   const price = p.salePrice || p.price;
 
   return (
-    <section className="bg-band py-16 md:py-24" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
+    <section className="bg-band py-12 md:py-24" onMouseEnter={() => setPaused(true)} onMouseLeave={() => setPaused(false)}>
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-        <div className="mb-8 flex items-end justify-between gap-4 md:mb-12">
+        <div className="mb-6 flex items-end justify-between gap-4 md:mb-12">
           <div className="min-w-0">
             <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{lang === "ar" ? "مختاراتنا" : "The edit"}</p></Reveal>
             <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
@@ -347,7 +385,7 @@ export function Spotlight({ products }: { products: Product[] }) {
           </div>
         </div>
 
-        <div className="grid items-center gap-8 lg:grid-cols-12 lg:gap-14">
+        <div className="grid items-center gap-5 lg:grid-cols-12 lg:gap-14">
           {/* Image stage: new piece wipes in over the old */}
           <div className="relative aspect-square overflow-hidden bg-plate lg:col-span-7 lg:aspect-[5/4]">
             <AnimatePresence initial={false} custom={dir}>
@@ -379,19 +417,19 @@ export function Spotlight({ products }: { products: Product[] }) {
               <motion.div key={p.id} initial="hidden" animate="show" exit="out" variants={{ show: { transition: { staggerChildren: 0.07 } } }}>
                 {[
                   <p key="eb" className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted">{materialTags(p, lang)}</p>,
-                  <h3 key="h" className="mt-3 font-display text-[clamp(2rem,3.4vw,3rem)] font-semibold leading-[1.02] tracking-[-0.03em]">{tx(p.name, lang)}</h3>,
-                  <p key="d" className="mt-5 max-w-md font-serif text-[1.2rem] leading-relaxed text-ink-2">{tx(p.description, lang)}</p>,
-                  <div key="sw" className="mt-6 flex items-center gap-2">
+                  <h3 key="h" className="mt-2 font-display md:mt-3 text-[clamp(2rem,3.4vw,3rem)] font-semibold leading-[1.02] tracking-[-0.03em]">{tx(p.name, lang)}</h3>,
+                  <p key="d" className="mt-5 hidden max-w-md font-serif md:block text-[1.2rem] leading-relaxed text-ink-2">{tx(p.description, lang)}</p>,
+                  <div key="sw" className="mt-3 flex items-center gap-2 md:mt-6">
                     {p.finishes.map((f, k) => (
                       <span key={k} title={tx(f.name, lang)} className="h-6 w-6 rounded-full ring-1 ring-black/10" style={{ background: f.hex }} />
                     ))}
                     <span className="ms-2 text-[0.82rem] text-muted">{p.finishes.length} {lang === "ar" ? "خيارات" : p.finishes.length === 1 ? "finish" : "finishes"}</span>
                   </div>,
-                  <dl key="spec" className="mt-7 grid max-w-md grid-cols-2 gap-4 border-y border-ink/10 py-5 text-[0.85rem]">
+                  <dl key="spec" className="mt-7 hidden max-w-md grid-cols-2 md:grid gap-4 border-y border-ink/10 py-5 text-[0.85rem]">
                     <div><dt className="text-muted">{t("shop.dimensions")}</dt><dd className="mt-0.5">{p.dimensions}</dd></div>
                     <div><dt className="text-muted">{lang === "ar" ? "مدة التجهيز" : "Lead time"}</dt><dd className="mt-0.5">{p.priceOnRequest ? t("shop.madeToOrder") : t("shop.leadTime", { n: p.leadTimeDays })}</dd></div>
                   </dl>,
-                  <div key="cta" className="mt-7 flex flex-wrap items-center gap-3">
+                  <div key="cta" className="mt-5 flex flex-wrap items-center gap-3 md:mt-7">
                     {p.priceOnRequest ? (
                       <PillLink href={`/quote?service=custom&product=${encodeURIComponent(p.name.en)}`}>{t("shop.request")}</PillLink>
                     ) : (
@@ -421,7 +459,7 @@ export function Spotlight({ products }: { products: Product[] }) {
         </div>
 
         {/* Progress per slide */}
-        <div className="mt-10 grid gap-2" style={{ gridTemplateColumns: `repeat(${products.length}, minmax(0, 1fr))` }}>
+        <div className="mt-6 grid gap-2 md:mt-10" style={{ gridTemplateColumns: `repeat(${products.length}, minmax(0, 1fr))` }}>
           {products.map((q, k) => (
             <button key={q.id} onClick={() => { setDir(k > i ? 1 : -1); setI(k); }} className="group py-2 text-start" aria-label={tx(q.name, lang)}>
               <span className="relative block h-px overflow-hidden bg-ink/15">
@@ -451,8 +489,8 @@ export function Collections({ groups }: { groups: { id: string; label: string; p
   const [tab, setTab] = useState(groups[0]?.id);
   const current = groups.find((g) => g.id === tab) ?? groups[0];
   return (
-    <section className="py-16 md:py-24">
-      <div className="mx-auto mb-8 flex max-w-[1440px] flex-col justify-between gap-6 px-5 md:mb-12 md:flex-row md:items-end md:px-10">
+    <section className="py-12 md:py-24">
+      <div className="mx-auto mb-6 flex max-w-[1440px] flex-col justify-between gap-4 px-5 md:mb-12 md:flex-row md:items-end md:gap-6 md:px-10">
         <div>
           <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{t("v2.newIn")}</p></Reveal>
           <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
@@ -491,7 +529,7 @@ export function Collections({ groups }: { groups: { id: string; label: string; p
       <div className="lg:hidden">
         <AnimatePresence mode="wait">
           <motion.div key={current.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <Rail itemClass="w-[72vw] sm:w-[320px]">
+            <Rail itemClass="w-[60vw] sm:w-[320px]">
               {current.products.map((p, k) => (
                 <ProductCard key={p.id} product={p} priority={k < 2} sizes="72vw" />
               ))}
@@ -525,7 +563,7 @@ export function Tailored({ products }: { products: Product[] }) {
   const flip = lang === "ar" ? -1 : 1;
 
   return (
-    <section className="overflow-hidden py-16 md:py-28">
+    <section className="hidden overflow-hidden py-12 md:block md:py-28">
       <div className="mx-auto max-w-[1100px] px-5 md:px-10">
         <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{t("v2.tailoredSerif")}</p></Reveal>
         <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
@@ -575,7 +613,7 @@ export function ProjectsShowcase({ projects }: { projects: Project[] }) {
   const sry = useSpring(ry, { stiffness: 120, damping: 20 });
 
   return (
-    <section className="bg-band py-16 md:py-28">
+    <section className="bg-band py-12 md:py-28">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
@@ -662,12 +700,12 @@ const CLIENTS = ["Galeries Lafayette", "Harvey Nichols", "VOX Cinemas", "Corneli
 export function Clients() {
   const { t } = useSite();
   return (
-    <section className="border-y border-line py-12 md:py-16">
+    <section className="border-y border-line py-10 md:py-16">
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <Eyebrow className="mb-8 justify-center">{t("v2.clients")}</Eyebrow>
-        <ul className="grid grid-cols-2 gap-x-6 gap-y-5 text-center sm:grid-cols-3 lg:grid-cols-6" dir="ltr">
+        <ul className="grid grid-cols-3 gap-x-4 gap-y-4 text-center lg:grid-cols-6" dir="ltr">
           {CLIENTS.map((c, i) => (
-            <Reveal as="li" key={c} delay={(i % 6) * 0.04} className="font-serif text-[1.25rem] text-ink/55 transition-colors hover:text-ink md:text-[1.4rem]">
+            <Reveal as="li" key={c} delay={(i % 6) * 0.04} className="font-serif text-[1rem] leading-tight text-ink/55 transition-colors hover:text-ink md:text-[1.4rem]">
               {c}
             </Reveal>
           ))}
@@ -681,9 +719,9 @@ export function Clients() {
 export function HelpCTA() {
   const { t } = useSite();
   return (
-    <section className="py-16 md:py-28">
+    <section className="py-12 md:py-28">
       <div className="mx-auto grid max-w-[1440px] items-center gap-10 px-5 md:px-10 lg:grid-cols-2 lg:gap-16">
-        <Reveal className="relative aspect-[4/3] overflow-hidden bg-plate lg:order-2">
+        <Reveal className="relative hidden aspect-[4/3] overflow-hidden bg-plate md:block lg:order-2">
           <ParallaxImg src="/images/craft/craftsman.jpg" />
         </Reveal>
         <div className="max-w-xl">
@@ -724,8 +762,8 @@ export function Heritage({ projectCount }: { projectCount: number }) {
     { v: 5, s: lang === "ar" ? " سنوات" : " yr", l: lang === "ar" ? "ضمان على الهيكل" : "Frame warranty" },
   ];
   return (
-    <section className="pb-16 md:pb-28">
-      <div className="relative h-[52vh] min-h-[340px] overflow-hidden bg-plate md:h-[72vh]">
+    <section className="pb-12 md:pb-28">
+      <div className="relative h-[34vh] min-h-[230px] overflow-hidden bg-plate md:h-[72vh]">
         <ParallaxImg src="/images/craft/gloves-wide.jpg" />
       </div>
       <div className="mx-auto mt-12 grid max-w-[1100px] gap-12 px-5 md:mt-16 md:px-10 lg:grid-cols-[1.2fr_1fr]">
@@ -773,7 +811,7 @@ export function Faq() {
   const { t, lang } = useSite();
   const [open, setOpen] = useState<number | null>(0);
   return (
-    <section className="border-t border-line py-16 md:py-24">
+    <section className="border-t border-line py-12 md:py-24">
       <div className="mx-auto grid max-w-[1100px] gap-10 px-5 md:px-10 lg:grid-cols-[1fr_2fr]">
         <h2 className="font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">{t("v2.faqTitle")}</h2>
         <ul className="border-t border-line">

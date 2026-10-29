@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
 import { useSite } from "@/components/providers";
 import { WhatsAppIcon } from "@/components/ui/icons";
@@ -10,6 +11,19 @@ export function WhatsAppFab() {
   const { settings, t } = useSite();
   const pathname = usePathname();
   const hide = useUI((s) => s.menuOpen || s.cartOpen);
+  // On phones the hero's own buttons sit where this floats, so it waits until you scroll past them.
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => {
+    const on = () => setScrolled(window.scrollY > 420 || window.innerWidth >= 1024);
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    window.addEventListener("resize", on);
+    return () => {
+      window.removeEventListener("scroll", on);
+      window.removeEventListener("resize", on);
+    };
+  }, []);
+  if (!scrolled && pathname === "/") return null;
   if (hide || pathname.startsWith("/admin") || pathname.startsWith("/checkout") || pathname.startsWith("/shop/")) return null;
   return (
     <motion.a
@@ -17,7 +31,7 @@ export function WhatsAppFab() {
       target="_blank"
       rel="noreferrer"
       aria-label={t("home.whatsapp")}
-      className="group fixed bottom-5 end-5 z-40 flex h-12 items-center gap-2 rounded-full bg-white ps-3 pe-3 text-ink shadow-[0_8px_30px_-8px_rgba(0,0,0,0.25)] ring-1 ring-line transition-[padding] duration-500 hover:pe-5 no-print"
+      className="group fixed bottom-[calc(72px+env(safe-area-inset-bottom))] end-4 z-40 lg:bottom-5 lg:end-5 flex h-12 items-center gap-2 rounded-full bg-white ps-3 pe-3 text-ink shadow-[0_8px_30px_-8px_rgba(0,0,0,0.25)] ring-1 ring-line transition-[padding] duration-500 hover:pe-5 no-print"
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: 1.2, duration: 0.6 }}

@@ -66,10 +66,10 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
   };
 
   return (
-    <section className={clsx(standalone ? "py-10 md:py-14" : "py-16 md:py-24")}>
+    <section className={clsx(standalone ? "py-10 md:py-14" : "py-12 md:py-24")}>
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         {!standalone && (
-          <div className="mb-8 flex items-end justify-between gap-6 md:mb-10">
+          <div className="mb-6 flex items-end justify-between gap-6 md:mb-10">
             <div>
               <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{lang === "ar" ? "تسوّق الإطلالة" : "Shop the look"}</p></Reveal>
               <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
@@ -82,7 +82,7 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
 
         <div className="grid gap-6 lg:grid-cols-12 lg:gap-10">
           {/* Room */}
-          <div className="lg:col-span-8">
+          <div className="-mx-5 min-w-0 md:mx-0 lg:col-span-8">
             <div className="relative overflow-hidden bg-plate" style={{ aspectRatio: `${look.w}/${look.h}` }}>
               <AnimatePresence initial={false}>
                 <motion.div
@@ -116,14 +116,37 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
           </div>
 
           {/* Panel */}
-          <div className="flex flex-col lg:col-span-4">
+          <div className="flex min-w-0 flex-col lg:col-span-4">
             <AnimatePresence mode="wait">
               <motion.div key={look.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.6, ease: EASE }} className="flex flex-1 flex-col">
-                <p className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted">{lang === "ar" ? "الإطلالة" : "The look"}</p>
+                <p className="hidden text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted lg:block">{lang === "ar" ? "الإطلالة" : "The look"}</p>
                 <h3 className="mt-2 font-display text-[clamp(1.6rem,2.4vw,2.2rem)] font-semibold leading-[1.05] tracking-[-0.025em]">{tx(look.title, lang)}</h3>
-                <p className="mt-3 font-serif text-[1.1rem] leading-relaxed text-ink-2">{tx(look.mood, lang)}</p>
+                <p className="mt-1.5 font-serif text-[1.05rem] leading-relaxed text-ink-2 lg:mt-3 lg:text-[1.1rem]">{tx(look.mood, lang)}</p>
 
-                <ul className="mt-6 border-t border-line">
+                {/* Phones: the pieces as a swipeable row */}
+                <div className="no-scrollbar -mx-5 mt-4 flex gap-2 overflow-x-auto px-5 lg:hidden">
+                  {look.pins.map(({ product: p }) => {
+                    const on = picked.has(p.id);
+                    return (
+                      <div key={p.id} className={clsx("flex w-[240px] shrink-0 items-center gap-3 rounded-xl border p-2 transition-colors", on ? "border-ink/30" : "border-line")}>
+                        <Link href={`/shop/${p.slug}`} className="relative h-14 w-14 shrink-0 overflow-hidden rounded-lg bg-plate">
+                          <Image src={p.images[0]} alt="" fill sizes="56px" className="object-cover" />
+                        </Link>
+                        <Link href={`/shop/${p.slug}`} className="min-w-0 flex-1">
+                          <span className="block truncate text-[0.85rem]">{tx(p.name, lang)}</span>
+                          <span className="block text-[0.78rem] text-muted tabular-nums">{p.priceOnRequest ? t("shop.onRequest") : money(p.salePrice || p.price, lang)}</span>
+                        </Link>
+                        {!p.priceOnRequest && (
+                          <button onClick={() => toggle(p.id)} className={clsx("flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition", on ? "border-ink bg-ink text-white" : "border-ink/25")} aria-label="Select" aria-pressed={on}>
+                            {on && <Check className="h-3 w-3" />}
+                          </button>
+                        )}
+                      </div>
+                    );
+                  })}
+                </div>
+
+                <ul className="mt-6 hidden border-t border-line lg:block">
                   {look.pins.map(({ product: p }) => {
                     const on = picked.has(p.id);
                     return (
@@ -154,7 +177,7 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
                   })}
                 </ul>
 
-                <div className="mt-auto pt-6">
+                <div className="mt-auto pt-5 lg:pt-6">
                   {look.pins.some((p) => !p.product.priceOnRequest) ? (
                     <>
                       <div className="mb-4 flex items-baseline justify-between">
@@ -186,9 +209,9 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
 
         {/* Look selector */}
         {looks.length > 1 && (
-          <div className="no-scrollbar -mx-5 mt-8 flex gap-3 overflow-x-auto px-5 md:mx-0 md:px-0">
+          <div className="no-scrollbar -mx-5 mt-6 flex gap-2.5 overflow-x-auto px-5 md:mx-0 md:mt-8 md:gap-3 md:px-0">
             {looks.map((l, k) => (
-              <button key={l.id} onClick={() => setI(k)} className="group w-48 shrink-0 text-start md:w-56">
+              <button key={l.id} onClick={() => setI(k)} className="group w-[124px] shrink-0 text-start md:w-56">
                 <span className="relative block aspect-[16/9] overflow-hidden bg-plate">
                   <Image src={l.image} alt="" fill sizes="224px" className={clsx("object-cover transition duration-700 group-hover:scale-105", k !== i && "opacity-60 group-hover:opacity-100")} />
                 </span>
