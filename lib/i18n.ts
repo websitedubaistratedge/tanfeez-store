@@ -362,3 +362,15 @@ export const EMIRATES_AR: Record<string, string> = {
   Fujairah: "الفجيرة",
 };
 export const emirateName = (e: string, lang: Lang) => (lang === "ar" ? EMIRATES_AR[e] || e : e);
+
+/** Short category names for tight spots (category circles on phones): [en, ar]. */
+export const CATEGORY_SHORT: Record<string, [string, string]> = {
+  sofas: ["Sofas", "الكنب"],
+  armchairs: ["Armchairs", "الكراسي"],
+  beds: ["Beds", "الأسرّة"],
+  media: ["Media walls", "التلفاز"],
+  storage: ["Wardrobes", "الخزائن"],
+  tables: ["Tables", "الطاولات"],
+  joinery: ["Joinery", "النجارة"],
+  commercial: ["Retail", "التجاري"],
+};

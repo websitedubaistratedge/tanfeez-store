@@ -186,8 +186,8 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
               const add = sizeDelta(p, i);
               return (
                 <button key={s} onClick={() => setCfg({ ...cfg, size: i })} className={clsx("relative h-11 rounded-full border px-4 text-[0.85rem] transition", cfg.size === i ? "border-ink bg-ink text-white" : "border-line hover:border-ink")}>
-                  {s}
-                  {add > 0 && <span className={clsx("ms-2 text-[0.75rem] tabular-nums", cfg.size === i ? "text-white/70" : "text-muted")}>+{money(add, lang)}</span>}
+                  <bdi>{s}</bdi>
+                  {add > 0 && <span className={clsx("ms-2 text-[0.75rem] tabular-nums", cfg.size === i ? "text-white/70" : "text-muted")}><bdi>+{money(add, lang)}</bdi></span>}
                 </button>
               );
             })}
@@ -206,7 +206,7 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
           )}
           {price.sizeAdd > 0 && (
             <motion.span key="s" initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>
-              + {p.sizes[cfg.size]} {money(price.sizeAdd, lang)}
+              + <bdi>{p.sizes[cfg.size]}</bdi> {money(price.sizeAdd, lang)}
             </motion.span>
           )}
         </AnimatePresence>
@@ -242,7 +242,7 @@ function StepTitle({ n, title, value }: { n: number; title: string; value?: stri
       {value && (
         <AnimatePresence mode="wait">
           <motion.span key={value} initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -4 }} className="text-muted">
-            · {value}
+            · <bdi>{value}</bdi>
           </motion.span>
         </AnimatePresence>
       )}

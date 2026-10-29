@@ -10,7 +10,7 @@ import { useSite } from "@/components/providers";
 import { CountUp, EASE, Reveal, SplitLines } from "@/components/ui/motion";
 import { ArrowLink, CircleArrow, Eyebrow, OutlineLink, PillLink } from "@/components/ui/buttons";
 import { ProductCard, materialTags } from "@/components/shop/ProductCard";
-import { money, tx } from "@/lib/i18n";
+import { CATEGORY_SHORT, money, tx } from "@/lib/i18n";
 import { useCart, useUI } from "@/lib/store";
 import type { Category, Product, Project } from "@/lib/types";
 
@@ -267,7 +267,7 @@ export function QuickShop({ categories, covers }: { categories: Category[]; cove
   const ar = lang === "ar";
   const items = [
     { href: "/shop", label: ar ? "الكل" : "Shop all", img: "/images/lifestyle/hero.jpg" },
-    ...categories.map((c) => ({ href: `/shop?c=${c.slug}`, label: SHORT[c.slug]?.[ar ? 1 : 0] ?? tx(c.name, lang), img: covers[c.slug] ?? c.image })),
+    ...categories.map((c) => ({ href: `/shop?c=${c.slug}`, label: CATEGORY_SHORT[c.slug]?.[ar ? 1 : 0] ?? tx(c.name, lang), img: covers[c.slug] ?? c.image })),
     { href: "/inspiration", label: ar ? "إلهام" : "Rooms", img: "/images/lifestyle/look-emerald.jpg" },
   ];
   return (
@@ -285,16 +285,6 @@ export function QuickShop({ categories, covers }: { categories: Category[]; cove
     </section>
   );
 }
-const SHORT: Record<string, [string, string]> = {
-  sofas: ["Sofas", "الكنب"],
-  armchairs: ["Armchairs", "الكراسي"],
-  beds: ["Beds", "الأسرّة"],
-  media: ["Media walls", "التلفاز"],
-  storage: ["Wardrobes", "الخزائن"],
-  tables: ["Tables", "الطاولات"],
-  joinery: ["Joinery", "النجارة"],
-  commercial: ["Retail", "التجاري"],
-};
 
 export function Categories({ categories, covers, counts }: { categories: Category[]; covers: Record<string, string>; counts: Record<string, number> }) {
   const { t, lang } = useSite();

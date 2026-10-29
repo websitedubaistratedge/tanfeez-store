@@ -100,7 +100,11 @@ export function Footer() {
         <div className="mt-16 flex flex-col items-start justify-between gap-6 border-t border-ink/10 pt-8 md:flex-row md:items-center">
           <Logo sub />
           <p className="text-[0.8rem] text-muted">
-            © {new Date().getFullYear()} TANFEEZ Aamal Technical Contracting LLC. {t("footer.rights")}
+            {ar ? (
+              <>© {new Date().getFullYear()} تنفيذ أعمال للمقاولات الفنية ذ.م.م. {t("footer.rights")}</>
+            ) : (
+              <>© {new Date().getFullYear()} TANFEEZ Aamal Technical Contracting LLC. {t("footer.rights")}</>
+            )}
           </p>
         </div>
       </div>

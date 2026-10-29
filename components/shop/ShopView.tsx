@@ -9,7 +9,7 @@ import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { PageHero } from "@/components/site/PageHero";
 import { ProductCard } from "./ProductCard";
-import { money, tx } from "@/lib/i18n";
+import { money, tx, CATEGORY_SHORT } from "@/lib/i18n";
 import type { Category, Product, Project } from "@/lib/types";
 import { EASE } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
@@ -131,7 +131,7 @@ export function ShopView({
               <span className={clsx("relative block h-[60px] w-[60px] overflow-hidden rounded-full bg-plate ring-offset-2 transition", cat === c.slug ? "ring-[1.5px] ring-ink" : "ring-1 ring-line")}>
                 <Image src={c.image} alt="" fill sizes="60px" className="object-cover" />
               </span>
-              <span className={clsx("w-full truncate text-center text-[0.72rem] leading-tight", cat === c.slug ? "font-medium text-ink" : "text-ink/60")}>{tx(c.name, lang).replace(/ & .*/, "")}</span>
+              <span className={clsx("w-full truncate text-center text-[0.72rem] leading-tight", cat === c.slug ? "font-medium text-ink" : "text-ink/60")}>{CATEGORY_SHORT[c.slug]?.[ar ? 1 : 0] ?? tx(c.name, lang)}</span>
             </button>
           ))}
         </div>

@@ -17,8 +17,8 @@ export function ContactView() {
 
   const rows = [
     { k: t("contact.call"), v: [settings.phone, settings.mobile], href: `tel:${settings.mobile.replace(/\s/g, "")}`, ltr: true },
-    { k: "WhatsApp", v: [settings.mobile], href: `https://wa.me/${settings.whatsapp}`, ltr: true },
-    { k: "Email", v: [settings.email], href: `mailto:${settings.email}` },
+    { k: lang === "ar" ? "واتساب" : "WhatsApp", v: [settings.mobile], href: `https://wa.me/${settings.whatsapp}`, ltr: true },
+    { k: lang === "ar" ? "البريد الإلكتروني" : "Email", v: [settings.email], href: `mailto:${settings.email}` },
     { k: t("contact.visit"), v: [settings.address] },
     { k: t("contact.hours"), v: [settings.hours] },
   ];
