@@ -1,0 +1,132 @@
+@import "tailwindcss";
+
+/* TANFEEZ v2: calm white theme. Brand yellow is an accent only. */
+@theme {
+  --color-brand: #ffcb06;
+  --color-brand-600: #d9a900;
+  --color-ink: #1a1a1a;
+  --color-ink-2: #3a3836;
+  --color-muted: #6e6b67;
+  --color-faint: #a19d97;
+  --color-line: #e6e4e0;
+  --color-plate: #f3f2f0;
+  --color-band: #f6f1ea;
+  --color-paper: #ffffff;
+
+  /* legacy aliases used by admin and older components */
+  --color-sand: #f6f5f3;
+  --color-sand-200: #ecebe8;
+  --color-brand-50: #fff8db;
+  --color-ink-950: #121212;
+  --color-ink-900: #1a1a1a;
+  --color-ink-800: #242322;
+  --color-ink-700: #33312f;
+  --color-steel: #8a8586;
+
+  --font-sans: var(--font-inter), "Inter", system-ui, sans-serif;
+  --font-display: var(--font-inter-tight), "Inter Tight", system-ui, sans-serif;
+  --font-serif: var(--font-instrument), "Instrument Serif", Georgia, serif;
+  --font-arabic: var(--font-plex-ar), "IBM Plex Sans Arabic", system-ui, sans-serif;
+
+  --ease-out-expo: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root { color-scheme: light; }
+
+html { -webkit-tap-highlight-color: transparent; text-rendering: optimizeLegibility; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+body {
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-feature-settings: "ss01", "cv11";
+  overflow-x: clip;
+  letter-spacing: -0.005em;
+}
+
+.font-serif { font-family: var(--font-serif); font-weight: 400; letter-spacing: -0.01em; }
+
+/* Arabic */
+html[lang="ar"] body,
+html[lang="ar"] .font-display,
+html[lang="ar"] .font-serif { font-family: var(--font-arabic); }
+html[lang="ar"] .font-serif { font-weight: 500; }
+html[lang="ar"] [class*="tracking-"] { letter-spacing: 0 !important; }
+html[lang="ar"] body { letter-spacing: 0; }
+html[lang="ar"] .uppercase { text-transform: none; }
+html[lang="ar"] h1, html[lang="ar"] h2, html[lang="ar"] h3 { line-height: 1.35 !important; }
+html[lang="ar"] .split-line { padding-top: 0.1em; padding-bottom: 0.14em; }
+
+::selection { background: var(--color-brand); color: var(--color-ink); }
+
+/* Legacy helpers still used by the admin panel */
+.diag-tr { clip-path: polygon(100% 0, 100% 100%, 0 100%); }
+.grid-lines {
+  background-image:
+    linear-gradient(to right, rgb(255 255 255 / 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(255 255 255 / 0.05) 1px, transparent 1px);
+  background-size: 72px 72px;
+}
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+input, textarea, select { font: inherit; }
+
+.field {
+  width: 100%;
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid var(--color-line);
+  background: transparent;
+  padding: 0.85rem 0;
+  outline: none;
+  transition: border-color 0.25s;
+}
+.field:focus { border-bottom-color: var(--color-ink); }
+.field::placeholder { color: var(--color-faint); }
+
+/* Underline link that draws on hover */
+.link-u {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size 0.5s var(--ease-out-expo);
+}
+.link-u:hover { background-size: 100% 1px; }
+html[dir="rtl"] .link-u { background-position: 100% 100%; }
+
+/* Entrance animations that run on first paint (no JS needed) */
+@keyframes page-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+.page-in { animation: page-in 0.7s var(--ease-out-expo) both; }
+@keyframes word-rise { from { transform: translateY(105%); } to { transform: translateY(0); } }
+.word-rise { display: inline-block; animation: word-rise 1s var(--ease-out-expo) both; }
+@keyframes fade-up { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: none; } }
+.fade-up { animation: fade-up 0.9s var(--ease-out-expo) both; }
+@keyframes hero-zoom { from { transform: scale(1.12); } to { transform: scale(1); } }
+.hero-zoom { animation: hero-zoom 2.6s var(--ease-out-expo) both; }
+
+/* Business hero: endless vertical project reel (content is duplicated, so -50% loops seamlessly) */
+@keyframes biz-reel-up { from { transform: translateY(0); } to { transform: translateY(calc(-50% - 6px)); } }
+@keyframes biz-reel-down { from { transform: translateY(calc(-50% - 6px)); } to { transform: translateY(0); } }
+.biz-reel-up { animation: biz-reel-up linear infinite; }
+.biz-reel-down { animation: biz-reel-down linear infinite; }
+@media (prefers-reduced-motion: reduce) { .biz-reel-up, .biz-reel-down { animation: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+@media print {
+  .no-print { display: none !important; }
+  body { background: white; }
+}

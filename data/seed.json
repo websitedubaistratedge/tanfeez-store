@@ -1,0 +1,5610 @@
+{
+ "categories": [
+  {
+   "id": "cat_sofas",
+   "order": 0,
+   "slug": "sofas",
+   "name": {
+    "en": "Sofas & Lounge",
+    "ar": "الكنب والجلسات"
+   },
+   "blurb": {
+    "en": "Hand-upholstered sofas built in our Dubai workshop.",
+    "ar": "كنب منجّد يدوياً في ورشتنا بدبي."
+   },
+   "image": "/images/products/p32_7.jpg"
+  },
+  {
+   "id": "cat_armchairs",
+   "order": 1,
+   "slug": "armchairs",
+   "name": {
+    "en": "Armchairs",
+    "ar": "الكراسي المنفردة"
+   },
+   "blurb": {
+    "en": "Statement chairs in leather, velvet and solid wood.",
+    "ar": "كراسٍ مميزة من الجلد والمخمل والخشب الطبيعي."
+   },
+   "image": "/images/products/p32_6.jpg"
+  },
+  {
+   "id": "cat_beds",
+   "order": 2,
+   "slug": "beds",
+   "name": {
+    "en": "Beds & Bedroom",
+    "ar": "الأسرّة وغرف النوم"
+   },
+   "blurb": {
+    "en": "Upholstered headboards, platform beds and storage beds.",
+    "ar": "ألواح رأس منجّدة وأسرّة منصّة وأسرّة بتخزين."
+   },
+   "image": "/images/products/p34_1.jpg"
+  },
+  {
+   "id": "cat_media",
+   "order": 3,
+   "slug": "media",
+   "name": {
+    "en": "TV & Media Walls",
+    "ar": "وحدات التلفاز والجدران"
+   },
+   "blurb": {
+    "en": "Feature walls, media units and fireplaces.",
+    "ar": "جدران مميزة ووحدات تلفاز ومدافئ."
+   },
+   "image": "/images/products/p33_3.jpg"
+  },
+  {
+   "id": "cat_storage",
+   "order": 4,
+   "slug": "storage",
+   "name": {
+    "en": "Wardrobes & Storage",
+    "ar": "الخزائن والتخزين"
+   },
+   "blurb": {
+    "en": "Walk-in closets, wardrobes and smart storage.",
+    "ar": "غرف ملابس وخزائن وحلول تخزين ذكية."
+   },
+   "image": "/images/products/p36_2.jpg"
+  },
+  {
+   "id": "cat_tables",
+   "order": 5,
+   "slug": "tables",
+   "name": {
+    "en": "Tables & Vanities",
+    "ar": "الطاولات والتسريحات"
+   },
+   "blurb": {
+    "en": "Live-edge tables, consoles, desks and vanities.",
+    "ar": "طاولات خشب طبيعي وكونسول ومكاتب وتسريحات."
+   },
+   "image": "/images/products/p36_6.jpg"
+  },
+  {
+   "id": "cat_joinery",
+   "order": 6,
+   "slug": "joinery",
+   "name": {
+    "en": "Stairs, Doors & Joinery",
+    "ar": "السلالم والأبواب والنجارة"
+   },
+   "blurb": {
+    "en": "Floating staircases, barn doors and partitions.",
+    "ar": "سلالم معلّقة وأبواب منزلقة وفواصل خشبية."
+   },
+   "image": "/images/products/p35_4.jpg"
+  },
+  {
+   "id": "cat_commercial",
+   "order": 7,
+   "slug": "commercial",
+   "name": {
+    "en": "Retail & Commercial",
+    "ar": "المحلات والمشاريع التجارية"
+   },
+   "blurb": {
+    "en": "Kiosks, display units and counters for brands.",
+    "ar": "أكشاك ووحدات عرض وكاونترات للعلامات التجارية."
+   },
+   "image": "/images/projects/the-ceremony-1.jpg"
+  }
+ ],
+ "products": [
+  {
+   "id": "prd_001",
+   "slug": "chesterfield-heritage-sofa",
+   "sku": "TNF-1001",
+   "name": {
+    "en": "Chesterfield Heritage Sofa",
+    "ar": "كنبة تشسترفيلد التراثية"
+   },
+   "category": "sofas",
+   "price": 14900,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 6,
+   "images": [
+    "/images/products-v2/chesterfield-heritage-sofa.jpg",
+    "/images/products/p32_10.jpg"
+   ],
+   "description": {
+    "en": "A timeless Chesterfield, deep-buttoned by hand in our Dubai workshop. Rolled arms, a solid hardwood frame and full-grain leather that only gets better with age.",
+    "ar": "تشسترفيلد كلاسيكية بأزرار عميقة مصنوعة يدوياً في ورشتنا بدبي. مساند ملفوفة وهيكل خشبي صلب وجلد طبيعي يزداد جمالاً مع الوقت."
+   },
+   "materials": {
+    "en": "Hand-buttoned full-grain leather, kiln-dried hardwood frame, pocket springs.",
+    "ar": "جلد طبيعي كامل الحبيبات بأزرار يدوية، هيكل خشب صلب مجفف، نوابض جيبية."
+   },
+   "dimensions": "230 × 95 × 78 cm",
+   "leadTimeDays": 7,
+   "finishes": [
+    {
+     "name": {
+      "en": "Cognac Leather",
+      "ar": "جلد كونياك"
+     },
+     "hex": "#8A4A25"
+    },
+    {
+     "name": {
+      "en": "Charcoal",
+      "ar": "فحمي"
+     },
+     "hex": "#36312F"
+    }
+   ],
+   "sizes": [
+    "3 Seater",
+    "4 Seater"
+   ],
+   "featured": true,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.9,
+   "reviews": 12,
+   "createdAt": "2026-06-03T19:00:00.000Z"
+  },
+  {
+   "id": "prd_002",
+   "slug": "velvet-chaise-daybed",
+   "sku": "TNF-1002",
+   "name": {
+    "en": "Velvet Chaise Daybed",
+    "ar": "أريكة استرخاء مخملية"
+   },
+   "category": "sofas",
+   "price": 6800,
+   "salePrice": 5900,
+   "priceOnRequest": false,
+   "stock": 3,
+   "images": [
+    "/images/products-v2/velvet-chaise-daybed.jpg",
+    "/images/products/p32_11.jpg"
+   ],
+   "description": {
+    "en": "A sculpted daybed with two asymmetric backrests and turned walnut legs. Perfect for a dressing room, bedroom corner or boutique lounge.",
+    "ar": "أريكة نهارية منحوتة بظهرين غير متماثلين وأرجل من خشب الجوز. مثالية لغرفة الملابس أو ركن غرفة النوم أو صالة البوتيك."
+   },
+   "materials": {
+    "en": "Performance velvet, turned solid-wood legs, high-resilience foam.",
+    "ar": "مخمل عالي الأداء، أرجل خشبية مخروطة، إسفنج عالي المرونة."
+   },
+   "dimensions": "180 × 70 × 75 cm",
+   "leadTimeDays": 10,
+   "finishes": [
+    {
+     "name": {
+      "en": "Stone Grey",
+      "ar": "رمادي حجري"
+     },
+     "hex": "#9C9A96"
+    },
+    {
+     "name": {
+      "en": "Emerald Velvet",
+      "ar": "مخمل زمردي"
+     },
+     "hex": "#1F5A43"
+    },
+    {
+     "name": {
+      "en": "Blush",
+      "ar": "وردي ناعم"
+     },
+     "hex": "#D9B2A9"
+    }
+   ],
+   "sizes": [
+    "Standard"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 5,
+   "reviews": 31,
+   "createdAt": "2026-06-06T19:00:00.000Z"
+  },
+  {
+   "id": "prd_003",
+   "slug": "harbour-lounge-set",
+   "sku": "TNF-1003",
+   "name": {
+    "en": "Harbour Lounge Set",
+    "ar": "طقم جلسة هاربر"
+   },
+   "category": "sofas",
+   "price": 18500,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 12,
+   "images": [
+    "/images/products-v2/harbour-lounge-set.jpg",
+    "/images/products/p32_12.jpg"
+   ],
+   "description": {
+    "en": "A mid-century inspired lounge set with slim arms and tapered oak legs, made for majlis and family rooms that are lived in every day.",
+    "ar": "طقم جلسة مستوحى من منتصف القرن بمساند نحيفة وأرجل من البلوط، مصمم للمجالس وغرف العائلة الاستخدام اليومي."
+   },
+   "materials": {
+    "en": "Woven upholstery fabric, tapered oak legs, removable cushions.",
+    "ar": "قماش تنجيد منسوج، أرجل بلوط مستدقة، وسائد قابلة للإزالة."
+   },
+   "dimensions": "Sofa 210 × 88 × 80 cm",
+   "leadTimeDays": 14,
+   "finishes": [
+    {
+     "name": {
+      "en": "Stone Grey",
+      "ar": "رمادي حجري"
+     },
+     "hex": "#9C9A96"
+    },
+    {
+     "name": {
+      "en": "Desert Sand",
+      "ar": "رمل الصحراء"
+     },
+     "hex": "#D8C8AE"
+    },
+    {
+     "name": {
+      "en": "Ocean Blue",
+      "ar": "أزرق محيطي"
+     },
+     "hex": "#2E4D7B"
+    }
+   ],
+   "sizes": [
+    "3+2+1",
+    "3+1"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.8,
+   "reviews": 8,
+   "createdAt": "2026-06-09T19:00:00.000Z"
+  },
+  {
+   "id": "prd_004",
+   "slug": "cloud-curve-sofa",
+   "sku": "TNF-1004",
+   "name": {
+    "en": "Cloud Curve Sofa",
+    "ar": "كنبة كلاود المنحنية"
+   },
+   "category": "sofas",
+   "price": 12400,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 2,
+   "images": [
+    "/images/products-v2/cloud-curve-sofa.jpg",
+    "/images/products/p32_13.jpg"
+   ],
+   "description": {
+    "en": "Organic, curved and endlessly comfortable. The Cloud Curve brings a soft gallery feel to villas, lobbies and boutique lounges.",
+    "ar": "منحنية وانسيابية ومريحة للغاية. تضفي كنبة كلاود لمسة فنية ناعمة على الفلل والردهات وصالات البوتيك."
+   },
+   "materials": {
+    "en": "Bouclé or velvet, curved plywood frame, feather-wrapped foam.",
+    "ar": "بوكليه أو مخمل، هيكل خشب رقائقي منحني، إسفنج مغلف بالريش."
+   },
+   "dimensions": "240 × 100 × 82 cm",
+   "leadTimeDays": 21,
+   "finishes": [
+    {
+     "name": {
+      "en": "Ivory Bouclé",
+      "ar": "بوكليه عاجي"
+     },
+     "hex": "#ECE6DA"
+    },
+    {
+     "name": {
+      "en": "Stone Grey",
+      "ar": "رمادي حجري"
+     },
+     "hex": "#9C9A96"
+    },
+    {
+     "name": {
+      "en": "Desert Sand",
+      "ar": "رمل الصحراء"
+     },
+     "hex": "#D8C8AE"
+    }
+   ],
+   "sizes": [
+    "240 cm",
+    "280 cm"
+   ],
+   "featured": true,
+   "isNew": true,
+   "status": "active",
+   "rating": 4.7,
+   "reviews": 22,
+   "createdAt": "2026-06-12T19:00:00.000Z"
+  },
+  {
+   "id": "prd_005",
+   "slug": "alba-modular-corner",
+   "sku": "TNF-1005",
+   "name": {
+    "en": "Alba Modular Corner",
+    "ar": "زاوية ألبا المعيارية"
+   },
+   "category": "sofas",
+   "price": 16900,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 8,
+   "images": [
+    "/images/products-v2/alba-modular-corner.jpg",
+    "/images/products/p32_2.jpg"
+   ],
+   "description": {
+    "en": "A low, generous corner sofa in modular sections, so you can configure it left- or right-handed. Comes with a matching round pouf.",
+    "ar": "كنبة زاوية منخفضة وواسعة بأقسام معيارية يمكن تركيبها لليمين أو اليسار. تأتي مع بوف دائري مطابق."
+   },
+   "materials": {
+    "en": "Leather-look upholstery, modular sections, matching pouf.",
+    "ar": "تنجيد بملمس الجلد، أقسام معيارية، مع بوف مطابق."
+   },
+   "dimensions": "300 × 220 × 72 cm",
+   "leadTimeDays": 7,
+   "finishes": [
+    {
+     "name": {
+      "en": "Ivory Bouclé",
+      "ar": "بوكليه عاجي"
+     },
+     "hex": "#ECE6DA"
+    },
+    {
+     "name": {
+      "en": "Desert Sand",
+      "ar": "رمل الصحراء"
+     },
+     "hex": "#D8C8AE"
+    },
+    {
+     "name": {
+      "en": "Stone Grey",
+      "ar": "رمادي حجري"
+     },
+     "hex": "#9C9A96"
+    }
+   ],
+   "sizes": [
+    "L-Left",
+    "L-Right"
+   ],
+   "featured": true,
+   "isNew": false,
+   "status": "active",
+   "rating": 5,
+   "reviews": 17,
+   "createdAt": "2026-06-15T19:00:00.000Z"
+  },
+  {
+   "id": "prd_006",
+   "slug": "riviera-channel-sofa",
+   "sku": "TNF-1006",
+   "name": {
+    "en": "Riviera Channel Sofa",
+    "ar": "كنبة ريفييرا المضلعة"
+   },
+   "category": "sofas",
+   "price": 11200,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 5,
+   "images": [
+    "/images/products-v2/riviera-channel-sofa.jpg",
+    "/images/products/p32_4.jpg"
+   ],
+   "description": {
+    "en": "Hotel-lobby elegance for the home: a channel-tufted back on a slim brushed-metal plinth, finished with five scatter cushions.",
+    "ar": "أناقة ردهات الفنادق في منزلك: ظهر مضلع على قاعدة معدنية رفيعة مع خمس وسائد."
+   },
+   "materials": {
+    "en": "Channel-tufted back, brushed brass plinth, linen-blend fabric.",
+    "ar": "ظهر مضلع بخياطة قنوات، قاعدة نحاسية مصقولة، قماش ممزوج بالكتان."
+   },
+   "dimensions": "240 × 95 × 80 cm",
+   "leadTimeDays": 10,
+   "finishes": [
+    {
+     "name": {
+      "en": "Desert Sand",
+      "ar": "رمل الصحراء"
+     },
+     "hex": "#D8C8AE"
+    },
+    {
+     "name": {
+      "en": "Stone Grey",
+      "ar": "رمادي حجري"
+     },
+     "hex": "#9C9A96"
+    },
+    {
+     "name": {
+      "en": "Charcoal",
+      "ar": "فحمي"
+     },
+     "hex": "#36312F"
+    }
+   ],
+   "sizes": [
+    "3 Seater",
+    "4 Seater"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.9,
+   "reviews": 5,
+   "createdAt": "2026-06-18T19:00:00.000Z"
+  },
+  {
+   "id": "prd_007",
+   "slug": "velluto-tufted-sofa",
+   "sku": "TNF-1007",
+   "name": {
+    "en": "Velluto Tufted Modular",
+    "ar": "كنبة فيلوتو المعيارية"
+   },
+   "category": "sofas",
+   "price": 15800,
+   "salePrice": 13900,
+   "priceOnRequest": false,
+   "stock": 0,
+   "images": [
+    "/images/products-v2/velluto-tufted-sofa.jpg",
+    "/images/products/p32_7.jpg"
+   ],
+   "description": {
+    "en": "Seventies-inspired, deeply biscuit-tufted modules in rich emerald velvet. Pull them together as a sofa or apart as loungers.",
+    "ar": "وحدات بتنجيد مربعات عميق بمخمل زمردي فاخر مستوحاة من السبعينيات. اجمعها ككنبة أو افصلها كأسرّة استرخاء."
+   },
+   "materials": {
+    "en": "Biscuit-tufted velvet modules, solid pine base, Ø-legs hidden.",
+    "ar": "وحدات مخملية بتنجيد مربعات، قاعدة صنوبر صلبة، أرجل مخفية."
+   },
+   "dimensions": "290 × 105 × 70 cm",
+   "leadTimeDays": 14,
+   "finishes": [
+    {
+     "name": {
+      "en": "Emerald Velvet",
+      "ar": "مخمل زمردي"
+     },
+     "hex": "#1F5A43"
+    },
+    {
+     "name": {
+      "en": "Charcoal",
+      "ar": "فحمي"
+     },
+     "hex": "#36312F"
+    },
+    {
+     "name": {
+      "en": "Blush",
+      "ar": "وردي ناعم"
+     },
+     "hex": "#D9B2A9"
+    }
+   ],
+   "sizes": [
+    "2 Modules",
+    "3 Modules"
+   ],
+   "featured": true,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.9,
+   "reviews": 41,
+   "createdAt": "2026-06-21T19:00:00.000Z"
+  },
+  {
+   "id": "prd_008",
+   "slug": "milano-leather-sofa",
+   "sku": "TNF-1008",
+   "name": {
+    "en": "Milano Leather Sofa",
+    "ar": "كنبة ميلانو الجلدية"
+   },
+   "category": "sofas",
+   "price": 17600,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 9,
+   "images": [
+    "/images/products-v2/milano-leather-sofa.jpg",
+    "/images/products/p32_8.jpg"
+   ],
+   "description": {
+    "en": "A long, low leather sofa with a clean track arm, built for big living rooms and executive lounges.",
+    "ar": "كنبة جلدية طويلة ومنخفضة بمساند مستقيمة، مصممة لغرف المعيشة الكبيرة وصالات كبار التنفيذيين."
+   },
+   "materials": {
+    "en": "Aniline leather, solid beech frame, high-density seat foam.",
+    "ar": "جلد أنيلين، هيكل زان صلب، إسفنج مقاعد عالي الكثافة."
+   },
+   "dimensions": "320 × 98 × 76 cm",
+   "leadTimeDays": 21,
+   "finishes": [
+    {
+     "name": {
+      "en": "Cognac Leather",
+      "ar": "جلد كونياك"
+     },
+     "hex": "#8A4A25"
+    },
+    {
+     "name": {
+      "en": "Charcoal",
+      "ar": "فحمي"
+     },
+     "hex": "#36312F"
+    }
+   ],
+   "sizes": [
+    "4 Seater",
+    "5 Seater"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 5,
+   "reviews": 12,
+   "createdAt": "2026-06-24T19:00:00.000Z"
+  },
+  {
+   "id": "prd_009",
+   "slug": "sahara-l-sofa",
+   "sku": "TNF-1009",
+   "name": {
+    "en": "Sahara L-Shape Sofa",
+    "ar": "كنبة صحارى على شكل L"
+   },
+   "category": "sofas",
+   "price": 9900,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 4,
+   "images": [
+    "/images/products-v2/sahara-l-sofa.jpg",
+    "/images/products/p32_9.jpg"
+   ],
+   "description": {
+    "en": "A clean-lined L-shape sofa on floating legs that makes small and mid-size apartments feel bigger.",
+    "ar": "كنبة على شكل L بخطوط نظيفة وأرجل معلّقة تجعل الشقق الصغيرة والمتوسطة تبدو أوسع."
+   },
+   "materials": {
+    "en": "Textured woven fabric, floating brushed-steel legs.",
+    "ar": "قماش منسوج بملمس، أرجل فولاذية معلّقة."
+   },
+   "dimensions": "270 × 200 × 80 cm",
+   "leadTimeDays": 7,
+   "finishes": [
+    {
+     "name": {
+      "en": "Stone Grey",
+      "ar": "رمادي حجري"
+     },
+     "hex": "#9C9A96"
+    },
+    {
+     "name": {
+      "en": "Desert Sand",
+      "ar": "رمل الصحراء"
+     },
+     "hex": "#D8C8AE"
+    }
+   ],
+   "sizes": [
+    "L-Left",
+    "L-Right"
+   ],
+   "featured": false,
+   "isNew": true,
+   "status": "active",
+   "rating": 4.8,
+   "reviews": 31,
+   "createdAt": "2026-06-27T19:00:00.000Z"
+  },
+  {
+   "id": "prd_010",
+   "slug": "coral-shell-lounge-chair",
+   "sku": "TNF-1010",
+   "name": {
+    "en": "Coral Shell Lounge Chair",
+    "ar": "كرسي كورال الصدفي"
+   },
+   "category": "armchairs",
+   "price": 3400,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 14,
+   "images": [
+    "/images/products-v2/coral-shell-lounge-chair.jpg",
+    "/images/products/p32_3.jpg"
+   ],
+   "description": {
+    "en": "A rounded shell chair that hugs you. Shown here in a Dubai boutique paired with our matching chaise.",
+    "ar": "كرسي صدفي دائري يحتضنك. معروض هنا في بوتيك بدبي مع أريكة مطابقة."
+   },
+   "materials": {
+    "en": "Moulded shell, performance velvet, black powder-coated legs.",
+    "ar": "هيكل صدفي مقولب، مخمل عالي الأداء، أرجل مطلية بالبودرة السوداء."
+   },
+   "dimensions": "78 × 80 × 85 cm",
+   "leadTimeDays": 10,
+   "finishes": [
+    {
+     "name": {
+      "en": "Ocean Blue",
+      "ar": "أزرق محيطي"
+     },
+     "hex": "#2E4D7B"
+    },
+    {
+     "name": {
+      "en": "Stone Grey",
+      "ar": "رمادي حجري"
+     },
+     "hex": "#9C9A96"
+    },
+    {
+     "name": {
+      "en": "Blush",
+      "ar": "وردي ناعم"
+     },
+     "hex": "#D9B2A9"
+    }
+   ],
+   "sizes": [
+    "Single",
+    "Pair"
+   ],
+   "featured": true,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.7,
+   "reviews": 8,
+   "createdAt": "2026-06-30T19:00:00.000Z"
+  },
+  {
+   "id": "prd_011",
+   "slug": "nord-leather-armchair",
+   "sku": "TNF-1011",
+   "name": {
+    "en": "Nord Leather Armchair",
+    "ar": "كرسي نورد الجلدي"
+   },
+   "category": "armchairs",
+   "price": 4200,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 6,
+   "images": [
+    "/images/products-v2/nord-leather-armchair.jpg",
+    "/images/products/p32_5.jpg"
+   ],
+   "description": {
+    "en": "Scandinavian proportions with a solid walnut frame that wraps the cushion. Saddle leather in Ocean Blue or Cognac.",
+    "ar": "تصميم إسكندنافي بهيكل من خشب الجوز يحيط بالوسادة. جلد سرج بالأزرق المحيطي أو الكونياك."
+   },
+   "materials": {
+    "en": "Solid walnut frame, saddle leather, webbed seat.",
+    "ar": "هيكل جوز صلب، جلد سرج، مقعد بأحزمة."
+   },
+   "dimensions": "75 × 82 × 88 cm",
+   "leadTimeDays": 14,
+   "finishes": [
+    {
+     "name": {
+      "en": "Ocean Blue",
+      "ar": "أزرق محيطي"
+     },
+     "hex": "#2E4D7B"
+    },
+    {
+     "name": {
+      "en": "Cognac Leather",
+      "ar": "جلد كونياك"
+     },
+     "hex": "#8A4A25"
+    },
+    {
+     "name": {
+      "en": "Charcoal",
+      "ar": "فحمي"
+     },
+     "hex": "#36312F"
+    }
+   ],
+   "sizes": [
+    "Standard"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 5,
+   "reviews": 22,
+   "createdAt": "2026-07-03T19:00:00.000Z"
+  },
+  {
+   "id": "prd_012",
+   "slug": "wingback-chesterfield-chair",
+   "sku": "TNF-1012",
+   "name": {
+    "en": "Wingback Chesterfield Chair",
+    "ar": "كرسي تشسترفيلد بأجنحة"
+   },
+   "category": "armchairs",
+   "price": 5600,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 3,
+   "images": [
+    "/images/products-v2/wingback-chesterfield-chair.jpg",
+    "/images/products/p32_6.jpg"
+   ],
+   "description": {
+    "en": "The library chair, made properly. Hand-buttoned wings, nailhead detail and turned mahogany legs.",
+    "ar": "كرسي المكتبة مصنوع كما يجب. أجنحة بأزرار يدوية وتفاصيل مسامير وأرجل ماهوجني مخروطة."
+   },
+   "materials": {
+    "en": "Deep-buttoned leather, nailhead trim, turned mahogany legs.",
+    "ar": "جلد بأزرار عميقة، مسامير زخرفية، أرجل ماهوجني مخروطة."
+   },
+   "dimensions": "85 × 90 × 110 cm",
+   "leadTimeDays": 21,
+   "finishes": [
+    {
+     "name": {
+      "en": "Cognac Leather",
+      "ar": "جلد كونياك"
+     },
+     "hex": "#8A4A25"
+    },
+    {
+     "name": {
+      "en": "Charcoal",
+      "ar": "فحمي"
+     },
+     "hex": "#36312F"
+    }
+   ],
+   "sizes": [
+    "Standard"
+   ],
+   "featured": true,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.9,
+   "reviews": 17,
+   "createdAt": "2026-07-06T19:00:00.000Z"
+  },
+  {
+   "id": "prd_013",
+   "slug": "blush-couture-bed",
+   "sku": "TNF-1013",
+   "name": {
+    "en": "Couture Panel Bed",
+    "ar": "سرير كوتور بألواح"
+   },
+   "category": "beds",
+   "price": 9800,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 12,
+   "images": [
+    "/images/products-v2/blush-couture-bed.jpg",
+    "/images/products/p34_1.jpg"
+   ],
+   "description": {
+    "en": "A dramatic, extra-tall upholstered headboard in geometric panels. Made to measure for your ceiling height.",
+    "ar": "لوح رأس منجّد طويل بشكل لافت بألواح هندسية. يُصنع حسب ارتفاع سقفك."
+   },
+   "materials": {
+    "en": "Floor-to-ceiling upholstered headboard, solid frame, velvet.",
+    "ar": "لوح رأس منجّد من الأرض حتى السقف، هيكل صلب، مخمل."
+   },
+   "dimensions": "King: 196 × 215 × 190 cm",
+   "leadTimeDays": 7,
+   "finishes": [
+    {
+     "name": {
+      "en": "Blush",
+      "ar": "وردي ناعم"
+     },
+     "hex": "#D9B2A9"
+    },
+    {
+     "name": {
+      "en": "Ivory Bouclé",
+      "ar": "بوكليه عاجي"
+     },
+     "hex": "#ECE6DA"
+    },
+    {
+     "name": {
+      "en": "Stone Grey",
+      "ar": "رمادي حجري"
+     },
+     "hex": "#9C9A96"
+    }
+   ],
+   "sizes": [
+    "Queen 160",
+    "King 180",
+    "Super King 200"
+   ],
+   "featured": true,
+   "isNew": true,
+   "status": "active",
+   "rating": 4.9,
+   "reviews": 5,
+   "createdAt": "2026-07-09T19:00:00.000Z"
+  },
+  {
+   "id": "prd_014",
+   "slug": "walnut-platform-bed",
+   "sku": "TNF-1014",
+   "name": {
+    "en": "Walnut Platform Bed",
+    "ar": "سرير منصة من الجوز"
+   },
+   "category": "beds",
+   "price": 8600,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 2,
+   "images": [
+    "/images/products-v2/walnut-platform-bed.jpg",
+    "/images/products/p34_3.jpg"
+   ],
+   "description": {
+    "en": "A low walnut platform with floating nightstands and an upholstered headboard, shown with our backlit feature wall.",
+    "ar": "منصة منخفضة من الجوز مع طاولات جانبية معلّقة ولوح رأس منجّد، معروضة مع جدارنا المضاء من الخلف."
+   },
+   "materials": {
+    "en": "Walnut veneer platform, upholstered headboard, LED wall panel.",
+    "ar": "منصة بقشرة الجوز، لوح رأس منجّد، لوح جداري بإضاءة LED."
+   },
+   "dimensions": "200 × 220 × 110 cm",
+   "leadTimeDays": 10,
+   "finishes": [
+    {
+     "name": {
+      "en": "American Walnut",
+      "ar": "جوز أمريكي"
+     },
+     "hex": "#5C3A21"
+    },
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    }
+   ],
+   "sizes": [
+    "King 180",
+    "Super King 200"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 5,
+   "reviews": 41,
+   "createdAt": "2026-07-12T19:00:00.000Z"
+  },
+  {
+   "id": "prd_015",
+   "slug": "floating-oak-bed",
+   "sku": "TNF-1015",
+   "name": {
+    "en": "Floating Oak Bed",
+    "ar": "سرير البلوط المعلّق"
+   },
+   "category": "beds",
+   "price": 7400,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 8,
+   "images": [
+    "/images/products-v2/floating-oak-bed.jpg",
+    "/images/products/p34_4.jpg"
+   ],
+   "description": {
+    "en": "A recessed plinth makes the frame appear to float. Pairs with our matching oak nightstands.",
+    "ar": "القاعدة الغائرة تجعل السرير يبدو معلّقاً. يتناسق مع طاولات البلوط الجانبية المطابقة."
+   },
+   "materials": {
+    "en": "Solid oak frame with recessed plinth, linen headboard.",
+    "ar": "هيكل بلوط صلب بقاعدة غائرة، لوح رأس من الكتان."
+   },
+   "dimensions": "190 × 215 × 100 cm",
+   "leadTimeDays": 14,
+   "finishes": [
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    },
+    {
+     "name": {
+      "en": "American Walnut",
+      "ar": "جوز أمريكي"
+     },
+     "hex": "#5C3A21"
+    }
+   ],
+   "sizes": [
+    "Queen 160",
+    "King 180"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.8,
+   "reviews": 12,
+   "createdAt": "2026-07-15T19:00:00.000Z"
+  },
+  {
+   "id": "prd_016",
+   "slug": "cane-oak-bed",
+   "sku": "TNF-1016",
+   "name": {
+    "en": "Cane & Oak Bed",
+    "ar": "سرير الخيزران والبلوط"
+   },
+   "category": "beds",
+   "price": 6900,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 5,
+   "images": [
+    "/images/products-v2/cane-oak-bed.jpg",
+    "/images/products/p34_5.jpg"
+   ],
+   "description": {
+    "en": "Warm oak with a hand-woven rattan cane headboard. Relaxed, natural and built to last.",
+    "ar": "بلوط دافئ مع لوح رأس من الروطان المنسوج يدوياً. طبيعي ومريح ومصنوع ليدوم."
+   },
+   "materials": {
+    "en": "Solid oak, natural rattan cane inlay.",
+    "ar": "بلوط صلب، تطعيم من خيزران الروطان الطبيعي."
+   },
+   "dimensions": "190 × 215 × 105 cm",
+   "leadTimeDays": 21,
+   "finishes": [
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    }
+   ],
+   "sizes": [
+    "Queen 160",
+    "King 180"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.7,
+   "reviews": 31,
+   "createdAt": "2026-07-18T19:00:00.000Z"
+  },
+  {
+   "id": "prd_017",
+   "slug": "atelier-storage-bed",
+   "sku": "TNF-1017",
+   "name": {
+    "en": "Atelier Storage Bed",
+    "ar": "سرير أتيليه بتخزين"
+   },
+   "category": "beds",
+   "price": 8200,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 0,
+   "images": [
+    "/images/products-v2/atelier-storage-bed.jpg",
+    "/images/products/p34_6.jpg"
+   ],
+   "description": {
+    "en": "Lift the slatted base to reveal full-size storage. The channel headboard ties into built-in side shelving.",
+    "ar": "ارفع القاعدة لتكشف عن مساحة تخزين كاملة. لوح الرأس المضلع يتصل برفوف جانبية مدمجة."
+   },
+   "materials": {
+    "en": "Gas-lift storage base, channel headboard, integrated shelving.",
+    "ar": "قاعدة تخزين برافعة غازية، لوح رأس مضلع، رفوف مدمجة."
+   },
+   "dimensions": "200 × 220 × 140 cm",
+   "leadTimeDays": 7,
+   "finishes": [
+    {
+     "name": {
+      "en": "Stone Grey",
+      "ar": "رمادي حجري"
+     },
+     "hex": "#9C9A96"
+    },
+    {
+     "name": {
+      "en": "Desert Sand",
+      "ar": "رمل الصحراء"
+     },
+     "hex": "#D8C8AE"
+    }
+   ],
+   "sizes": [
+    "King 180",
+    "Super King 200"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 5,
+   "reviews": 8,
+   "createdAt": "2026-07-21T19:00:00.000Z"
+  },
+  {
+   "id": "prd_018",
+   "slug": "petal-kids-bed-nook",
+   "sku": "TNF-1018",
+   "name": {
+    "en": "Petal Kids' Bed Nook",
+    "ar": "ركن سرير الأطفال بيتال"
+   },
+   "category": "beds",
+   "price": 0,
+   "salePrice": null,
+   "priceOnRequest": true,
+   "stock": 0,
+   "images": [
+    "/images/products-v2/petal-kids-bed-nook.jpg",
+    "/images/products/p34_7.jpg"
+   ],
+   "description": {
+    "en": "A built-in sleeping nook with an upholstered back and display shelving on both sides. Designed around your child's room.",
+    "ar": "ركن نوم مدمج بلوح خلفي منجّد ورفوف عرض على الجانبين. يُصمم حسب غرفة طفلك."
+   },
+   "materials": {
+    "en": "Built-in joinery, upholstered back panel, display shelves.",
+    "ar": "نجارة مدمجة، لوح خلفي منجّد، رفوف عرض."
+   },
+   "dimensions": "Made to measure",
+   "leadTimeDays": 28,
+   "finishes": [
+    {
+     "name": {
+      "en": "Blush",
+      "ar": "وردي ناعم"
+     },
+     "hex": "#D9B2A9"
+    },
+    {
+     "name": {
+      "en": "Matt White",
+      "ar": "أبيض مطفي"
+     },
+     "hex": "#F2F0EC"
+    }
+   ],
+   "sizes": [
+    "Single 120"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.9,
+   "reviews": 22,
+   "createdAt": "2026-07-24T19:00:00.000Z"
+  },
+  {
+   "id": "prd_019",
+   "slug": "concrete-media-wall",
+   "sku": "TNF-1019",
+   "name": {
+    "en": "Concrete & Oak Media Wall",
+    "ar": "جدار وسائط خرساني وبلوط"
+   },
+   "category": "media",
+   "price": 13500,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 4,
+   "images": [
+    "/images/products-v2/concrete-media-wall.jpg",
+    "/images/products/p33_1.jpg"
+   ],
+   "description": {
+    "en": "A micro-cement feature panel framed by oak shelving and a floating console that hides every cable.",
+    "ar": "لوح مميز من المايكرو سمنت تحيطه رفوف البلوط وكونسول معلّق يخفي جميع الأسلاك."
+   },
+   "materials": {
+    "en": "Micro-cement panel, oak veneer shelving, floating console.",
+    "ar": "لوح مايكرو سمنت، رفوف بقشرة البلوط، كونسول معلّق."
+   },
+   "dimensions": "300 × 280 cm",
+   "leadTimeDays": 14,
+   "finishes": [
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    },
+    {
+     "name": {
+      "en": "Greige Lacquer",
+      "ar": "لاكر رمادي بيج"
+     },
+     "hex": "#B8AFA3"
+    }
+   ],
+   "sizes": [
+    "Up to 3 m",
+    "Up to 4 m"
+   ],
+   "featured": true,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.9,
+   "reviews": 17,
+   "createdAt": "2026-07-27T19:00:00.000Z"
+  },
+  {
+   "id": "prd_020",
+   "slug": "slatted-media-unit",
+   "sku": "TNF-1020",
+   "name": {
+    "en": "Slatted Oak Media Unit",
+    "ar": "وحدة تلفاز بشرائح البلوط"
+   },
+   "category": "media",
+   "price": 9800,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 14,
+   "images": [
+    "/images/products-v2/slatted-media-unit.jpg",
+    "/images/products/p33_2.jpg"
+   ],
+   "description": {
+    "en": "Bright and Scandinavian: vertical oak slats, white low cabinets and an open bookcase.",
+    "ar": "مشرق وإسكندنافي: شرائح بلوط عمودية وخزائن بيضاء منخفضة ومكتبة مفتوحة."
+   },
+   "materials": {
+    "en": "Oak slats, matt white lacquer, open shelving.",
+    "ar": "شرائح بلوط، لاكر أبيض مطفي، رفوف مفتوحة."
+   },
+   "dimensions": "300 × 260 cm",
+   "leadTimeDays": 21,
+   "finishes": [
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    },
+    {
+     "name": {
+      "en": "Matt White",
+      "ar": "أبيض مطفي"
+     },
+     "hex": "#F2F0EC"
+    }
+   ],
+   "sizes": [
+    "2.4 m",
+    "3.0 m"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 5,
+   "reviews": 5,
+   "createdAt": "2026-07-30T19:00:00.000Z"
+  },
+  {
+   "id": "prd_021",
+   "slug": "ember-fireplace-wall",
+   "sku": "TNF-1021",
+   "name": {
+    "en": "Ember Fireplace Wall",
+    "ar": "جدار المدفأة إمبر"
+   },
+   "category": "media",
+   "price": 22800,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 6,
+   "images": [
+    "/images/products-v2/ember-fireplace-wall.jpg",
+    "/images/products/p33_3.jpg"
+   ],
+   "description": {
+    "en": "A full-height walnut wall with a 3D vapour fireplace and backlit display niches. The centrepiece of any majlis.",
+    "ar": "جدار جوز بكامل الارتفاع مع مدفأة بخار ثلاثية الأبعاد وتجاويف عرض مضاءة. محور أي مجلس."
+   },
+   "materials": {
+    "en": "Walnut veneer, black glass, 3D water-vapour fireplace, LED.",
+    "ar": "قشرة جوز، زجاج أسود، مدفأة بخار ماء ثلاثية الأبعاد، إضاءة LED."
+   },
+   "dimensions": "450 × 300 cm",
+   "leadTimeDays": 7,
+   "finishes": [
+    {
+     "name": {
+      "en": "American Walnut",
+      "ar": "جوز أمريكي"
+     },
+     "hex": "#5C3A21"
+    },
+    {
+     "name": {
+      "en": "Black Ash",
+      "ar": "رماد أسود"
+     },
+     "hex": "#1E1C1B"
+    }
+   ],
+   "sizes": [
+    "Up to 4 m",
+    "Up to 5 m"
+   ],
+   "featured": true,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.8,
+   "reviews": 41,
+   "createdAt": "2026-08-02T19:00:00.000Z"
+  },
+  {
+   "id": "prd_022",
+   "slug": "walnut-frame-tv-wall",
+   "sku": "TNF-1022",
+   "name": {
+    "en": "Walnut Frame TV Wall",
+    "ar": "جدار تلفاز بإطار الجوز"
+   },
+   "category": "media",
+   "price": 11900,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 3,
+   "images": [
+    "/images/products-v2/walnut-frame-tv-wall.jpg",
+    "/images/products/p33_5.jpg"
+   ],
+   "description": {
+    "en": "A deep walnut frame around the screen with a soft fabric back panel and a long, low console.",
+    "ar": "إطار عميق من الجوز حول الشاشة مع لوح خلفي من القماش وكونسول طويل منخفض."
+   },
+   "materials": {
+    "en": "Walnut veneer frame, fabric back panel, low console.",
+    "ar": "إطار بقشرة الجوز، لوح خلفي من القماش، كونسول منخفض."
+   },
+   "dimensions": "350 × 270 cm",
+   "leadTimeDays": 10,
+   "finishes": [
+    {
+     "name": {
+      "en": "American Walnut",
+      "ar": "جوز أمريكي"
+     },
+     "hex": "#5C3A21"
+    },
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    }
+   ],
+   "sizes": [
+    "Up to 3 m",
+    "Up to 4 m"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.7,
+   "reviews": 12,
+   "createdAt": "2026-08-05T19:00:00.000Z"
+  },
+  {
+   "id": "prd_023",
+   "slug": "lagoon-lacquer-media",
+   "sku": "TNF-1023",
+   "name": {
+    "en": "Lagoon Lacquer Media Unit",
+    "ar": "وحدة وسائط لاجون"
+   },
+   "category": "media",
+   "price": 15200,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 12,
+   "images": [
+    "/images/products-v2/lagoon-lacquer-media.jpg",
+    "/images/products/p33_6.jpg"
+   ],
+   "description": {
+    "en": "A long, layered media wall in deep lagoon blue and white, with integrated LED lighting.",
+    "ar": "جدار وسائط طويل متعدد الطبقات بالأزرق اللاجوني والأبيض مع إضاءة LED مدمجة."
+   },
+   "materials": {
+    "en": "High-gloss lacquer, LED channels, push-to-open doors.",
+    "ar": "لاكر لامع، قنوات LED، أبواب بفتح بالضغط."
+   },
+   "dimensions": "500 × 220 cm",
+   "leadTimeDays": 14,
+   "finishes": [
+    {
+     "name": {
+      "en": "Ocean Blue",
+      "ar": "أزرق محيطي"
+     },
+     "hex": "#2E4D7B"
+    },
+    {
+     "name": {
+      "en": "Matt White",
+      "ar": "أبيض مطفي"
+     },
+     "hex": "#F2F0EC"
+    }
+   ],
+   "sizes": [
+    "4 m",
+    "5 m"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 5,
+   "reviews": 31,
+   "createdAt": "2026-08-08T19:00:00.000Z"
+  },
+  {
+   "id": "prd_024",
+   "slug": "gallery-walk-in-closet",
+   "sku": "TNF-1024",
+   "name": {
+    "en": "Gallery Walk-in Closet",
+    "ar": "غرفة ملابس جاليري"
+   },
+   "category": "storage",
+   "price": 0,
+   "salePrice": null,
+   "priceOnRequest": true,
+   "stock": 0,
+   "images": [
+    "/images/products-v2/gallery-walk-in-closet.jpg",
+    "/images/products/p36_2.jpg"
+   ],
+   "description": {
+    "en": "A full walk-in closet designed and built around your room: hanging, drawers, shoe walls and a mirrored end panel.",
+    "ar": "غرفة ملابس كاملة تُصمم وتُبنى حسب غرفتك: تعليق وأدراج وجدران أحذية ولوح مرآة."
+   },
+   "materials": {
+    "en": "Textured melamine, soft-close hinges, integrated lighting.",
+    "ar": "ميلامين بملمس، مفصلات إغلاق ناعم، إضاءة مدمجة."
+   },
+   "dimensions": "Made to measure",
+   "leadTimeDays": 28,
+   "finishes": [
+    {
+     "name": {
+      "en": "Greige Lacquer",
+      "ar": "لاكر رمادي بيج"
+     },
+     "hex": "#B8AFA3"
+    },
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    },
+    {
+     "name": {
+      "en": "Matt White",
+      "ar": "أبيض مطفي"
+     },
+     "hex": "#F2F0EC"
+    }
+   ],
+   "sizes": [
+    "Made to measure"
+   ],
+   "featured": true,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.9,
+   "reviews": 8,
+   "createdAt": "2026-08-11T19:00:00.000Z"
+  },
+  {
+   "id": "prd_025",
+   "slug": "blush-sliding-wardrobe",
+   "sku": "TNF-1025",
+   "name": {
+    "en": "Blush Sliding Wardrobe",
+    "ar": "خزانة منزلقة وردية"
+   },
+   "category": "storage",
+   "price": 7600,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 8,
+   "images": [
+    "/images/products/p36_9.jpg"
+   ],
+   "description": {
+    "en": "Floor-to-ceiling sliding doors in a soft blush lacquer. The interior is fully fitted with hanging rails, drawers and shelves.",
+    "ar": "أبواب منزلقة من الأرض للسقف بلاكر وردي ناعم مع تجهيز داخلي كامل."
+   },
+   "materials": {
+    "en": "Lacquered sliding doors, soft-close tracks, full interior.",
+    "ar": "أبواب منزلقة ملكّرة، مسارات إغلاق ناعم، تجهيز داخلي كامل."
+   },
+   "dimensions": "300 × 260 × 60 cm",
+   "leadTimeDays": 7,
+   "finishes": [
+    {
+     "name": {
+      "en": "Blush",
+      "ar": "وردي ناعم"
+     },
+     "hex": "#D9B2A9"
+    },
+    {
+     "name": {
+      "en": "Matt White",
+      "ar": "أبيض مطفي"
+     },
+     "hex": "#F2F0EC"
+    },
+    {
+     "name": {
+      "en": "Greige Lacquer",
+      "ar": "لاكر رمادي بيج"
+     },
+     "hex": "#B8AFA3"
+    }
+   ],
+   "sizes": [
+    "2.4 m",
+    "3.0 m"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "draft",
+   "rating": 4.9,
+   "reviews": 22,
+   "createdAt": "2026-08-14T19:00:00.000Z"
+  },
+  {
+   "id": "prd_026",
+   "slug": "understair-wine-storage",
+   "sku": "TNF-1026",
+   "name": {
+    "en": "Under-Stair Wine & Storage",
+    "ar": "تخزين تحت الدرج"
+   },
+   "category": "storage",
+   "price": 0,
+   "salePrice": null,
+   "priceOnRequest": true,
+   "stock": 0,
+   "images": [
+    "/images/products/p36_4.jpg"
+   ],
+   "description": {
+    "en": "We turn wasted under-stair space into storage, display and a glass-front cooler cabinet.",
+    "ar": "نحوّل المساحة المهدرة تحت الدرج إلى تخزين وعرض وخزانة بواجهة زجاجية."
+   },
+   "materials": {
+    "en": "Oak veneer, black metal frames, glass-door cabinet.",
+    "ar": "قشرة بلوط، إطارات معدنية سوداء، خزانة بباب زجاجي."
+   },
+   "dimensions": "Made to measure",
+   "leadTimeDays": 28,
+   "finishes": [
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    },
+    {
+     "name": {
+      "en": "Black Ash",
+      "ar": "رماد أسود"
+     },
+     "hex": "#1E1C1B"
+    }
+   ],
+   "sizes": [
+    "Made to measure"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "draft",
+   "rating": 5,
+   "reviews": 17,
+   "createdAt": "2026-08-17T19:00:00.000Z"
+  },
+  {
+   "id": "prd_027",
+   "slug": "study-nook-desk",
+   "sku": "TNF-1027",
+   "name": {
+    "en": "Study Nook & Shelving",
+    "ar": "ركن الدراسة والرفوف"
+   },
+   "category": "storage",
+   "price": 5400,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 0,
+   "images": [
+    "/images/products-v2/study-nook-desk.jpg",
+    "/images/products/p36_3.jpg"
+   ],
+   "description": {
+    "en": "A floating study desk with upper cabinets and side shelving. Ideal for home offices and teenagers' rooms.",
+    "ar": "مكتب دراسة معلّق مع خزائن علوية ورفوف جانبية. مثالي للمكاتب المنزلية وغرف الشباب."
+   },
+   "materials": {
+    "en": "Lacquered MDF, floating desk, upper cabinets.",
+    "ar": "MDF ملكّر، مكتب معلّق، خزائن علوية."
+   },
+   "dimensions": "240 × 260 cm",
+   "leadTimeDays": 14,
+   "finishes": [
+    {
+     "name": {
+      "en": "Matt White",
+      "ar": "أبيض مطفي"
+     },
+     "hex": "#F2F0EC"
+    },
+    {
+     "name": {
+      "en": "Greige Lacquer",
+      "ar": "لاكر رمادي بيج"
+     },
+     "hex": "#B8AFA3"
+    }
+   ],
+   "sizes": [
+    "1.8 m",
+    "2.4 m"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.8,
+   "reviews": 5,
+   "createdAt": "2026-08-20T19:00:00.000Z"
+  },
+  {
+   "id": "prd_028",
+   "slug": "live-edge-walnut-table",
+   "sku": "TNF-1028",
+   "name": {
+    "en": "Live-Edge Walnut Dining Table",
+    "ar": "طاولة طعام جوز بحافة طبيعية"
+   },
+   "category": "tables",
+   "price": 16500,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 9,
+   "images": [
+    "/images/products-v2/live-edge-walnut-table.jpg",
+    "/images/products/p36_6.jpg"
+   ],
+   "description": {
+    "en": "A single slab of solid walnut with its natural live edge, on a sculpted blackened-steel base. Every table is unique.",
+    "ar": "لوح واحد من خشب الجوز الصلب بحافته الطبيعية على قاعدة فولاذية سوداء منحوتة. كل طاولة فريدة من نوعها."
+   },
+   "materials": {
+    "en": "Solid walnut slab, epoxy-stabilised, sculpted steel base.",
+    "ar": "لوح جوز صلب مثبت بالإيبوكسي، قاعدة فولاذية منحوتة."
+   },
+   "dimensions": "300 × 110 × 76 cm",
+   "leadTimeDays": 21,
+   "finishes": [
+    {
+     "name": {
+      "en": "American Walnut",
+      "ar": "جوز أمريكي"
+     },
+     "hex": "#5C3A21"
+    }
+   ],
+   "sizes": [
+    "240 cm",
+    "300 cm"
+   ],
+   "featured": true,
+   "isNew": true,
+   "status": "active",
+   "rating": 4.7,
+   "reviews": 41,
+   "createdAt": "2026-08-23T19:00:00.000Z"
+  },
+  {
+   "id": "prd_029",
+   "slug": "walnut-vanity-console",
+   "sku": "TNF-1029",
+   "name": {
+    "en": "Walnut Vanity Console",
+    "ar": "كونسول تسريحة الجوز"
+   },
+   "category": "tables",
+   "price": 6200,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 4,
+   "images": [
+    "/images/products/p36_5.jpg"
+   ],
+   "description": {
+    "en": "A stepped walnut console that works as a vanity, desk or sideboard, with a full-height mirror panel.",
+    "ar": "كونسول جوز متدرج يعمل كتسريحة أو مكتب أو بوفيه مع لوح مرآة بكامل الارتفاع."
+   },
+   "materials": {
+    "en": "Walnut veneer, stepped top, soft-close drawers.",
+    "ar": "قشرة جوز، سطح متدرج، أدراج بإغلاق ناعم."
+   },
+   "dimensions": "240 × 50 × 80 cm",
+   "leadTimeDays": 7,
+   "finishes": [
+    {
+     "name": {
+      "en": "American Walnut",
+      "ar": "جوز أمريكي"
+     },
+     "hex": "#5C3A21"
+    },
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    }
+   ],
+   "sizes": [
+    "1.8 m",
+    "2.4 m"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "draft",
+   "rating": 5,
+   "reviews": 12,
+   "createdAt": "2026-08-26T19:00:00.000Z"
+  },
+  {
+   "id": "prd_030",
+   "slug": "lumiere-vanity",
+   "sku": "TNF-1030",
+   "name": {
+    "en": "Lumière Vanity Unit",
+    "ar": "وحدة تسريحة لوميير"
+   },
+   "category": "tables",
+   "price": 7800,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 14,
+   "images": [
+    "/images/products/p36_7.jpg",
+    "/images/products/p36_8.jpg"
+   ],
+   "description": {
+    "en": "A built-in vanity with a backlit mirror, open display shelves and storage above. Shown in two finishes.",
+    "ar": "تسريحة مدمجة بمرآة مضاءة ورفوف عرض مفتوحة وتخزين علوي. معروضة بلونين."
+   },
+   "materials": {
+    "en": "Lacquer, backlit mirror, display shelving.",
+    "ar": "لاكر، مرآة مضاءة، رفوف عرض."
+   },
+   "dimensions": "160 × 260 cm",
+   "leadTimeDays": 10,
+   "finishes": [
+    {
+     "name": {
+      "en": "Matt White",
+      "ar": "أبيض مطفي"
+     },
+     "hex": "#F2F0EC"
+    },
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    }
+   ],
+   "sizes": [
+    "1.2 m",
+    "1.6 m"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "draft",
+   "rating": 4.9,
+   "reviews": 31,
+   "createdAt": "2026-08-29T19:00:00.000Z"
+  },
+  {
+   "id": "prd_031",
+   "slug": "arc-reception-counter",
+   "sku": "TNF-1031",
+   "name": {
+    "en": "Arc Reception Counter",
+    "ar": "كاونتر استقبال آرك"
+   },
+   "category": "commercial",
+   "price": 0,
+   "salePrice": null,
+   "priceOnRequest": true,
+   "stock": 0,
+   "images": [
+    "/images/products-v2/arc-reception-counter.jpg",
+    "/images/products/p33_7.jpg"
+   ],
+   "description": {
+    "en": "A sweeping, layered reception counter with hidden LED lines. Built for offices, clinics and showrooms.",
+    "ar": "كاونتر استقبال منحني متعدد الطبقات بخطوط LED مخفية. مصمم للمكاتب والعيادات وصالات العرض."
+   },
+   "materials": {
+    "en": "Solid surface, curved MDF, LED cove lighting.",
+    "ar": "سطح صلب، MDF منحني، إضاءة LED مخفية."
+   },
+   "dimensions": "Made to measure",
+   "leadTimeDays": 28,
+   "finishes": [
+    {
+     "name": {
+      "en": "Greige Lacquer",
+      "ar": "لاكر رمادي بيج"
+     },
+     "hex": "#B8AFA3"
+    },
+    {
+     "name": {
+      "en": "Matt White",
+      "ar": "أبيض مطفي"
+     },
+     "hex": "#F2F0EC"
+    }
+   ],
+   "sizes": [
+    "Made to measure"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "active",
+   "rating": 4.9,
+   "reviews": 8,
+   "createdAt": "2026-09-01T19:00:00.000Z"
+  },
+  {
+   "id": "prd_032",
+   "slug": "floating-oak-staircase",
+   "sku": "TNF-1032",
+   "name": {
+    "en": "Floating Oak Staircase",
+    "ar": "درج البلوط المعلّق"
+   },
+   "category": "joinery",
+   "price": 0,
+   "salePrice": null,
+   "priceOnRequest": true,
+   "stock": 0,
+   "images": [
+    "/images/products/p35_4.jpg",
+    "/images/products/p35_2.jpg"
+   ],
+   "description": {
+    "en": "Cantilevered solid oak treads with frameless glass balustrade and LED step lighting. We survey, fabricate and install.",
+    "ar": "درجات بلوط صلبة معلّقة مع درابزين زجاجي بدون إطار وإضاءة LED. نقوم بالمعاينة والتصنيع والتركيب."
+   },
+   "materials": {
+    "en": "Solid oak treads, frameless glass, LED step lights.",
+    "ar": "درجات بلوط صلب، زجاج بدون إطار، إضاءة LED للدرجات."
+   },
+   "dimensions": "Made to measure",
+   "leadTimeDays": 28,
+   "finishes": [
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    },
+    {
+     "name": {
+      "en": "American Walnut",
+      "ar": "جوز أمريكي"
+     },
+     "hex": "#5C3A21"
+    }
+   ],
+   "sizes": [
+    "Made to measure"
+   ],
+   "featured": true,
+   "isNew": false,
+   "status": "draft",
+   "rating": 5,
+   "reviews": 22,
+   "createdAt": "2026-09-04T19:00:00.000Z"
+  },
+  {
+   "id": "prd_033",
+   "slug": "black-steel-balustrade",
+   "sku": "TNF-1033",
+   "name": {
+    "en": "Black Steel Balustrade",
+    "ar": "درابزين فولاذي أسود"
+   },
+   "category": "joinery",
+   "price": 0,
+   "salePrice": null,
+   "priceOnRequest": true,
+   "stock": 0,
+   "images": [
+    "/images/products/p35_5.jpg",
+    "/images/products/p35_3.jpg"
+   ],
+   "description": {
+    "en": "Slim vertical steel balusters with a solid oak handrail, for stairs and mezzanines.",
+    "ar": "قضبان فولاذية عمودية نحيفة مع درابزين يد من البلوط الصلب للسلالم والميزانين."
+   },
+   "materials": {
+    "en": "Powder-coated steel, oak handrail.",
+    "ar": "فولاذ مطلي بالبودرة، درابزين يد من البلوط."
+   },
+   "dimensions": "Made to measure",
+   "leadTimeDays": 28,
+   "finishes": [
+    {
+     "name": {
+      "en": "Black Ash",
+      "ar": "رماد أسود"
+     },
+     "hex": "#1E1C1B"
+    },
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    }
+   ],
+   "sizes": [
+    "Per linear metre"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "draft",
+   "rating": 4.8,
+   "reviews": 17,
+   "createdAt": "2026-09-07T19:00:00.000Z"
+  },
+  {
+   "id": "prd_034",
+   "slug": "barn-sliding-door",
+   "sku": "TNF-1034",
+   "name": {
+    "en": "Barn Sliding Door",
+    "ar": "باب منزلق ريفي"
+   },
+   "category": "joinery",
+   "price": 3900,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 2,
+   "images": [
+    "/images/products/p36_10.jpg"
+   ],
+   "description": {
+    "en": "A solid-wood barn door on a black steel track. Saves space and adds character.",
+    "ar": "باب خشبي صلب على مسار فولاذي أسود. يوفر المساحة ويضيف طابعاً مميزاً."
+   },
+   "materials": {
+    "en": "Solid wood panel, black steel track, soft-stop.",
+    "ar": "لوح خشب صلب، مسار فولاذي أسود، توقف ناعم."
+   },
+   "dimensions": "120 × 240 cm",
+   "leadTimeDays": 10,
+   "finishes": [
+    {
+     "name": {
+      "en": "American Walnut",
+      "ar": "جوز أمريكي"
+     },
+     "hex": "#5C3A21"
+    },
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    },
+    {
+     "name": {
+      "en": "Black Ash",
+      "ar": "رماد أسود"
+     },
+     "hex": "#1E1C1B"
+    }
+   ],
+   "sizes": [
+    "90 × 220 cm",
+    "120 × 240 cm"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "draft",
+   "rating": 4.7,
+   "reviews": 5,
+   "createdAt": "2026-09-10T19:00:00.000Z"
+  },
+  {
+   "id": "prd_035",
+   "slug": "slatted-partition-console",
+   "sku": "TNF-1035",
+   "name": {
+    "en": "Slatted Partition & Console",
+    "ar": "فاصل بشرائح مع كونسول"
+   },
+   "category": "joinery",
+   "price": 6400,
+   "salePrice": null,
+   "priceOnRequest": false,
+   "stock": 8,
+   "images": [
+    "/images/products/p33_8.jpg"
+   ],
+   "description": {
+    "en": "Divide open-plan spaces without losing light: floor-to-ceiling oak slats above a storage console.",
+    "ar": "قسّم المساحات المفتوحة دون فقدان الضوء: شرائح بلوط من الأرض للسقف فوق كونسول تخزين."
+   },
+   "materials": {
+    "en": "Oak slats, lacquered base cabinet.",
+    "ar": "شرائح بلوط، خزانة قاعدة ملكّرة."
+   },
+   "dimensions": "200 × 280 cm",
+   "leadTimeDays": 14,
+   "finishes": [
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    },
+    {
+     "name": {
+      "en": "Matt White",
+      "ar": "أبيض مطفي"
+     },
+     "hex": "#F2F0EC"
+    }
+   ],
+   "sizes": [
+    "2 m",
+    "3 m"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "draft",
+   "rating": 5,
+   "reviews": 41,
+   "createdAt": "2026-09-13T19:00:00.000Z"
+  },
+  {
+   "id": "prd_036",
+   "slug": "ceremony-retail-kiosk",
+   "sku": "TNF-1036",
+   "name": {
+    "en": "Signature Retail Kiosk",
+    "ar": "كشك تجزئة مميز"
+   },
+   "category": "commercial",
+   "price": 0,
+   "salePrice": null,
+   "priceOnRequest": true,
+   "stock": 0,
+   "images": [
+    "/images/projects/the-ceremony-1.jpg",
+    "/images/projects/the-ceremony-2.jpg"
+   ],
+   "description": {
+    "en": "Mall-approved kiosks designed, built and installed by TANFEEZ, like The Ceremony at The Avenues. Includes shop drawings for mall approval.",
+    "ar": "أكشاك معتمدة للمولات نصممها ونصنعها ونركّبها، مثل كشك ذا سيريموني. تشمل الرسومات التنفيذية لموافقة المول."
+   },
+   "materials": {
+    "en": "Lacquered MDF, LED, solid surface counter, lockable storage.",
+    "ar": "MDF ملكّر، إضاءة LED، كاونتر بسطح صلب، تخزين بقفل."
+   },
+   "dimensions": "Made to measure",
+   "leadTimeDays": 28,
+   "finishes": [
+    {
+     "name": {
+      "en": "Ocean Blue",
+      "ar": "أزرق محيطي"
+     },
+     "hex": "#2E4D7B"
+    },
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    }
+   ],
+   "sizes": [
+    "Made to measure"
+   ],
+   "featured": true,
+   "isNew": false,
+   "status": "draft",
+   "rating": 4.9,
+   "reviews": 12,
+   "createdAt": "2026-09-16T19:00:00.000Z"
+  },
+  {
+   "id": "prd_037",
+   "slug": "perfume-wall-display",
+   "sku": "TNF-1037",
+   "name": {
+    "en": "Perfume Wall Display",
+    "ar": "وحدة عرض العطور الجدارية"
+   },
+   "category": "commercial",
+   "price": 0,
+   "salePrice": null,
+   "priceOnRequest": true,
+   "stock": 0,
+   "images": [
+    "/images/projects/vilhelm-parfumerie-1.jpg",
+    "/images/projects/vilhelm-parfumerie-2.jpg"
+   ],
+   "description": {
+    "en": "Branded, back-lit wall displays for fragrance and beauty, as built for Vilhelm Parfumerie at The Dubai Mall.",
+    "ar": "وحدات عرض جدارية مضاءة بهوية العلامة للعطور ومستحضرات التجميل، كما نفذناها لفيلهلم بارفيوميري في دبي مول."
+   },
+   "materials": {
+    "en": "Lacquer, mirror-polished steel, back-lit shelves.",
+    "ar": "لاكر، فولاذ مصقول كالمرآة، رفوف مضاءة."
+   },
+   "dimensions": "Made to measure",
+   "leadTimeDays": 28,
+   "finishes": [
+    {
+     "name": {
+      "en": "Matt White",
+      "ar": "أبيض مطفي"
+     },
+     "hex": "#F2F0EC"
+    },
+    {
+     "name": {
+      "en": "Natural Oak",
+      "ar": "بلوط طبيعي"
+     },
+     "hex": "#C49A6C"
+    }
+   ],
+   "sizes": [
+    "Made to measure"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "draft",
+   "rating": 4.9,
+   "reviews": 31,
+   "createdAt": "2026-09-19T19:00:00.000Z"
+  },
+  {
+   "id": "prd_038",
+   "slug": "coffee-kiosk-pod",
+   "sku": "TNF-1038",
+   "name": {
+    "en": "Outdoor Coffee Kiosk Pod",
+    "ar": "كشك قهوة خارجي"
+   },
+   "category": "commercial",
+   "price": 0,
+   "salePrice": null,
+   "priceOnRequest": true,
+   "stock": 0,
+   "images": [
+    "/images/projects/pentagon-coffee-1.jpg",
+    "/images/projects/pentagon-coffee-2.jpg"
+   ],
+   "description": {
+    "en": "Design-and-build coffee kiosks for events and outdoor spaces, delivered ready to trade.",
+    "ar": "تصميم وتنفيذ أكشاك قهوة للفعاليات والمساحات الخارجية، تُسلّم جاهزة للتشغيل."
+   },
+   "materials": {
+    "en": "Weather-proof frame, timber louvres, full MEP.",
+    "ar": "هيكل مقاوم للطقس، شرائح خشبية، تمديدات كاملة."
+   },
+   "dimensions": "Made to measure",
+   "leadTimeDays": 28,
+   "finishes": [
+    {
+     "name": {
+      "en": "Desert Sand",
+      "ar": "رمل الصحراء"
+     },
+     "hex": "#D8C8AE"
+    },
+    {
+     "name": {
+      "en": "Ocean Blue",
+      "ar": "أزرق محيطي"
+     },
+     "hex": "#2E4D7B"
+    }
+   ],
+   "sizes": [
+    "3 × 3 m",
+    "4 × 3 m"
+   ],
+   "featured": false,
+   "isNew": false,
+   "status": "draft",
+   "rating": 5,
+   "reviews": 8,
+   "createdAt": "2026-09-22T19:00:00.000Z"
+  }
+ ],
+ "projects": [
+  {
+   "id": "prj_001",
+   "slug": "galeries-lafayette-outlet",
+   "client": "Galeries Lafayette",
+   "title": {
+    "en": "L'Outlet Department Store",
+    "ar": "متجر لافاييت آوتلت"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Fit-out & furniture",
+    "ar": "تجهيز داخلي وأثاث"
+   },
+   "location": {
+    "en": "Ibn Battuta Mall, Dubai",
+    "ar": "ابن بطوطة مول، دبي"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "Complete fit-out and furniture for a multi-department outlet: cash desks, wall systems, gondolas and feature zones across the whole floor plate.",
+    "ar": "تجهيز داخلي وأثاث متكامل لمتجر متعدد الأقسام: كاونترات دفع وأنظمة جدارية ووحدات عرض ومناطق مميزة على كامل المساحة."
+   },
+   "images": [
+    {
+     "src": "/images/projects/galeries-lafayette-outlet-1.jpg",
+     "w": 640,
+     "h": 349
+    }
+   ],
+   "featured": true,
+   "order": 0,
+   "createdAt": "2026-03-15T19:00:00.000Z"
+  },
+  {
+   "id": "prj_002",
+   "slug": "lafayette-gourmet",
+   "client": "Galeries Lafayette",
+   "title": {
+    "en": "Lafayette Gourmet",
+    "ar": "لافاييت جورميه"
+   },
+   "sector": "fnb",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "The Dubai Mall",
+    "ar": "دبي مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "Food-hall counters, sushi and bakery stations, chesterfield banquettes and terrace seating for one of Dubai's busiest gourmet destinations.",
+    "ar": "كاونترات قاعة الطعام ومحطات السوشي والمخبوزات ومقاعد تشسترفيلد وجلسات التراس لإحدى أكثر الوجهات الذواقة ازدحاماً في دبي."
+   },
+   "images": [
+    {
+     "src": "/images/projects/lafayette-gourmet-1.jpg",
+     "w": 1193,
+     "h": 669
+    },
+    {
+     "src": "/images/projects/lafayette-gourmet-2.jpg",
+     "w": 1177,
+     "h": 665
+    },
+    {
+     "src": "/images/projects/lafayette-gourmet-3.jpg",
+     "w": 1197,
+     "h": 669
+    },
+    {
+     "src": "/images/projects/lafayette-gourmet-4.jpg",
+     "w": 1143,
+     "h": 667
+    },
+    {
+     "src": "/images/projects/lafayette-gourmet-5.jpg",
+     "w": 1004,
+     "h": 738
+    },
+    {
+     "src": "/images/projects/lafayette-gourmet-6.jpg",
+     "w": 1007,
+     "h": 724
+    },
+    {
+     "src": "/images/projects/lafayette-gourmet-7.jpg",
+     "w": 650,
+     "h": 465
+    }
+   ],
+   "featured": true,
+   "order": 1,
+   "createdAt": "2026-03-16T19:00:00.000Z"
+  },
+  {
+   "id": "prj_003",
+   "slug": "vox-cinema-theatre",
+   "client": "VOX Cinemas",
+   "title": {
+    "en": "THEATRE by VOX",
+    "ar": "ثياتر من ڤوكس"
+   },
+   "sector": "hospitality",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "Mall of the Emirates",
+    "ar": "مول الإمارات"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "Bespoke lounge sofas, curved velvet seating, side tables and a statement bar back for VOX's luxury THEATRE experience.",
+    "ar": "كنب صالات مخصص ومقاعد مخملية منحنية وطاولات جانبية وخلفية بار مميزة لتجربة ثياتر الفاخرة من ڤوكس."
+   },
+   "images": [
+    {
+     "src": "/images/projects/vox-cinema-theatre-1.jpg",
+     "w": 1178,
+     "h": 878
+    },
+    {
+     "src": "/images/projects/vox-cinema-theatre-2.jpg",
+     "w": 799,
+     "h": 481
+    },
+    {
+     "src": "/images/projects/vox-cinema-theatre-3.jpg",
+     "w": 662,
+     "h": 800
+    },
+    {
+     "src": "/images/projects/vox-cinema-theatre-4.jpg",
+     "w": 622,
+     "h": 283
+    },
+    {
+     "src": "/images/projects/vox-cinema-theatre-5.jpg",
+     "w": 388,
+     "h": 286
+    }
+   ],
+   "featured": true,
+   "order": 2,
+   "createdAt": "2026-03-17T19:00:00.000Z"
+  },
+  {
+   "id": "prj_004",
+   "slug": "corneliani",
+   "client": "Corneliani",
+   "title": {
+    "en": "Corneliani Boutique",
+    "ar": "بوتيك كورنلياني"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "The Dubai Mall",
+    "ar": "دبي مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "Walnut wall systems, display tables and lounge furniture for the Italian menswear house.",
+    "ar": "أنظمة جدارية من الجوز وطاولات عرض وأثاث صالة لدار الأزياء الرجالية الإيطالية."
+   },
+   "images": [
+    {
+     "src": "/images/projects/corneliani-1.jpg",
+     "w": 1600,
+     "h": 938
+    },
+    {
+     "src": "/images/projects/corneliani-2.jpg",
+     "w": 658,
+     "h": 438
+    },
+    {
+     "src": "/images/projects/corneliani-3.jpg",
+     "w": 719,
+     "h": 336
+    }
+   ],
+   "featured": true,
+   "order": 3,
+   "createdAt": "2026-03-18T19:00:00.000Z"
+  },
+  {
+   "id": "prj_005",
+   "slug": "the-art-of-shaving",
+   "client": "The Art of Shaving",
+   "title": {
+    "en": "Airport Retail Store",
+    "ar": "متجر المطار"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Fit-out",
+    "ar": "تجهيز داخلي"
+   },
+   "location": {
+    "en": "Sharjah International Airport",
+    "ar": "مطار الشارقة الدولي"
+   },
+   "emirate": "Sharjah",
+   "summary": {
+    "en": "Full airside fit-out including dark-timber wall displays, barber station and island counters, delivered within airport security constraints.",
+    "ar": "تجهيز داخلي كامل داخل المطار يشمل وحدات عرض خشبية داكنة ومحطة حلاقة وكاونترات وسطية، ضمن قيود أمن المطار."
+   },
+   "images": [
+    {
+     "src": "/images/projects/the-art-of-shaving-1.jpg",
+     "w": 1280,
+     "h": 988
+    },
+    {
+     "src": "/images/projects/the-art-of-shaving-2.jpg",
+     "w": 402,
+     "h": 416
+    }
+   ],
+   "featured": true,
+   "order": 4,
+   "createdAt": "2026-03-19T19:00:00.000Z"
+  },
+  {
+   "id": "prj_006",
+   "slug": "hovi-digital-lab",
+   "client": "Hovi Digital Lab",
+   "title": {
+    "en": "Creative Office",
+    "ar": "مكتب إبداعي"
+   },
+   "sector": "office",
+   "scope": {
+    "en": "Fit-out",
+    "ar": "تجهيز داخلي"
+   },
+   "location": {
+    "en": "Dubai Internet City",
+    "ar": "مدينة دبي للإنترنت"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "A colourful creative office: reception, glass meeting rooms, timber-clad pods and branded feature walls.",
+    "ar": "مكتب إبداعي ملوّن: استقبال وغرف اجتماعات زجاجية وكبائن مكسوة بالخشب وجدران بهوية العلامة."
+   },
+   "images": [
+    {
+     "src": "/images/projects/hovi-digital-lab-1.jpg",
+     "w": 1600,
+     "h": 1204
+    },
+    {
+     "src": "/images/projects/hovi-digital-lab-2.jpg",
+     "w": 673,
+     "h": 897
+    }
+   ],
+   "featured": true,
+   "order": 5,
+   "createdAt": "2026-03-20T19:00:00.000Z"
+  },
+  {
+   "id": "prj_007",
+   "slug": "vilhelm-parfumerie",
+   "client": "Vilhelm Parfumerie",
+   "title": {
+    "en": "Wall Concept",
+    "ar": "مفهوم الجدار"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "The Dubai Mall",
+    "ar": "دبي مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "A signature yellow back-lit wall concept and display island for the New York fragrance house.",
+    "ar": "مفهوم جداري أصفر مضاء وجزيرة عرض لدار العطور النيويوركية."
+   },
+   "images": [
+    {
+     "src": "/images/projects/vilhelm-parfumerie-1.jpg",
+     "w": 603,
+     "h": 830
+    },
+    {
+     "src": "/images/projects/vilhelm-parfumerie-2.jpg",
+     "w": 570,
+     "h": 759
+    }
+   ],
+   "featured": true,
+   "order": 6,
+   "createdAt": "2026-03-21T19:00:00.000Z"
+  },
+  {
+   "id": "prj_008",
+   "slug": "the-ceremony",
+   "client": "The Ceremony",
+   "title": {
+    "en": "Retail Kiosk",
+    "ar": "كشك تجزئة"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Design & production",
+    "ar": "تصميم وإنتاج"
+   },
+   "location": {
+    "en": "Avenue Mall",
+    "ar": "أفينيو مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "A sculptural kiosk with layered display niches and LED edges, designed for maximum product visibility on a compact footprint.",
+    "ar": "كشك منحوت بتجاويف عرض متعددة وحواف LED، مصمم لأقصى ظهور للمنتجات على مساحة صغيرة."
+   },
+   "images": [
+    {
+     "src": "/images/projects/the-ceremony-1.jpg",
+     "w": 822,
+     "h": 617
+    },
+    {
+     "src": "/images/projects/the-ceremony-2.jpg",
+     "w": 714,
+     "h": 617
+    }
+   ],
+   "featured": false,
+   "order": 7,
+   "createdAt": "2026-03-22T19:00:00.000Z"
+  },
+  {
+   "id": "prj_009",
+   "slug": "pellini",
+   "client": "Pellini",
+   "title": {
+    "en": "Retail Stores",
+    "ar": "متاجر بيليني"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "Dubai Hills Mall & Dubai Festival City",
+    "ar": "دبي هيلز مول ودبي فستيفال سيتي"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "Two stores fitted with tailored wall systems, display tables and fitting rooms in a confident dark palette.",
+    "ar": "متجران مجهزان بأنظمة جدارية مفصّلة وطاولات عرض وغرف قياس بألوان داكنة واثقة."
+   },
+   "images": [
+    {
+     "src": "/images/projects/pellini-1.jpg",
+     "w": 768,
+     "h": 576
+    },
+    {
+     "src": "/images/projects/pellini-2.jpg",
+     "w": 678,
+     "h": 492
+    },
+    {
+     "src": "/images/projects/pellini-3.jpg",
+     "w": 681,
+     "h": 492
+    },
+    {
+     "src": "/images/projects/pellini-4.jpg",
+     "w": 600,
+     "h": 487
+    }
+   ],
+   "featured": false,
+   "order": 8,
+   "createdAt": "2026-03-23T19:00:00.000Z"
+  },
+  {
+   "id": "prj_010",
+   "slug": "drykorn",
+   "client": "Drykorn",
+   "title": {
+    "en": "Brand Corner",
+    "ar": "ركن العلامة"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "The Dubai Mall",
+    "ar": "دبي مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "Slatted oak backdrops, hanging rails and stepped display plinths for the Berlin fashion label.",
+    "ar": "خلفيات من شرائح البلوط وقضبان تعليق ومنصات عرض متدرجة للعلامة البرلينية."
+   },
+   "images": [
+    {
+     "src": "/images/projects/drykorn-1.jpg",
+     "w": 1254,
+     "h": 888
+    },
+    {
+     "src": "/images/projects/drykorn-2.jpg",
+     "w": 541,
+     "h": 478
+    }
+   ],
+   "featured": false,
+   "order": 9,
+   "createdAt": "2026-03-24T19:00:00.000Z"
+  },
+  {
+   "id": "prj_011",
+   "slug": "peserico",
+   "client": "Peserico",
+   "title": {
+    "en": "Boutique",
+    "ar": "بوتيك"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "The Dubai Mall",
+    "ar": "دبي مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "Soft-toned display tables, wall bays and framed niches for the Italian womenswear brand.",
+    "ar": "طاولات عرض بألوان هادئة ووحدات جدارية وتجاويف مؤطرة لعلامة الأزياء النسائية الإيطالية."
+   },
+   "images": [
+    {
+     "src": "/images/projects/peserico-1.jpg",
+     "w": 1086,
+     "h": 815
+    },
+    {
+     "src": "/images/projects/peserico-2.jpg",
+     "w": 665,
+     "h": 822
+    }
+   ],
+   "featured": false,
+   "order": 10,
+   "createdAt": "2026-03-25T19:00:00.000Z"
+  },
+  {
+   "id": "prj_012",
+   "slug": "pal-zileri",
+   "client": "Pal Zileri",
+   "title": {
+    "en": "Boutique",
+    "ar": "بوتيك"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "The Dubai Mall",
+    "ar": "دبي مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "Walnut and sage-green wall systems with glass display counters.",
+    "ar": "أنظمة جدارية من الجوز والأخضر الهادئ مع كاونترات عرض زجاجية."
+   },
+   "images": [
+    {
+     "src": "/images/projects/pal-zileri-1.jpg",
+     "w": 1055,
+     "h": 771
+    },
+    {
+     "src": "/images/projects/pal-zileri-2.jpg",
+     "w": 684,
+     "h": 588
+    }
+   ],
+   "featured": false,
+   "order": 11,
+   "createdAt": "2026-03-26T19:00:00.000Z"
+  },
+  {
+   "id": "prj_013",
+   "slug": "the-edit-galeries-lafayette",
+   "client": "Galeries Lafayette",
+   "title": {
+    "en": "THE EDIT Concept",
+    "ar": "مفهوم ذا إيديت"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "The Dubai Mall",
+    "ar": "دبي مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "A curated concept space with brass-framed rails, display tables and open sightlines.",
+    "ar": "مساحة مفهوم منسقة بقضبان نحاسية الإطار وطاولات عرض وخطوط رؤية مفتوحة."
+   },
+   "images": [
+    {
+     "src": "/images/projects/the-edit-galeries-lafayette-1.jpg",
+     "w": 1191,
+     "h": 665
+    },
+    {
+     "src": "/images/projects/the-edit-galeries-lafayette-2.jpg",
+     "w": 1181,
+     "h": 669
+    }
+   ],
+   "featured": false,
+   "order": 12,
+   "createdAt": "2026-03-27T19:00:00.000Z"
+  },
+  {
+   "id": "prj_014",
+   "slug": "letrange",
+   "client": "L'Étrange",
+   "title": {
+    "en": "Boutique",
+    "ar": "بوتيك"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "The Dubai Mall",
+    "ar": "دبي مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "A blush-pink boutique with sculpted plinths and floating shelves for the Parisian maison.",
+    "ar": "بوتيك وردي بمنصات منحوتة ورفوف معلّقة للدار الباريسية."
+   },
+   "images": [
+    {
+     "src": "/images/projects/letrange-1.jpg",
+     "w": 742,
+     "h": 615
+    },
+    {
+     "src": "/images/projects/letrange-2.jpg",
+     "w": 793,
+     "h": 629
+    },
+    {
+     "src": "/images/projects/letrange-3.jpg",
+     "w": 427,
+     "h": 361
+    }
+   ],
+   "featured": false,
+   "order": 13,
+   "createdAt": "2026-03-28T19:00:00.000Z"
+  },
+  {
+   "id": "prj_015",
+   "slug": "harvey-nichols-fashion-kids",
+   "client": "Harvey Nichols",
+   "title": {
+    "en": "Fashion Kids",
+    "ar": "أزياء الأطفال"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "Mall of the Emirates",
+    "ar": "مول الإمارات"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "A playful kids' department with modular wall shelving and soft seating.",
+    "ar": "قسم أطفال مرح بوحدات رفوف جدارية معيارية ومقاعد ناعمة."
+   },
+   "images": [
+    {
+     "src": "/images/projects/harvey-nichols-fashion-kids-1.jpg",
+     "w": 782,
+     "h": 599
+    },
+    {
+     "src": "/images/projects/harvey-nichols-fashion-kids-2.jpg",
+     "w": 708,
+     "h": 599
+    }
+   ],
+   "featured": false,
+   "order": 14,
+   "createdAt": "2026-03-29T19:00:00.000Z"
+  },
+  {
+   "id": "prj_016",
+   "slug": "home-of-scent",
+   "client": "Home of Scent",
+   "title": {
+    "en": "Retail Store",
+    "ar": "متجر تجزئة"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "Marina Mall, Abu Dhabi",
+    "ar": "مارينا مول، أبوظبي"
+   },
+   "emirate": "Abu Dhabi",
+   "summary": {
+    "en": "Bright white perfume walls with gold accents and a central display table.",
+    "ar": "جدران عطور بيضاء ناصعة بلمسات ذهبية وطاولة عرض وسطية."
+   },
+   "images": [
+    {
+     "src": "/images/projects/home-of-scent-1.jpg",
+     "w": 822,
+     "h": 632
+    },
+    {
+     "src": "/images/projects/home-of-scent-2.jpg",
+     "w": 831,
+     "h": 609
+    }
+   ],
+   "featured": false,
+   "order": 15,
+   "createdAt": "2026-03-30T19:00:00.000Z"
+  },
+  {
+   "id": "prj_017",
+   "slug": "the-scent-library",
+   "client": "The Scent Library",
+   "title": {
+    "en": "Retail Store",
+    "ar": "متجر تجزئة"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Fit-out",
+    "ar": "تجهيز داخلي"
+   },
+   "location": {
+    "en": "Jumeirah 2, Dubai",
+    "ar": "جميرا 2، دبي"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "A dark, library-like fragrance store with arched timber niches and a central consultation table.",
+    "ar": "متجر عطور داكن يشبه المكتبة بتجاويف خشبية مقوسة وطاولة استشارات وسطية."
+   },
+   "images": [
+    {
+     "src": "/images/projects/the-scent-library-1.jpg",
+     "w": 861,
+     "h": 538
+    },
+    {
+     "src": "/images/projects/the-scent-library-2.jpg",
+     "w": 731,
+     "h": 545
+    }
+   ],
+   "featured": false,
+   "order": 16,
+   "createdAt": "2026-03-31T19:00:00.000Z"
+  },
+  {
+   "id": "prj_018",
+   "slug": "55-car-care",
+   "client": "55 Car Care",
+   "title": {
+    "en": "Detailing Studio",
+    "ar": "استوديو العناية بالسيارات"
+   },
+   "sector": "automotive",
+   "scope": {
+    "en": "Fit-out",
+    "ar": "تجهيز داخلي"
+   },
+   "location": {
+    "en": "Al Quoz, Dubai",
+    "ar": "القوز، دبي"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "A futuristic detailing studio with hexagonal LED ceiling and seamless white walls.",
+    "ar": "استوديو عناية بالسيارات بتصميم مستقبلي بسقف LED سداسي وجدران بيضاء متصلة."
+   },
+   "images": [
+    {
+     "src": "/images/projects/55-car-care-1.jpg",
+     "w": 842,
+     "h": 674
+    },
+    {
+     "src": "/images/projects/55-car-care-2.jpg",
+     "w": 483,
+     "h": 531
+    }
+   ],
+   "featured": false,
+   "order": 17,
+   "createdAt": "2026-04-01T19:00:00.000Z"
+  },
+  {
+   "id": "prj_019",
+   "slug": "izu-brasserie",
+   "client": "IZU",
+   "title": {
+    "en": "Brasserie & Café",
+    "ar": "براسري ومقهى"
+   },
+   "sector": "fnb",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "The Dubai Mall",
+    "ar": "دبي مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "Curved timber counters, bar seating and café furniture for an all-day brasserie.",
+    "ar": "كاونترات خشبية منحنية ومقاعد بار وأثاث مقهى لبراسري طوال اليوم."
+   },
+   "images": [
+    {
+     "src": "/images/projects/izu-brasserie-1.jpg",
+     "w": 771,
+     "h": 578
+    },
+    {
+     "src": "/images/projects/izu-brasserie-2.jpg",
+     "w": 771,
+     "h": 578
+    },
+    {
+     "src": "/images/projects/izu-brasserie-3.jpg",
+     "w": 551,
+     "h": 735
+    },
+    {
+     "src": "/images/projects/izu-brasserie-4.jpg",
+     "w": 636,
+     "h": 477
+    }
+   ],
+   "featured": false,
+   "order": 18,
+   "createdAt": "2026-04-02T19:00:00.000Z"
+  },
+  {
+   "id": "prj_020",
+   "slug": "moishi-kiosk",
+   "client": "M'OISHI",
+   "title": {
+    "en": "Mochi Kiosk",
+    "ar": "كشك موتشي"
+   },
+   "sector": "fnb",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "Yas Mall, Abu Dhabi",
+    "ar": "ياس مول، أبوظبي"
+   },
+   "emirate": "Abu Dhabi",
+   "summary": {
+    "en": "A walnut kiosk with planter-edged seating area in the heart of Yas Mall.",
+    "ar": "كشك من الجوز مع منطقة جلوس محاطة بأحواض نباتات في قلب ياس مول."
+   },
+   "images": [
+    {
+     "src": "/images/projects/moishi-kiosk-1.jpg",
+     "w": 994,
+     "h": 500
+    }
+   ],
+   "featured": false,
+   "order": 19,
+   "createdAt": "2026-04-03T19:00:00.000Z"
+  },
+  {
+   "id": "prj_021",
+   "slug": "pentagon-coffee",
+   "client": "Pentagon Specialty Coffee",
+   "title": {
+    "en": "Outdoor Coffee Kiosk",
+    "ar": "كشك قهوة خارجي"
+   },
+   "sector": "fnb",
+   "scope": {
+    "en": "Design & production",
+    "ar": "تصميم وإنتاج"
+   },
+   "location": {
+    "en": "Abu Dhabi",
+    "ar": "أبوظبي"
+   },
+   "emirate": "Abu Dhabi",
+   "summary": {
+    "en": "Designed and produced in-house: a timber-louvred outdoor coffee kiosk delivered ready to trade.",
+    "ar": "صُمم وأُنتج داخلياً: كشك قهوة خارجي بشرائح خشبية سُلّم جاهزاً للتشغيل."
+   },
+   "images": [
+    {
+     "src": "/images/projects/pentagon-coffee-1.jpg",
+     "w": 821,
+     "h": 724
+    },
+    {
+     "src": "/images/projects/pentagon-coffee-2.jpg",
+     "w": 810,
+     "h": 799
+    }
+   ],
+   "featured": false,
+   "order": 20,
+   "createdAt": "2026-04-04T19:00:00.000Z"
+  },
+  {
+   "id": "prj_022",
+   "slug": "treasure-island",
+   "client": "Treasure Island",
+   "title": {
+    "en": "Kids' Store",
+    "ar": "متجر أطفال"
+   },
+   "sector": "retail",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "The Dubai Mall",
+    "ar": "دبي مول"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "Themed, story-driven furniture and façades for a children's play and retail concept.",
+    "ar": "أثاث وواجهات بطابع قصصي لمفهوم لعب وتجزئة للأطفال."
+   },
+   "images": [
+    {
+     "src": "/images/projects/treasure-island-1.jpg",
+     "w": 897,
+     "h": 671
+    },
+    {
+     "src": "/images/projects/treasure-island-2.jpg",
+     "w": 890,
+     "h": 660
+    }
+   ],
+   "featured": false,
+   "order": 21,
+   "createdAt": "2026-04-05T19:00:00.000Z"
+  },
+  {
+   "id": "prj_023",
+   "slug": "lalique-tamer-beauty",
+   "client": "Lalique Tamer Beauty",
+   "title": {
+    "en": "Corporate Office",
+    "ar": "مكتب الشركة"
+   },
+   "sector": "office",
+   "scope": {
+    "en": "Fit-out",
+    "ar": "تجهيز داخلي"
+   },
+   "location": {
+    "en": "Dubai Design District (d3)",
+    "ar": "حي دبي للتصميم"
+   },
+   "emirate": "Dubai",
+   "summary": {
+    "en": "A refined corporate office with branded reception, lounge seating and meeting rooms.",
+    "ar": "مكتب شركة راقٍ باستقبال يحمل الهوية وجلسات صالة وغرف اجتماعات."
+   },
+   "images": [
+    {
+     "src": "/images/projects/lalique-tamer-beauty-1.jpg",
+     "w": 1024,
+     "h": 768
+    },
+    {
+     "src": "/images/projects/lalique-tamer-beauty-2.jpg",
+     "w": 727,
+     "h": 545
+    }
+   ],
+   "featured": false,
+   "order": 22,
+   "createdAt": "2026-04-06T19:00:00.000Z"
+  },
+  {
+   "id": "prj_024",
+   "slug": "abu-al-abyad-accommodation",
+   "client": "Private Department of the President",
+   "title": {
+    "en": "Staff Accommodation",
+    "ar": "سكن الموظفين"
+   },
+   "sector": "accommodation",
+   "scope": {
+    "en": "Furniture works",
+    "ar": "أعمال الأثاث"
+   },
+   "location": {
+    "en": "Abu Al Abyad Island, Abu Dhabi",
+    "ar": "جزيرة أبو الأبيض، أبوظبي"
+   },
+   "emirate": "Abu Dhabi",
+   "summary": {
+    "en": "Large-scale furniture supply for staff accommodation: dining halls, lounges and bedrooms, delivered to an island site.",
+    "ar": "توريد أثاث على نطاق واسع لسكن الموظفين: قاعات طعام وصالات وغرف نوم، سُلّمت إلى موقع على جزيرة."
+   },
+   "images": [
+    {
+     "src": "/images/projects/abu-al-abyad-accommodation-1.jpg",
+     "w": 735,
+     "h": 488
+    },
+    {
+     "src": "/images/projects/abu-al-abyad-accommodation-2.jpg",
+     "w": 775,
+     "h": 419
+    },
+    {
+     "src": "/images/projects/abu-al-abyad-accommodation-3.jpg",
+     "w": 766,
+     "h": 488
+    },
+    {
+     "src": "/images/projects/abu-al-abyad-accommodation-4.jpg",
+     "w": 622,
+     "h": 389
+    }
+   ],
+   "featured": false,
+   "order": 23,
+   "createdAt": "2026-04-07T19:00:00.000Z"
+  }
+ ],
+ "orders": [
+  {
+   "id": "ord_4",
+   "number": "TNF-10004",
+   "customer": {
+    "name": "Hassan Saleh",
+    "phone": "+971 58 149 4288",
+    "email": "hassan.saleh@example.com",
+    "emirate": "Dubai",
+    "area": "Al Barsha",
+    "address": "Villa 80"
+   },
+   "items": [
+    {
+     "productId": "prd_017",
+     "slug": "atelier-storage-bed",
+     "name": "Atelier Storage Bed",
+     "image": "/images/products/p34_6.jpg",
+     "price": 8200,
+     "qty": 1,
+     "finish": "Stone Grey",
+     "size": "King 180"
+    }
+   ],
+   "subtotal": 8200,
+   "delivery": 0,
+   "vat": 390,
+   "total": 8200,
+   "payment": "cod",
+   "status": "confirmed",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-26T18:00:00.000Z"
+    },
+    {
+     "status": "confirmed",
+     "at": "2026-09-26T18:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-26T18:00:00.000Z"
+  },
+  {
+   "id": "ord_16",
+   "number": "TNF-10016",
+   "customer": {
+    "name": "Sara Haddad",
+    "phone": "+971 51 706 3189",
+    "email": "sara.haddad@example.com",
+    "emirate": "Dubai",
+    "area": "Dubai Hills",
+    "address": "Villa 120"
+   },
+   "items": [
+    {
+     "productId": "prd_019",
+     "slug": "concrete-media-wall",
+     "name": "Concrete & Oak Media Wall",
+     "image": "/images/products/p33_1.jpg",
+     "price": 13500,
+     "qty": 2,
+     "finish": "Natural Oak",
+     "size": "Up to 3 m"
+    }
+   ],
+   "subtotal": 27000,
+   "delivery": 0,
+   "vat": 1286,
+   "total": 27000,
+   "payment": "bank",
+   "status": "confirmed",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-24T18:00:00.000Z"
+    },
+    {
+     "status": "confirmed",
+     "at": "2026-09-24T18:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-24T18:00:00.000Z"
+  },
+  {
+   "id": "ord_19",
+   "number": "TNF-10019",
+   "customer": {
+    "name": "Rashid Al Ketbi",
+    "phone": "+971 57 965 8207",
+    "email": "rashid.al.ketbi@example.com",
+    "emirate": "Abu Dhabi",
+    "area": "Al Majaz",
+    "address": "Villa 69"
+   },
+   "items": [
+    {
+     "productId": "prd_030",
+     "slug": "lumiere-vanity",
+     "name": "Lumière Vanity Unit",
+     "image": "/images/products/p36_7.jpg",
+     "price": 7800,
+     "qty": 1,
+     "finish": "Matt White",
+     "size": "1.2 m"
+    }
+   ],
+   "subtotal": 7800,
+   "delivery": 300,
+   "vat": 386,
+   "total": 8100,
+   "payment": "bank",
+   "status": "delivery",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-23T21:00:00.000Z"
+    },
+    {
+     "status": "delivery",
+     "at": "2026-09-23T21:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-23T21:00:00.000Z"
+  },
+  {
+   "id": "ord_38",
+   "number": "TNF-10038",
+   "customer": {
+    "name": "Sara Haddad",
+    "phone": "+971 53 511 1895",
+    "email": "sara.haddad@example.com",
+    "emirate": "Dubai",
+    "area": "JVC",
+    "address": "Villa 33"
+   },
+   "items": [
+    {
+     "productId": "prd_014",
+     "slug": "walnut-platform-bed",
+     "name": "Walnut Platform Bed",
+     "image": "/images/products/p34_3.jpg",
+     "price": 8600,
+     "qty": 1,
+     "finish": "American Walnut",
+     "size": "King 180"
+    }
+   ],
+   "subtotal": 8600,
+   "delivery": 0,
+   "vat": 410,
+   "total": 8600,
+   "payment": "bank",
+   "status": "production",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-18T23:00:00.000Z"
+    },
+    {
+     "status": "production",
+     "at": "2026-09-18T23:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-18T23:00:00.000Z"
+  },
+  {
+   "id": "ord_5",
+   "number": "TNF-10005",
+   "customer": {
+    "name": "Yousef Darwish",
+    "phone": "+971 54 652 3098",
+    "email": "yousef.darwish@example.com",
+    "emirate": "Ajman",
+    "area": "Arabian Ranches",
+    "address": "Villa 55"
+   },
+   "items": [
+    {
+     "productId": "prd_009",
+     "slug": "sahara-l-sofa",
+     "name": "Sahara L-Shape Sofa",
+     "image": "/images/products/p32_9.jpg",
+     "price": 9900,
+     "qty": 1,
+     "finish": "Stone Grey",
+     "size": "L-Left"
+    }
+   ],
+   "subtotal": 9900,
+   "delivery": 200,
+   "vat": 481,
+   "total": 10100,
+   "payment": "cod",
+   "status": "delivery",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-17T20:00:00.000Z"
+    },
+    {
+     "status": "delivery",
+     "at": "2026-09-17T20:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-17T20:00:00.000Z"
+  },
+  {
+   "id": "ord_18",
+   "number": "TNF-10018",
+   "customer": {
+    "name": "Mariam Al Shamsi",
+    "phone": "+971 58 167 4720",
+    "email": "mariam.al.shamsi@example.com",
+    "emirate": "Ras Al Khaimah",
+    "area": "Al Barsha",
+    "address": "Villa 1"
+   },
+   "items": [
+    {
+     "productId": "prd_008",
+     "slug": "milano-leather-sofa",
+     "name": "Milano Leather Sofa",
+     "image": "/images/products/p32_8.jpg",
+     "price": 17600,
+     "qty": 1,
+     "finish": "Cognac Leather",
+     "size": "4 Seater"
+    }
+   ],
+   "subtotal": 17600,
+   "delivery": 300,
+   "vat": 852,
+   "total": 17900,
+   "payment": "bank",
+   "status": "production",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-16T21:00:00.000Z"
+    },
+    {
+     "status": "production",
+     "at": "2026-09-16T21:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-16T21:00:00.000Z"
+  },
+  {
+   "id": "ord_24",
+   "number": "TNF-10024",
+   "customer": {
+    "name": "Hassan Saleh",
+    "phone": "+971 55 114 8306",
+    "email": "hassan.saleh@example.com",
+    "emirate": "Dubai",
+    "area": "Al Reem",
+    "address": "Villa 91"
+   },
+   "items": [
+    {
+     "productId": "prd_034",
+     "slug": "barn-sliding-door",
+     "name": "Barn Sliding Door",
+     "image": "/images/products/p36_10.jpg",
+     "price": 3900,
+     "qty": 1,
+     "finish": "American Walnut",
+     "size": "90 × 220 cm"
+    }
+   ],
+   "subtotal": 3900,
+   "delivery": 150,
+   "vat": 193,
+   "total": 4050,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-16T18:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-09-16T18:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-16T18:00:00.000Z"
+  },
+  {
+   "id": "ord_41",
+   "number": "TNF-10041",
+   "customer": {
+    "name": "Noura Al Hammadi",
+    "phone": "+971 54 652 7227",
+    "email": "noura.al.hammadi@example.com",
+    "emirate": "Fujairah",
+    "area": "Al Majaz",
+    "address": "Villa 6"
+   },
+   "items": [
+    {
+     "productId": "prd_021",
+     "slug": "ember-fireplace-wall",
+     "name": "Ember Fireplace Wall",
+     "image": "/images/products/p33_3.jpg",
+     "price": 22800,
+     "qty": 1,
+     "finish": "American Walnut",
+     "size": "Up to 4 m"
+    },
+    {
+     "productId": "prd_034",
+     "slug": "barn-sliding-door",
+     "name": "Barn Sliding Door",
+     "image": "/images/products/p36_10.jpg",
+     "price": 3900,
+     "qty": 1,
+     "finish": "American Walnut",
+     "size": "90 × 220 cm"
+    }
+   ],
+   "subtotal": 26700,
+   "delivery": 350,
+   "vat": 1288,
+   "total": 27050,
+   "payment": "cod",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-16T00:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-09-16T00:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-16T00:00:00.000Z"
+  },
+  {
+   "id": "ord_13",
+   "number": "TNF-10013",
+   "customer": {
+    "name": "Aisha Rahman",
+    "phone": "+971 51 501 2494",
+    "email": "aisha.rahman@example.com",
+    "emirate": "Sharjah",
+    "area": "Al Majaz",
+    "address": "Villa 63"
+   },
+   "items": [
+    {
+     "productId": "prd_004",
+     "slug": "cloud-curve-sofa",
+     "name": "Cloud Curve Sofa",
+     "image": "/images/products/p32_13.jpg",
+     "price": 12400,
+     "qty": 1,
+     "finish": "Ivory Bouclé",
+     "size": "240 cm"
+    },
+    {
+     "productId": "prd_017",
+     "slug": "atelier-storage-bed",
+     "name": "Atelier Storage Bed",
+     "image": "/images/products/p34_6.jpg",
+     "price": 8200,
+     "qty": 1,
+     "finish": "Stone Grey",
+     "size": "King 180"
+    }
+   ],
+   "subtotal": 20600,
+   "delivery": 200,
+   "vat": 990,
+   "total": 20800,
+   "payment": "cod",
+   "status": "cancelled",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-14T21:00:00.000Z"
+    },
+    {
+     "status": "cancelled",
+     "at": "2026-09-14T21:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-14T21:00:00.000Z"
+  },
+  {
+   "id": "ord_39",
+   "number": "TNF-10039",
+   "customer": {
+    "name": "Sara Haddad",
+    "phone": "+971 57 542 8801",
+    "email": "sara.haddad@example.com",
+    "emirate": "Dubai",
+    "area": "Al Majaz",
+    "address": "Villa 15"
+   },
+   "items": [
+    {
+     "productId": "prd_006",
+     "slug": "riviera-channel-sofa",
+     "name": "Riviera Channel Sofa",
+     "image": "/images/products/p32_4.jpg",
+     "price": 11200,
+     "qty": 1,
+     "finish": "Desert Sand",
+     "size": "3 Seater"
+    }
+   ],
+   "subtotal": 11200,
+   "delivery": 0,
+   "vat": 533,
+   "total": 11200,
+   "payment": "cod",
+   "status": "production",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-14T00:00:00.000Z"
+    },
+    {
+     "status": "production",
+     "at": "2026-09-14T00:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-14T00:00:00.000Z"
+  },
+  {
+   "id": "ord_35",
+   "number": "TNF-10035",
+   "customer": {
+    "name": "Ahmed Al Mansoori",
+    "phone": "+971 57 878 8319",
+    "email": "ahmed.al.mansoori@example.com",
+    "emirate": "Dubai",
+    "area": "Jumeirah",
+    "address": "Villa 68"
+   },
+   "items": [
+    {
+     "productId": "prd_001",
+     "slug": "chesterfield-heritage-sofa",
+     "name": "Chesterfield Heritage Sofa",
+     "image": "/images/products/p32_10.jpg",
+     "price": 14900,
+     "qty": 1,
+     "finish": "Cognac Leather",
+     "size": "3 Seater"
+    }
+   ],
+   "subtotal": 14900,
+   "delivery": 0,
+   "vat": 710,
+   "total": 14900,
+   "payment": "bank",
+   "status": "new",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-11T23:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-11T23:00:00.000Z"
+  },
+  {
+   "id": "ord_23",
+   "number": "TNF-10023",
+   "customer": {
+    "name": "Mariam Al Shamsi",
+    "phone": "+971 58 101 2186",
+    "email": "mariam.al.shamsi@example.com",
+    "emirate": "Ras Al Khaimah",
+    "area": "Dubai Hills",
+    "address": "Villa 3"
+   },
+   "items": [
+    {
+     "productId": "prd_027",
+     "slug": "study-nook-desk",
+     "name": "Study Nook & Shelving",
+     "image": "/images/products/p36_3.jpg",
+     "price": 5400,
+     "qty": 1,
+     "finish": "Matt White",
+     "size": "1.8 m"
+    },
+    {
+     "productId": "prd_021",
+     "slug": "ember-fireplace-wall",
+     "name": "Ember Fireplace Wall",
+     "image": "/images/products/p33_3.jpg",
+     "price": 22800,
+     "qty": 2,
+     "finish": "American Walnut",
+     "size": "Up to 4 m"
+    }
+   ],
+   "subtotal": 51000,
+   "delivery": 300,
+   "vat": 2443,
+   "total": 51300,
+   "payment": "cod",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-11T20:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-09-11T20:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-11T20:00:00.000Z"
+  },
+  {
+   "id": "ord_9",
+   "number": "TNF-10009",
+   "customer": {
+    "name": "Karim Nassar",
+    "phone": "+971 58 672 9298",
+    "email": "karim.nassar@example.com",
+    "emirate": "Dubai",
+    "area": "Downtown",
+    "address": "Villa 109"
+   },
+   "items": [
+    {
+     "productId": "prd_007",
+     "slug": "velluto-tufted-sofa",
+     "name": "Velluto Tufted Modular",
+     "image": "/images/products/p32_7.jpg",
+     "price": 13900,
+     "qty": 1,
+     "finish": "Emerald Velvet",
+     "size": "2 Modules"
+    },
+    {
+     "productId": "prd_029",
+     "slug": "walnut-vanity-console",
+     "name": "Walnut Vanity Console",
+     "image": "/images/products/p36_5.jpg",
+     "price": 6200,
+     "qty": 1,
+     "finish": "American Walnut",
+     "size": "1.8 m"
+    }
+   ],
+   "subtotal": 20100,
+   "delivery": 0,
+   "vat": 957,
+   "total": 20100,
+   "payment": "bank",
+   "status": "delivery",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-10T17:00:00.000Z"
+    },
+    {
+     "status": "delivery",
+     "at": "2026-09-10T17:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-10T17:00:00.000Z"
+  },
+  {
+   "id": "ord_33",
+   "number": "TNF-10033",
+   "customer": {
+    "name": "Noura Al Hammadi",
+    "phone": "+971 56 548 8799",
+    "email": "noura.al.hammadi@example.com",
+    "emirate": "Fujairah",
+    "area": "JVC",
+    "address": "Villa 98"
+   },
+   "items": [
+    {
+     "productId": "prd_009",
+     "slug": "sahara-l-sofa",
+     "name": "Sahara L-Shape Sofa",
+     "image": "/images/products/p32_9.jpg",
+     "price": 9900,
+     "qty": 1,
+     "finish": "Stone Grey",
+     "size": "L-Left"
+    }
+   ],
+   "subtotal": 9900,
+   "delivery": 350,
+   "vat": 488,
+   "total": 10250,
+   "payment": "cod",
+   "status": "cancelled",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-04T01:00:00.000Z"
+    },
+    {
+     "status": "cancelled",
+     "at": "2026-09-04T01:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-04T01:00:00.000Z"
+  },
+  {
+   "id": "ord_44",
+   "number": "TNF-10044",
+   "customer": {
+    "name": "Layla Mansour",
+    "phone": "+971 54 588 4887",
+    "email": "layla.mansour@example.com",
+    "emirate": "Dubai",
+    "area": "Al Reem",
+    "address": "Villa 108"
+   },
+   "items": [
+    {
+     "productId": "prd_003",
+     "slug": "harbour-lounge-set",
+     "name": "Harbour Lounge Set",
+     "image": "/images/products/p32_12.jpg",
+     "price": 18500,
+     "qty": 1,
+     "finish": "Stone Grey",
+     "size": "3+2+1"
+    }
+   ],
+   "subtotal": 18500,
+   "delivery": 0,
+   "vat": 881,
+   "total": 18500,
+   "payment": "cod",
+   "status": "delivery",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-09-03T23:00:00.000Z"
+    },
+    {
+     "status": "delivery",
+     "at": "2026-09-03T23:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-09-03T23:00:00.000Z"
+  },
+  {
+   "id": "ord_31",
+   "number": "TNF-10031",
+   "customer": {
+    "name": "Rashid Al Ketbi",
+    "phone": "+971 57 881 1399",
+    "email": "rashid.al.ketbi@example.com",
+    "emirate": "Abu Dhabi",
+    "area": "JVC",
+    "address": "Villa 39"
+   },
+   "items": [
+    {
+     "productId": "prd_020",
+     "slug": "slatted-media-unit",
+     "name": "Slatted Oak Media Unit",
+     "image": "/images/products/p33_2.jpg",
+     "price": 9800,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "2.4 m"
+    }
+   ],
+   "subtotal": 9800,
+   "delivery": 300,
+   "vat": 481,
+   "total": 10100,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-31T17:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-08-31T17:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-31T17:00:00.000Z"
+  },
+  {
+   "id": "ord_2",
+   "number": "TNF-10002",
+   "customer": {
+    "name": "Omar Khalil",
+    "phone": "+971 51 561 9307",
+    "email": "omar.khalil@example.com",
+    "emirate": "Sharjah",
+    "area": "Al Majaz",
+    "address": "Villa 78"
+   },
+   "items": [
+    {
+     "productId": "prd_022",
+     "slug": "walnut-frame-tv-wall",
+     "name": "Walnut Frame TV Wall",
+     "image": "/images/products/p33_5.jpg",
+     "price": 11900,
+     "qty": 1,
+     "finish": "American Walnut",
+     "size": "Up to 3 m"
+    },
+    {
+     "productId": "prd_021",
+     "slug": "ember-fireplace-wall",
+     "name": "Ember Fireplace Wall",
+     "image": "/images/products/p33_3.jpg",
+     "price": 22800,
+     "qty": 1,
+     "finish": "American Walnut",
+     "size": "Up to 4 m"
+    }
+   ],
+   "subtotal": 34700,
+   "delivery": 200,
+   "vat": 1662,
+   "total": 34900,
+   "payment": "cod",
+   "status": "cancelled",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-30T01:00:00.000Z"
+    },
+    {
+     "status": "cancelled",
+     "at": "2026-08-30T01:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-30T01:00:00.000Z"
+  },
+  {
+   "id": "ord_27",
+   "number": "TNF-10027",
+   "customer": {
+    "name": "Noura Al Hammadi",
+    "phone": "+971 51 212 9536",
+    "email": "noura.al.hammadi@example.com",
+    "emirate": "Fujairah",
+    "area": "Arabian Ranches",
+    "address": "Villa 7"
+   },
+   "items": [
+    {
+     "productId": "prd_025",
+     "slug": "blush-sliding-wardrobe",
+     "name": "Blush Sliding Wardrobe",
+     "image": "/images/products/p36_9.jpg",
+     "price": 7600,
+     "qty": 1,
+     "finish": "Blush",
+     "size": "2.4 m"
+    },
+    {
+     "productId": "prd_030",
+     "slug": "lumiere-vanity",
+     "name": "Lumière Vanity Unit",
+     "image": "/images/products/p36_7.jpg",
+     "price": 7800,
+     "qty": 2,
+     "finish": "Matt White",
+     "size": "1.2 m"
+    }
+   ],
+   "subtotal": 23200,
+   "delivery": 350,
+   "vat": 1121,
+   "total": 23550,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-25T00:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-08-25T00:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-25T00:00:00.000Z"
+  },
+  {
+   "id": "ord_20",
+   "number": "TNF-10020",
+   "customer": {
+    "name": "Rashid Al Ketbi",
+    "phone": "+971 56 895 8605",
+    "email": "rashid.al.ketbi@example.com",
+    "emirate": "Abu Dhabi",
+    "area": "Arabian Ranches",
+    "address": "Villa 53"
+   },
+   "items": [
+    {
+     "productId": "prd_017",
+     "slug": "atelier-storage-bed",
+     "name": "Atelier Storage Bed",
+     "image": "/images/products/p34_6.jpg",
+     "price": 8200,
+     "qty": 1,
+     "finish": "Stone Grey",
+     "size": "King 180"
+    }
+   ],
+   "subtotal": 8200,
+   "delivery": 300,
+   "vat": 405,
+   "total": 8500,
+   "payment": "bank",
+   "status": "confirmed",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-18T23:00:00.000Z"
+    },
+    {
+     "status": "confirmed",
+     "at": "2026-08-18T23:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-18T23:00:00.000Z"
+  },
+  {
+   "id": "ord_36",
+   "number": "TNF-10036",
+   "customer": {
+    "name": "Rashid Al Ketbi",
+    "phone": "+971 52 328 6525",
+    "email": "rashid.al.ketbi@example.com",
+    "emirate": "Abu Dhabi",
+    "area": "Al Reem",
+    "address": "Villa 113"
+   },
+   "items": [
+    {
+     "productId": "prd_016",
+     "slug": "cane-oak-bed",
+     "name": "Cane & Oak Bed",
+     "image": "/images/products/p34_5.jpg",
+     "price": 6900,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "Queen 160"
+    },
+    {
+     "productId": "prd_015",
+     "slug": "floating-oak-bed",
+     "name": "Floating Oak Bed",
+     "image": "/images/products/p34_4.jpg",
+     "price": 7400,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "Queen 160"
+    }
+   ],
+   "subtotal": 14300,
+   "delivery": 300,
+   "vat": 695,
+   "total": 14600,
+   "payment": "cod",
+   "status": "confirmed",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-15T00:00:00.000Z"
+    },
+    {
+     "status": "confirmed",
+     "at": "2026-08-15T00:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-15T00:00:00.000Z"
+  },
+  {
+   "id": "ord_10",
+   "number": "TNF-10010",
+   "customer": {
+    "name": "Aisha Rahman",
+    "phone": "+971 56 741 5483",
+    "email": "aisha.rahman@example.com",
+    "emirate": "Sharjah",
+    "area": "Downtown",
+    "address": "Villa 14"
+   },
+   "items": [
+    {
+     "productId": "prd_008",
+     "slug": "milano-leather-sofa",
+     "name": "Milano Leather Sofa",
+     "image": "/images/products/p32_8.jpg",
+     "price": 17600,
+     "qty": 1,
+     "finish": "Cognac Leather",
+     "size": "4 Seater"
+    },
+    {
+     "productId": "prd_007",
+     "slug": "velluto-tufted-sofa",
+     "name": "Velluto Tufted Modular",
+     "image": "/images/products/p32_7.jpg",
+     "price": 13900,
+     "qty": 1,
+     "finish": "Emerald Velvet",
+     "size": "2 Modules"
+    }
+   ],
+   "subtotal": 31500,
+   "delivery": 200,
+   "vat": 1510,
+   "total": 31700,
+   "payment": "cod",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-13T00:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-08-13T00:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-13T00:00:00.000Z"
+  },
+  {
+   "id": "ord_37",
+   "number": "TNF-10037",
+   "customer": {
+    "name": "Fatima Al Nuaimi",
+    "phone": "+971 55 886 6796",
+    "email": "fatima.al.nuaimi@example.com",
+    "emirate": "Abu Dhabi",
+    "area": "Dubai Hills",
+    "address": "Villa 42"
+   },
+   "items": [
+    {
+     "productId": "prd_020",
+     "slug": "slatted-media-unit",
+     "name": "Slatted Oak Media Unit",
+     "image": "/images/products/p33_2.jpg",
+     "price": 9800,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "2.4 m"
+    },
+    {
+     "productId": "prd_005",
+     "slug": "alba-modular-corner",
+     "name": "Alba Modular Corner",
+     "image": "/images/products/p32_2.jpg",
+     "price": 16900,
+     "qty": 1,
+     "finish": "Ivory Bouclé",
+     "size": "L-Left"
+    }
+   ],
+   "subtotal": 26700,
+   "delivery": 300,
+   "vat": 1286,
+   "total": 27000,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-08T20:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-08-08T20:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-08T20:00:00.000Z"
+  },
+  {
+   "id": "ord_26",
+   "number": "TNF-10026",
+   "customer": {
+    "name": "Omar Khalil",
+    "phone": "+971 57 693 8241",
+    "email": "omar.khalil@example.com",
+    "emirate": "Sharjah",
+    "area": "Downtown",
+    "address": "Villa 111"
+   },
+   "items": [
+    {
+     "productId": "prd_027",
+     "slug": "study-nook-desk",
+     "name": "Study Nook & Shelving",
+     "image": "/images/products/p36_3.jpg",
+     "price": 5400,
+     "qty": 1,
+     "finish": "Matt White",
+     "size": "1.8 m"
+    },
+    {
+     "productId": "prd_030",
+     "slug": "lumiere-vanity",
+     "name": "Lumière Vanity Unit",
+     "image": "/images/products/p36_7.jpg",
+     "price": 7800,
+     "qty": 1,
+     "finish": "Matt White",
+     "size": "1.2 m"
+    }
+   ],
+   "subtotal": 13200,
+   "delivery": 200,
+   "vat": 638,
+   "total": 13400,
+   "payment": "cod",
+   "status": "confirmed",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-07T21:00:00.000Z"
+    },
+    {
+     "status": "confirmed",
+     "at": "2026-08-07T21:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-07T21:00:00.000Z"
+  },
+  {
+   "id": "ord_29",
+   "number": "TNF-10029",
+   "customer": {
+    "name": "Sara Haddad",
+    "phone": "+971 53 651 9686",
+    "email": "sara.haddad@example.com",
+    "emirate": "Dubai",
+    "area": "JVC",
+    "address": "Villa 116"
+   },
+   "items": [
+    {
+     "productId": "prd_027",
+     "slug": "study-nook-desk",
+     "name": "Study Nook & Shelving",
+     "image": "/images/products/p36_3.jpg",
+     "price": 5400,
+     "qty": 1,
+     "finish": "Matt White",
+     "size": "1.8 m"
+    }
+   ],
+   "subtotal": 5400,
+   "delivery": 0,
+   "vat": 257,
+   "total": 5400,
+   "payment": "cod",
+   "status": "production",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-07T00:00:00.000Z"
+    },
+    {
+     "status": "production",
+     "at": "2026-08-07T00:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-07T00:00:00.000Z"
+  },
+  {
+   "id": "ord_43",
+   "number": "TNF-10043",
+   "customer": {
+    "name": "Yousef Darwish",
+    "phone": "+971 55 801 8562",
+    "email": "yousef.darwish@example.com",
+    "emirate": "Ajman",
+    "area": "Downtown",
+    "address": "Villa 37"
+   },
+   "items": [
+    {
+     "productId": "prd_008",
+     "slug": "milano-leather-sofa",
+     "name": "Milano Leather Sofa",
+     "image": "/images/products/p32_8.jpg",
+     "price": 17600,
+     "qty": 1,
+     "finish": "Cognac Leather",
+     "size": "4 Seater"
+    }
+   ],
+   "subtotal": 17600,
+   "delivery": 200,
+   "vat": 848,
+   "total": 17800,
+   "payment": "cod",
+   "status": "delivery",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-06T17:00:00.000Z"
+    },
+    {
+     "status": "delivery",
+     "at": "2026-08-06T17:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-06T17:00:00.000Z"
+  },
+  {
+   "id": "ord_6",
+   "number": "TNF-10006",
+   "customer": {
+    "name": "Mariam Al Shamsi",
+    "phone": "+971 55 415 3975",
+    "email": "mariam.al.shamsi@example.com",
+    "emirate": "Ras Al Khaimah",
+    "area": "Dubai Hills",
+    "address": "Villa 96"
+   },
+   "items": [
+    {
+     "productId": "prd_015",
+     "slug": "floating-oak-bed",
+     "name": "Floating Oak Bed",
+     "image": "/images/products/p34_4.jpg",
+     "price": 7400,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "Queen 160"
+    },
+    {
+     "productId": "prd_034",
+     "slug": "barn-sliding-door",
+     "name": "Barn Sliding Door",
+     "image": "/images/products/p36_10.jpg",
+     "price": 3900,
+     "qty": 1,
+     "finish": "American Walnut",
+     "size": "90 × 220 cm"
+    }
+   ],
+   "subtotal": 11300,
+   "delivery": 300,
+   "vat": 552,
+   "total": 11600,
+   "payment": "cod",
+   "status": "confirmed",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-05T19:00:00.000Z"
+    },
+    {
+     "status": "confirmed",
+     "at": "2026-08-05T19:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-05T19:00:00.000Z"
+  },
+  {
+   "id": "ord_11",
+   "number": "TNF-10011",
+   "customer": {
+    "name": "Sara Haddad",
+    "phone": "+971 53 323 7548",
+    "email": "sara.haddad@example.com",
+    "emirate": "Dubai",
+    "area": "Arabian Ranches",
+    "address": "Villa 48"
+   },
+   "items": [
+    {
+     "productId": "prd_002",
+     "slug": "velvet-chaise-daybed",
+     "name": "Velvet Chaise Daybed",
+     "image": "/images/products/p32_11.jpg",
+     "price": 5900,
+     "qty": 2,
+     "finish": "Stone Grey",
+     "size": "Standard"
+    },
+    {
+     "productId": "prd_028",
+     "slug": "live-edge-walnut-table",
+     "name": "Live-Edge Walnut Dining Table",
+     "image": "/images/products/p36_6.jpg",
+     "price": 16500,
+     "qty": 2,
+     "finish": "American Walnut",
+     "size": "240 cm"
+    }
+   ],
+   "subtotal": 44800,
+   "delivery": 0,
+   "vat": 2133,
+   "total": 44800,
+   "payment": "bank",
+   "status": "cancelled",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-08-02T00:00:00.000Z"
+    },
+    {
+     "status": "cancelled",
+     "at": "2026-08-02T00:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-08-02T00:00:00.000Z"
+  },
+  {
+   "id": "ord_34",
+   "number": "TNF-10034",
+   "customer": {
+    "name": "Aisha Rahman",
+    "phone": "+971 57 692 8343",
+    "email": "aisha.rahman@example.com",
+    "emirate": "Sharjah",
+    "area": "Dubai Hills",
+    "address": "Villa 96"
+   },
+   "items": [
+    {
+     "productId": "prd_022",
+     "slug": "walnut-frame-tv-wall",
+     "name": "Walnut Frame TV Wall",
+     "image": "/images/products/p33_5.jpg",
+     "price": 11900,
+     "qty": 1,
+     "finish": "American Walnut",
+     "size": "Up to 3 m"
+    }
+   ],
+   "subtotal": 11900,
+   "delivery": 200,
+   "vat": 576,
+   "total": 12100,
+   "payment": "cod",
+   "status": "new",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-31T18:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-31T18:00:00.000Z"
+  },
+  {
+   "id": "ord_25",
+   "number": "TNF-10025",
+   "customer": {
+    "name": "Fatima Al Nuaimi",
+    "phone": "+971 50 140 6518",
+    "email": "fatima.al.nuaimi@example.com",
+    "emirate": "Abu Dhabi",
+    "area": "Jumeirah",
+    "address": "Villa 70"
+   },
+   "items": [
+    {
+     "productId": "prd_016",
+     "slug": "cane-oak-bed",
+     "name": "Cane & Oak Bed",
+     "image": "/images/products/p34_5.jpg",
+     "price": 6900,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "Queen 160"
+    },
+    {
+     "productId": "prd_025",
+     "slug": "blush-sliding-wardrobe",
+     "name": "Blush Sliding Wardrobe",
+     "image": "/images/products/p36_9.jpg",
+     "price": 7600,
+     "qty": 1,
+     "finish": "Blush",
+     "size": "2.4 m"
+    }
+   ],
+   "subtotal": 14500,
+   "delivery": 300,
+   "vat": 705,
+   "total": 14800,
+   "payment": "bank",
+   "status": "confirmed",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-29T22:00:00.000Z"
+    },
+    {
+     "status": "confirmed",
+     "at": "2026-07-29T22:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-29T22:00:00.000Z"
+  },
+  {
+   "id": "ord_46",
+   "number": "TNF-10046",
+   "customer": {
+    "name": "Sara Haddad",
+    "phone": "+971 58 790 9582",
+    "email": "sara.haddad@example.com",
+    "emirate": "Dubai",
+    "area": "Downtown",
+    "address": "Villa 22"
+   },
+   "items": [
+    {
+     "productId": "prd_020",
+     "slug": "slatted-media-unit",
+     "name": "Slatted Oak Media Unit",
+     "image": "/images/products/p33_2.jpg",
+     "price": 9800,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "2.4 m"
+    }
+   ],
+   "subtotal": 9800,
+   "delivery": 0,
+   "vat": 467,
+   "total": 9800,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-26T01:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-07-26T01:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-26T01:00:00.000Z"
+  },
+  {
+   "id": "ord_14",
+   "number": "TNF-10014",
+   "customer": {
+    "name": "Yousef Darwish",
+    "phone": "+971 51 749 3617",
+    "email": "yousef.darwish@example.com",
+    "emirate": "Ajman",
+    "area": "Jumeirah",
+    "address": "Villa 80"
+   },
+   "items": [
+    {
+     "productId": "prd_023",
+     "slug": "lagoon-lacquer-media",
+     "name": "Lagoon Lacquer Media Unit",
+     "image": "/images/products/p33_6.jpg",
+     "price": 15200,
+     "qty": 1,
+     "finish": "Ocean Blue",
+     "size": "4 m"
+    }
+   ],
+   "subtotal": 15200,
+   "delivery": 200,
+   "vat": 733,
+   "total": 15400,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-25T22:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-07-25T22:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-25T22:00:00.000Z"
+  },
+  {
+   "id": "ord_17",
+   "number": "TNF-10017",
+   "customer": {
+    "name": "Karim Nassar",
+    "phone": "+971 58 237 9328",
+    "email": "karim.nassar@example.com",
+    "emirate": "Dubai",
+    "area": "Al Reem",
+    "address": "Villa 15"
+   },
+   "items": [
+    {
+     "productId": "prd_013",
+     "slug": "blush-couture-bed",
+     "name": "Couture Panel Bed",
+     "image": "/images/products/p34_1.jpg",
+     "price": 9800,
+     "qty": 1,
+     "finish": "Blush",
+     "size": "Queen 160"
+    }
+   ],
+   "subtotal": 9800,
+   "delivery": 0,
+   "vat": 467,
+   "total": 9800,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-25T01:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-07-25T01:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-25T01:00:00.000Z"
+  },
+  {
+   "id": "ord_15",
+   "number": "TNF-10015",
+   "customer": {
+    "name": "Ahmed Al Mansoori",
+    "phone": "+971 55 750 9082",
+    "email": "ahmed.al.mansoori@example.com",
+    "emirate": "Dubai",
+    "area": "Downtown",
+    "address": "Villa 17"
+   },
+   "items": [
+    {
+     "productId": "prd_030",
+     "slug": "lumiere-vanity",
+     "name": "Lumière Vanity Unit",
+     "image": "/images/products/p36_7.jpg",
+     "price": 7800,
+     "qty": 2,
+     "finish": "Matt White",
+     "size": "1.2 m"
+    },
+    {
+     "productId": "prd_021",
+     "slug": "ember-fireplace-wall",
+     "name": "Ember Fireplace Wall",
+     "image": "/images/products/p33_3.jpg",
+     "price": 22800,
+     "qty": 2,
+     "finish": "American Walnut",
+     "size": "Up to 4 m"
+    }
+   ],
+   "subtotal": 61200,
+   "delivery": 0,
+   "vat": 2914,
+   "total": 61200,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-25T00:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-07-25T00:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-25T00:00:00.000Z"
+  },
+  {
+   "id": "ord_32",
+   "number": "TNF-10032",
+   "customer": {
+    "name": "Hassan Saleh",
+    "phone": "+971 50 255 7797",
+    "email": "hassan.saleh@example.com",
+    "emirate": "Dubai",
+    "area": "JVC",
+    "address": "Villa 30"
+   },
+   "items": [
+    {
+     "productId": "prd_035",
+     "slug": "slatted-partition-console",
+     "name": "Slatted Partition & Console",
+     "image": "/images/products/p33_8.jpg",
+     "price": 6400,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "2 m"
+    }
+   ],
+   "subtotal": 6400,
+   "delivery": 0,
+   "vat": 305,
+   "total": 6400,
+   "payment": "cod",
+   "status": "confirmed",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-22T21:00:00.000Z"
+    },
+    {
+     "status": "confirmed",
+     "at": "2026-07-22T21:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-22T21:00:00.000Z"
+  },
+  {
+   "id": "ord_30",
+   "number": "TNF-10030",
+   "customer": {
+    "name": "Mariam Al Shamsi",
+    "phone": "+971 54 447 5449",
+    "email": "mariam.al.shamsi@example.com",
+    "emirate": "Ras Al Khaimah",
+    "area": "Downtown",
+    "address": "Villa 8"
+   },
+   "items": [
+    {
+     "productId": "prd_002",
+     "slug": "velvet-chaise-daybed",
+     "name": "Velvet Chaise Daybed",
+     "image": "/images/products/p32_11.jpg",
+     "price": 5900,
+     "qty": 1,
+     "finish": "Stone Grey",
+     "size": "Standard"
+    }
+   ],
+   "subtotal": 5900,
+   "delivery": 300,
+   "vat": 295,
+   "total": 6200,
+   "payment": "bank",
+   "status": "confirmed",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-21T21:00:00.000Z"
+    },
+    {
+     "status": "confirmed",
+     "at": "2026-07-21T21:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-21T21:00:00.000Z"
+  },
+  {
+   "id": "ord_7",
+   "number": "TNF-10007",
+   "customer": {
+    "name": "Sara Haddad",
+    "phone": "+971 51 668 2298",
+    "email": "sara.haddad@example.com",
+    "emirate": "Dubai",
+    "area": "Dubai Hills",
+    "address": "Villa 72"
+   },
+   "items": [
+    {
+     "productId": "prd_012",
+     "slug": "wingback-chesterfield-chair",
+     "name": "Wingback Chesterfield Chair",
+     "image": "/images/products/p32_6.jpg",
+     "price": 5600,
+     "qty": 1,
+     "finish": "Cognac Leather",
+     "size": "Standard"
+    }
+   ],
+   "subtotal": 5600,
+   "delivery": 0,
+   "vat": 267,
+   "total": 5600,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-21T02:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-07-21T02:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-21T02:00:00.000Z"
+  },
+  {
+   "id": "ord_45",
+   "number": "TNF-10045",
+   "customer": {
+    "name": "Layla Mansour",
+    "phone": "+971 57 200 3157",
+    "email": "layla.mansour@example.com",
+    "emirate": "Dubai",
+    "area": "Al Majaz",
+    "address": "Villa 27"
+   },
+   "items": [
+    {
+     "productId": "prd_020",
+     "slug": "slatted-media-unit",
+     "name": "Slatted Oak Media Unit",
+     "image": "/images/products/p33_2.jpg",
+     "price": 9800,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "2.4 m"
+    },
+    {
+     "productId": "prd_020",
+     "slug": "slatted-media-unit",
+     "name": "Slatted Oak Media Unit",
+     "image": "/images/products/p33_2.jpg",
+     "price": 9800,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "2.4 m"
+    }
+   ],
+   "subtotal": 19600,
+   "delivery": 0,
+   "vat": 933,
+   "total": 19600,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-19T17:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-07-19T17:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-19T17:00:00.000Z"
+  },
+  {
+   "id": "ord_42",
+   "number": "TNF-10042",
+   "customer": {
+    "name": "Aisha Rahman",
+    "phone": "+971 57 686 9786",
+    "email": "aisha.rahman@example.com",
+    "emirate": "Sharjah",
+    "area": "Al Barsha",
+    "address": "Villa 90"
+   },
+   "items": [
+    {
+     "productId": "prd_017",
+     "slug": "atelier-storage-bed",
+     "name": "Atelier Storage Bed",
+     "image": "/images/products/p34_6.jpg",
+     "price": 8200,
+     "qty": 1,
+     "finish": "Stone Grey",
+     "size": "King 180"
+    },
+    {
+     "productId": "prd_020",
+     "slug": "slatted-media-unit",
+     "name": "Slatted Oak Media Unit",
+     "image": "/images/products/p33_2.jpg",
+     "price": 9800,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "2.4 m"
+    }
+   ],
+   "subtotal": 18000,
+   "delivery": 200,
+   "vat": 867,
+   "total": 18200,
+   "payment": "cod",
+   "status": "delivery",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-17T17:00:00.000Z"
+    },
+    {
+     "status": "delivery",
+     "at": "2026-07-17T17:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-17T17:00:00.000Z"
+  },
+  {
+   "id": "ord_12",
+   "number": "TNF-10012",
+   "customer": {
+    "name": "Rashid Al Ketbi",
+    "phone": "+971 51 380 9868",
+    "email": "rashid.al.ketbi@example.com",
+    "emirate": "Abu Dhabi",
+    "area": "Arabian Ranches",
+    "address": "Villa 76"
+   },
+   "items": [
+    {
+     "productId": "prd_011",
+     "slug": "nord-leather-armchair",
+     "name": "Nord Leather Armchair",
+     "image": "/images/products/p32_5.jpg",
+     "price": 4200,
+     "qty": 1,
+     "finish": "Ocean Blue",
+     "size": "Standard"
+    },
+    {
+     "productId": "prd_023",
+     "slug": "lagoon-lacquer-media",
+     "name": "Lagoon Lacquer Media Unit",
+     "image": "/images/products/p33_6.jpg",
+     "price": 15200,
+     "qty": 1,
+     "finish": "Ocean Blue",
+     "size": "4 m"
+    }
+   ],
+   "subtotal": 19400,
+   "delivery": 300,
+   "vat": 938,
+   "total": 19700,
+   "payment": "cod",
+   "status": "confirmed",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-14T21:00:00.000Z"
+    },
+    {
+     "status": "confirmed",
+     "at": "2026-07-14T21:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-14T21:00:00.000Z"
+  },
+  {
+   "id": "ord_8",
+   "number": "TNF-10008",
+   "customer": {
+    "name": "Aisha Rahman",
+    "phone": "+971 50 101 6550",
+    "email": "aisha.rahman@example.com",
+    "emirate": "Sharjah",
+    "area": "Jumeirah",
+    "address": "Villa 89"
+   },
+   "items": [
+    {
+     "productId": "prd_029",
+     "slug": "walnut-vanity-console",
+     "name": "Walnut Vanity Console",
+     "image": "/images/products/p36_5.jpg",
+     "price": 6200,
+     "qty": 2,
+     "finish": "American Walnut",
+     "size": "1.8 m"
+    },
+    {
+     "productId": "prd_025",
+     "slug": "blush-sliding-wardrobe",
+     "name": "Blush Sliding Wardrobe",
+     "image": "/images/products/p36_9.jpg",
+     "price": 7600,
+     "qty": 1,
+     "finish": "Blush",
+     "size": "2.4 m"
+    }
+   ],
+   "subtotal": 20000,
+   "delivery": 200,
+   "vat": 962,
+   "total": 20200,
+   "payment": "bank",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-14T19:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-07-14T19:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-14T19:00:00.000Z"
+  },
+  {
+   "id": "ord_40",
+   "number": "TNF-10040",
+   "customer": {
+    "name": "Karim Nassar",
+    "phone": "+971 57 907 7510",
+    "email": "karim.nassar@example.com",
+    "emirate": "Dubai",
+    "area": "Al Reem",
+    "address": "Villa 29"
+   },
+   "items": [
+    {
+     "productId": "prd_035",
+     "slug": "slatted-partition-console",
+     "name": "Slatted Partition & Console",
+     "image": "/images/products/p33_8.jpg",
+     "price": 6400,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "2 m"
+    },
+    {
+     "productId": "prd_035",
+     "slug": "slatted-partition-console",
+     "name": "Slatted Partition & Console",
+     "image": "/images/products/p33_8.jpg",
+     "price": 6400,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "2 m"
+    }
+   ],
+   "subtotal": 12800,
+   "delivery": 0,
+   "vat": 610,
+   "total": 12800,
+   "payment": "cod",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-13T20:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-07-13T20:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-13T20:00:00.000Z"
+  },
+  {
+   "id": "ord_3",
+   "number": "TNF-10003",
+   "customer": {
+    "name": "Hassan Saleh",
+    "phone": "+971 52 485 3653",
+    "email": "hassan.saleh@example.com",
+    "emirate": "Dubai",
+    "area": "Arabian Ranches",
+    "address": "Villa 67"
+   },
+   "items": [
+    {
+     "productId": "prd_010",
+     "slug": "coral-shell-lounge-chair",
+     "name": "Coral Shell Lounge Chair",
+     "image": "/images/products/p32_3.jpg",
+     "price": 3400,
+     "qty": 1,
+     "finish": "Ocean Blue",
+     "size": "Single"
+    }
+   ],
+   "subtotal": 3400,
+   "delivery": 150,
+   "vat": 169,
+   "total": 3550,
+   "payment": "cod",
+   "status": "delivered",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-12T18:00:00.000Z"
+    },
+    {
+     "status": "delivered",
+     "at": "2026-07-12T18:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-12T18:00:00.000Z"
+  },
+  {
+   "id": "ord_22",
+   "number": "TNF-10022",
+   "customer": {
+    "name": "Sara Haddad",
+    "phone": "+971 57 343 7179",
+    "email": "sara.haddad@example.com",
+    "emirate": "Dubai",
+    "area": "Dubai Hills",
+    "address": "Villa 48"
+   },
+   "items": [
+    {
+     "productId": "prd_020",
+     "slug": "slatted-media-unit",
+     "name": "Slatted Oak Media Unit",
+     "image": "/images/products/p33_2.jpg",
+     "price": 9800,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "2.4 m"
+    },
+    {
+     "productId": "prd_016",
+     "slug": "cane-oak-bed",
+     "name": "Cane & Oak Bed",
+     "image": "/images/products/p34_5.jpg",
+     "price": 6900,
+     "qty": 1,
+     "finish": "Natural Oak",
+     "size": "Queen 160"
+    }
+   ],
+   "subtotal": 16700,
+   "delivery": 0,
+   "vat": 795,
+   "total": 16700,
+   "payment": "bank",
+   "status": "new",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-11T22:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-11T22:00:00.000Z"
+  },
+  {
+   "id": "ord_1",
+   "number": "TNF-10001",
+   "customer": {
+    "name": "Ahmed Al Mansoori",
+    "phone": "+971 56 778 5885",
+    "email": "ahmed.al.mansoori@example.com",
+    "emirate": "Dubai",
+    "area": "Al Majaz",
+    "address": "Villa 77"
+   },
+   "items": [
+    {
+     "productId": "prd_007",
+     "slug": "velluto-tufted-sofa",
+     "name": "Velluto Tufted Modular",
+     "image": "/images/products/p32_7.jpg",
+     "price": 13900,
+     "qty": 1,
+     "finish": "Emerald Velvet",
+     "size": "2 Modules"
+    }
+   ],
+   "subtotal": 13900,
+   "delivery": 0,
+   "vat": 662,
+   "total": 13900,
+   "payment": "cod",
+   "status": "production",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-11T20:00:00.000Z"
+    },
+    {
+     "status": "production",
+     "at": "2026-07-11T20:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-11T20:00:00.000Z"
+  },
+  {
+   "id": "ord_28",
+   "number": "TNF-10028",
+   "customer": {
+    "name": "Fatima Al Nuaimi",
+    "phone": "+971 51 390 5328",
+    "email": "fatima.al.nuaimi@example.com",
+    "emirate": "Abu Dhabi",
+    "area": "Jumeirah",
+    "address": "Villa 7"
+   },
+   "items": [
+    {
+     "productId": "prd_034",
+     "slug": "barn-sliding-door",
+     "name": "Barn Sliding Door",
+     "image": "/images/products/p36_10.jpg",
+     "price": 3900,
+     "qty": 1,
+     "finish": "American Walnut",
+     "size": "90 × 220 cm"
+    },
+    {
+     "productId": "prd_006",
+     "slug": "riviera-channel-sofa",
+     "name": "Riviera Channel Sofa",
+     "image": "/images/products/p32_4.jpg",
+     "price": 11200,
+     "qty": 1,
+     "finish": "Desert Sand",
+     "size": "3 Seater"
+    }
+   ],
+   "subtotal": 15100,
+   "delivery": 300,
+   "vat": 733,
+   "total": 15400,
+   "payment": "bank",
+   "status": "delivery",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-09T22:00:00.000Z"
+    },
+    {
+     "status": "delivery",
+     "at": "2026-07-09T22:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-09T22:00:00.000Z"
+  },
+  {
+   "id": "ord_21",
+   "number": "TNF-10021",
+   "customer": {
+    "name": "Aisha Rahman",
+    "phone": "+971 56 958 8082",
+    "email": "aisha.rahman@example.com",
+    "emirate": "Sharjah",
+    "area": "Jumeirah",
+    "address": "Villa 29"
+   },
+   "items": [
+    {
+     "productId": "prd_003",
+     "slug": "harbour-lounge-set",
+     "name": "Harbour Lounge Set",
+     "image": "/images/products/p32_12.jpg",
+     "price": 18500,
+     "qty": 1,
+     "finish": "Stone Grey",
+     "size": "3+2+1"
+    }
+   ],
+   "subtotal": 18500,
+   "delivery": 200,
+   "vat": 890,
+   "total": 18700,
+   "payment": "cod",
+   "status": "cancelled",
+   "history": [
+    {
+     "status": "new",
+     "at": "2026-07-07T00:00:00.000Z"
+    },
+    {
+     "status": "cancelled",
+     "at": "2026-07-07T00:00:00.000Z"
+    }
+   ],
+   "createdAt": "2026-07-07T00:00:00.000Z"
+  }
+ ],
+ "requests": [
+  {
+   "id": "req_1",
+   "number": "RQ-2201",
+   "service": "fitout",
+   "space": "Retail boutique",
+   "area": "120",
+   "emirate": "Dubai",
+   "budget": "AED 250k – 500k",
+   "timeline": "1 – 3 months",
+   "details": "New perfume boutique at Dubai Hills Mall, need design + build including mall approvals.",
+   "files": [],
+   "contact": {
+    "name": "Layla Mansour",
+    "company": "Oud & Co",
+    "phone": "+971 50 100 2000",
+    "email": "layla.mansour@example.com"
+   },
+   "status": "won",
+   "notes": [
+    {
+     "text": "Called client, site visit scheduled.",
+     "at": "2026-09-30T19:00:00.000Z"
+    }
+   ],
+   "value": 380000,
+   "createdAt": "2026-09-30T19:00:00.000Z"
+  },
+  {
+   "id": "req_2",
+   "number": "RQ-2202",
+   "service": "furniture",
+   "space": "Villa",
+   "area": "450",
+   "emirate": "Abu Dhabi",
+   "budget": "AED 100k – 250k",
+   "timeline": "1 – 3 months",
+   "details": "Full villa furniture package — majlis, 5 bedrooms, dining.",
+   "files": [],
+   "contact": {
+    "name": "Rashid Al Ketbi",
+    "company": "",
+    "phone": "+971 50 137 2113",
+    "email": "rashid.al.ketbi@example.com"
+   },
+   "status": "quoted",
+   "notes": [
+    {
+     "text": "Called client, site visit scheduled.",
+     "at": "2026-09-29T19:00:00.000Z"
+    }
+   ],
+   "value": 165000,
+   "createdAt": "2026-09-26T19:00:00.000Z"
+  },
+  {
+   "id": "req_3",
+   "number": "RQ-2203",
+   "service": "custom",
+   "space": "Apartment",
+   "area": "",
+   "emirate": "Dubai",
+   "budget": "AED 10k – 50k",
+   "timeline": "Within a month",
+   "details": "Cloud Curve Sofa but 320 cm wide in green velvet.",
+   "files": [],
+   "contact": {
+    "name": "Sara Haddad",
+    "company": "",
+    "phone": "+971 50 174 2226",
+    "email": "sara.haddad@example.com"
+   },
+   "status": "contacted",
+   "notes": [
+    {
+     "text": "Called client, site visit scheduled.",
+     "at": "2026-09-28T19:00:00.000Z"
+    }
+   ],
+   "value": null,
+   "createdAt": "2026-09-22T19:00:00.000Z"
+  },
+  {
+   "id": "req_4",
+   "number": "RQ-2204",
+   "service": "fitout",
+   "space": "Café / Restaurant",
+   "area": "220",
+   "emirate": "Sharjah",
+   "budget": "AED 500k+",
+   "timeline": "3 – 6 months",
+   "details": "Specialty coffee flagship, 2 floors, need kitchen + seating + façade.",
+   "files": [],
+   "contact": {
+    "name": "Omar Khalil",
+    "company": "Bean Theory",
+    "phone": "+971 50 211 2339",
+    "email": "omar.khalil@example.com"
+   },
+   "status": "visit",
+   "notes": [
+    {
+     "text": "Called client, site visit scheduled.",
+     "at": "2026-09-27T19:00:00.000Z"
+    }
+   ],
+   "value": null,
+   "createdAt": "2026-09-18T19:00:00.000Z"
+  },
+  {
+   "id": "req_5",
+   "number": "RQ-2205",
+   "service": "technical",
+   "space": "Office",
+   "area": "800",
+   "emirate": "Dubai",
+   "budget": "AED 50k – 100k",
+   "timeline": "ASAP",
+   "details": "MEP maintenance contract + partition changes in Business Bay office.",
+   "files": [],
+   "contact": {
+    "name": "Hassan Saleh",
+    "company": "Northgate Capital",
+    "phone": "+971 50 248 2452",
+    "email": "hassan.saleh@example.com"
+   },
+   "status": "new",
+   "notes": [],
+   "value": null,
+   "createdAt": "2026-09-14T19:00:00.000Z"
+  },
+  {
+   "id": "req_6",
+   "number": "RQ-2206",
+   "service": "furniture",
+   "space": "Hotel / Hospitality",
+   "area": "1500",
+   "emirate": "Ras Al Khaimah",
+   "budget": "AED 500k+",
+   "timeline": "3 – 6 months",
+   "details": "Lobby and lounge furniture for boutique hotel, 60 rooms later phase.",
+   "files": [],
+   "contact": {
+    "name": "Mariam Al Shamsi",
+    "company": "Coral Bay Hotel",
+    "phone": "+971 50 285 2565",
+    "email": "mariam.al.shamsi@example.com"
+   },
+   "status": "new",
+   "notes": [],
+   "value": null,
+   "createdAt": "2026-09-10T19:00:00.000Z"
+  },
+  {
+   "id": "req_7",
+   "number": "RQ-2207",
+   "service": "custom",
+   "space": "Villa",
+   "area": "",
+   "emirate": "Dubai",
+   "budget": "AED 50k – 100k",
+   "timeline": "1 – 3 months",
+   "details": "Floating oak staircase + glass balustrade, 2 floors.",
+   "files": [],
+   "contact": {
+    "name": "Karim Nassar",
+    "company": "",
+    "phone": "+971 50 322 2678",
+    "email": "karim.nassar@example.com"
+   },
+   "status": "quoted",
+   "notes": [
+    {
+     "text": "Called client, site visit scheduled.",
+     "at": "2026-09-24T19:00:00.000Z"
+    }
+   ],
+   "value": 78000,
+   "createdAt": "2026-09-06T19:00:00.000Z"
+  },
+  {
+   "id": "req_8",
+   "number": "RQ-2208",
+   "service": "fitout",
+   "space": "Kiosk",
+   "area": "16",
+   "emirate": "Abu Dhabi",
+   "budget": "AED 50k – 100k",
+   "timeline": "Within a month",
+   "details": "Mochi kiosk for Yas Mall, need approval drawings.",
+   "files": [],
+   "contact": {
+    "name": "Yousef Darwish",
+    "company": "Sweet Yuki",
+    "phone": "+971 50 359 2791",
+    "email": "yousef.darwish@example.com"
+   },
+   "status": "lost",
+   "notes": [
+    {
+     "text": "Called client, site visit scheduled.",
+     "at": "2026-09-23T19:00:00.000Z"
+    }
+   ],
+   "value": null,
+   "createdAt": "2026-09-02T19:00:00.000Z"
+  },
+  {
+   "id": "req_9",
+   "number": "RQ-2209",
+   "service": "fitout",
+   "space": "Clinic",
+   "area": "300",
+   "emirate": "Dubai",
+   "budget": "AED 250k – 500k",
+   "timeline": "1 – 3 months",
+   "details": "Aesthetics clinic in Jumeirah, reception, 6 treatment rooms.",
+   "files": [],
+   "contact": {
+    "name": "Aisha Rahman",
+    "company": "Glow Clinic",
+    "phone": "+971 50 396 2904",
+    "email": "aisha.rahman@example.com"
+   },
+   "status": "contacted",
+   "notes": [
+    {
+     "text": "Called client, site visit scheduled.",
+     "at": "2026-09-22T19:00:00.000Z"
+    }
+   ],
+   "value": null,
+   "createdAt": "2026-08-29T19:00:00.000Z"
+  }
+ ],
+ "messages": [
+  {
+   "id": "msg_1",
+   "name": "Nadia Fares",
+   "email": "nadia.fares@example.com",
+   "phone": "",
+   "subject": "Showroom visit",
+   "message": "Hi, can I visit your workshop on Saturday to see the fabric samples?",
+   "read": false,
+   "createdAt": "2026-09-30T19:00:00.000Z"
+  },
+  {
+   "id": "msg_2",
+   "name": "Tom Becker",
+   "email": "tom.becker@example.com",
+   "phone": "",
+   "subject": "Supplier introduction",
+   "message": "We supply Italian veneers and would like to present our catalogue.",
+   "read": false,
+   "createdAt": "2026-09-28T19:00:00.000Z"
+  },
+  {
+   "id": "msg_3",
+   "name": "Khalid Al Zaabi",
+   "email": "khalid.al.zaabi@example.com",
+   "phone": "",
+   "subject": "Delivery to Fujairah",
+   "message": "Do you deliver and install in Fujairah? Interested in the Walnut Platform Bed.",
+   "read": true,
+   "createdAt": "2026-09-26T19:00:00.000Z"
+  },
+  {
+   "id": "msg_4",
+   "name": "Priya Menon",
+   "email": "priya.menon@example.com",
+   "phone": "",
+   "subject": "Careers",
+   "message": "I am a joinery draughtsman with 6 years UAE experience — are you hiring?",
+   "read": true,
+   "createdAt": "2026-09-24T19:00:00.000Z"
+  }
+ ],
+ "settings": {
+  "phone": "+971 4 835 8197",
+  "mobile": "+971 50 899 6838",
+  "whatsapp": "971508996838",
+  "email": "info@tanfeez.me",
+  "instagram": "tanfeez_aamal_technical",
+  "address": {
+   "en": "Khalifa Al Mazrouei Bldg, Warehouse 2, Dubai Investment Park 2, Dubai, UAE",
+   "ar": "مبنى خليفة المزروعي، مستودع 2، مجمع دبي للاستثمار 2، دبي، الإمارات"
+  },
+  "hours": {
+   "en": "Sat – Thu · 8:00 – 18:00",
+   "ar": "السبت – الخميس · 8:00 – 18:00"
+  },
+  "announcement": {
+   "en": "Free delivery & installation across Dubai on orders over AED 5,000",
+   "ar": "توصيل وتركيب مجاني في دبي للطلبات فوق 5,000 درهم"
+  },
+  "freeDeliveryOver": 5000,
+  "deliveryFees": {
+   "Dubai": 150,
+   "Sharjah": 200,
+   "Ajman": 200,
+   "Abu Dhabi": 300,
+   "Umm Al Quwain": 250,
+   "Ras Al Khaimah": 300,
+   "Fujairah": 350
+  },
+  "bank": {
+   "name": "Emirates NBD",
+   "iban": "AE00 0000 0000 0000 0000 000",
+   "account": "TANFEEZ AAMAL TECHNICAL CONTRACTING LLC"
+  }
+ },
+ "counters": {
+  "order": 10047,
+  "request": 2210
+ }
+}
