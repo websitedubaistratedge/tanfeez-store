@@ -8,6 +8,7 @@ import type { Lang, Message, Order, QuoteRequest } from "./types";
 import { configPrice, DEFAULT_MATERIALS, describeConfig } from "./configurator";
 import { notify } from "./notify";
 import { currentCustomer, saveCustomer } from "./customers";
+import { LEGAL_UPDATED } from "./legal";
 
 export async function setLang(lang: Lang) {
   (await cookies()).set("lang", lang, { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
@@ -23,6 +24,8 @@ export type CheckoutInput = {
   customer: Order["customer"];
   payment: Order["payment"];
   notes?: string;
+  /** The customer ticked "I agree to the Terms of sale and Returns policy". */
+  agreed?: boolean;
 };
 
 export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; number: string } | { ok: false; error: string }> {
@@ -30,6 +33,7 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
   if (!clean(c.name) || digits(c.phone).length < 8 || !clean(c.address) || !clean(c.emirate))
     return { ok: false, error: "missing" };
   if (!input.items?.length) return { ok: false, error: "empty" };
+  if (!input.agreed) return { ok: false, error: "terms" };
   const me = await currentCustomer();
 
   const order = await mutate((db) => {
@@ -84,6 +88,7 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
       payment: (["bank", "tabby", "tamara"] as const).find((x) => x === input.payment) ?? "cod",
       notes: clean(input.notes, 1000),
       customerId: me?.id,
+      termsVersion: LEGAL_UPDATED,
       status: "new",
       history: [{ status: "new", at }],
       createdAt: at,

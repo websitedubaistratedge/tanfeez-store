@@ -99,13 +99,29 @@ export function Footer() {
 
         <div className="mt-16 flex flex-col items-start justify-between gap-6 border-t border-ink/10 pt-8 md:flex-row md:items-center">
           <Logo sub />
-          <p className="text-[0.8rem] text-muted">
-            {ar ? (
-              <>© {new Date().getFullYear()} تنفيذ أعمال للمقاولات الفنية ذ.م.م. {t("footer.rights")}</>
-            ) : (
-              <>© {new Date().getFullYear()} TANFEEZ Aamal Technical Contracting LLC. {t("footer.rights")}</>
+          <div className="space-y-2 md:text-end">
+            <nav className="flex flex-wrap gap-x-5 gap-y-1.5 text-[0.82rem] md:justify-end" aria-label={ar ? "السياسات" : "Policies"}>
+              <Link href="/terms" className="link-u">{ar ? "شروط البيع" : "Terms of sale"}</Link>
+              <Link href="/returns" className="link-u">{ar ? "الإرجاع والاسترداد" : "Returns & refunds"}</Link>
+              <Link href="/privacy" className="link-u">{ar ? "سياسة الخصوصية" : "Privacy policy"}</Link>
+              <Link href="/track" className="link-u">{t("nav.track")}</Link>
+            </nav>
+            <p className="text-[0.8rem] text-muted">
+              {ar ? (
+                <>© {new Date().getFullYear()} تنفيذ أعمال للمقاولات الفنية ذ.م.م. {t("footer.rights")}</>
+              ) : (
+                <>© {new Date().getFullYear()} TANFEEZ Aamal Technical Contracting LLC. {t("footer.rights")}</>
+              )}
+            </p>
+            {(settings.company.licence || settings.company.trn) && (
+              <p className="text-[0.74rem] text-faint">
+                {settings.company.licence && (ar ? `رخصة تجارية ${settings.company.licence}` : `Trade licence ${settings.company.licence}`)}
+                {settings.company.licence && settings.company.authority && ` · ${settings.company.authority}`}
+                {settings.company.licence && settings.company.trn && " · "}
+                {settings.company.trn && (ar ? `الرقم الضريبي ${settings.company.trn}` : `TRN ${settings.company.trn}`)}
+              </p>
             )}
-          </p>
+          </div>
         </div>
       </div>
     </footer>

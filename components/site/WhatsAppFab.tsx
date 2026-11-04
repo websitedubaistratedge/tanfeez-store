@@ -24,7 +24,7 @@ export function WhatsAppFab() {
     };
   }, []);
   if (!scrolled && pathname === "/") return null;
-  if (hide || pathname.startsWith("/admin") || pathname.startsWith("/checkout") || pathname.startsWith("/shop/") || ["/contact", "/quote", "/track", "/login", "/account"].includes(pathname)) return null;
+  if (hide || pathname.startsWith("/admin") || pathname.startsWith("/checkout") || pathname.startsWith("/shop/") || ["/contact", "/quote", "/track", "/login", "/account", "/reset", "/terms", "/privacy", "/returns"].includes(pathname)) return null;
   return (
     <motion.a
       href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent("Hello TANFEEZ, I'd like to ask about…")}`}

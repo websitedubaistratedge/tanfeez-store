@@ -5,7 +5,7 @@ import { Eye, EyeOff } from "lucide-react";
 import clsx from "clsx";
 
 /** Underlined field with a small label, matching checkout. */
-export function TextField({ label, className, ...rest }: { label: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+export function TextField({ label, className, ...rest }: { label: string; ref?: React.Ref<HTMLInputElement> } & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <label className={clsx("block", className)}>
       <span className="text-[0.82rem] text-muted">
@@ -78,6 +78,7 @@ const ERRORS: Record<string, [string, string]> = {
   wrong: ["That email and password don't match.", "البريد الإلكتروني أو كلمة المرور غير صحيحة."],
   locked: ["Too many attempts. Please try again in 15 minutes.", "محاولات كثيرة. يرجى المحاولة بعد 15 دقيقة."],
   current: ["Your current password isn't right.", "كلمة المرور الحالية غير صحيحة."],
+  expired: ["This reset link has expired or was already used. Request a new one.", "انتهت صلاحية رابط إعادة التعيين أو تم استخدامه. اطلب رابطاً جديداً."],
   signedOut: ["You've been signed out. Please sign in again.", "تم تسجيل خروجك. يرجى تسجيل الدخول مجدداً."],
 };
 export const errorText = (code: string, ar: boolean) => (ERRORS[code] ?? ["Something went wrong. Please try again.", "حدث خطأ. يرجى المحاولة مجدداً."])[ar ? 1 : 0];

@@ -241,3 +241,49 @@ export async function signOutEverywhere(id: string) {
   const s = JSON.parse(r.secret) as Secret;
   await writeSecret(id, { ...s, v: s.v + 1 });
 }
+
+// ───────── Password reset links ─────────
+const RESET_TTL = 60 * 60; // 1 hour
+const resetMemory = new Map<string, { customer: string; expires: number }>();
+const sha = async (t: string) => b64(await crypto.subtle.digest("SHA-256", enc.encode(t)));
+
+export async function findCustomerByEmail(email: string) {
+  const r = await rowByEmail(email);
+  return r ? toCustomer(r) : null;
+}
+
+/** A fresh single-use token for this customer (older ones stop working). */
+export async function createResetToken(customerId: string) {
+  const token = b64(crypto.getRandomValues(new Uint8Array(32)));
+  const hash = await sha(token);
+  const expires = Math.floor(Date.now() / 1000) + RESET_TTL;
+  const d = await db();
+  if (!d) {
+    for (const [k, v] of resetMemory) if (v.customer === customerId) resetMemory.delete(k);
+    resetMemory.set(hash, { customer: customerId, expires });
+    return token;
+  }
+  await d.batch([
+    d.prepare("DELETE FROM resets WHERE customer = ? OR expires < ?").bind(customerId, Math.floor(Date.now() / 1000)),
+    d.prepare("INSERT INTO resets (hash, customer, expires) VALUES (?, ?, ?)").bind(hash, customerId, expires),
+  ]);
+  return token;
+}
+
+/** The customer a still-valid token belongs to; `consume` makes it unusable afterwards. */
+export async function checkResetToken(token: string, consume = false): Promise<string | null> {
+  if (!/^[\w-]{30,60}$/.test(token)) return null;
+  const hash = await sha(token);
+  const now = Math.floor(Date.now() / 1000);
+  const d = await db();
+  if (!d) {
+    const r = resetMemory.get(hash);
+    if (!r || r.expires < now) return null;
+    if (consume) resetMemory.delete(hash);
+    return r.customer;
+  }
+  const r = await d.prepare("SELECT customer FROM resets WHERE hash = ? AND expires >= ?").bind(hash, now).first<{ customer: string }>();
+  if (!r) return null;
+  if (consume) await d.prepare("DELETE FROM resets WHERE customer = ?").bind(r.customer).run();
+  return r.customer;
+}

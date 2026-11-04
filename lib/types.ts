@@ -108,6 +108,8 @@ export type Order = {
   notes?: string;
   /** Set when the order was placed while signed in to a customer account. */
   customerId?: string;
+  /** Version (date) of the Terms of sale the customer accepted at checkout. */
+  termsVersion?: string;
   status: OrderStatus;
   history: { status: OrderStatus; at: string }[];
   createdAt: string;
@@ -158,6 +160,10 @@ export type Customer = {
   area: string;
   address: string;
   marketing: boolean;
+  /** When they agreed to the Terms and Privacy policy, and which version. */
+  termsAccepted?: { at: string; version: string };
+  /** When the marketing choice was last made (consent record). */
+  marketingAt?: string;
   createdAt: string;
   lastLogin?: string;
 };
@@ -210,6 +216,8 @@ export type Settings = {
   bank: { name: string; iban: string; account: string };
   materials?: MaterialCatalog;
   notify?: NotifyConfig;
+  /** Shown in the footer and legal pages once filled in (Admin → Settings → Company & legal). */
+  company?: { licence: string; authority: string; trn: string };
 };
 
 export type DB = {

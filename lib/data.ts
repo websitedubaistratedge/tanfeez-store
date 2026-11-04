@@ -20,6 +20,7 @@ export async function getPublicSettings(lang: Lang): Promise<PublicSettings> {
     freeDeliveryOver: s.freeDeliveryOver,
     deliveryFees: s.deliveryFees,
     materials: s.materials ?? DEFAULT_MATERIALS,
+    company: { licence: s.company?.licence ?? "", authority: s.company?.authority ?? "", trn: s.company?.trn ?? "" },
   };
 }
 

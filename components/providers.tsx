@@ -16,6 +16,7 @@ export type PublicSettings = {
   freeDeliveryOver: number;
   deliveryFees: Record<string, number>;
   materials: MaterialCatalog;
+  company: { licence: string; authority: string; trn: string };
 };
 
 type Ctx = {

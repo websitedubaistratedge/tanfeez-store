@@ -2,13 +2,13 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, useTransition } from "react";
+import { useRef, useState, useTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Loader2, MapPin, PackageCheck, Zap } from "lucide-react";
+import { ArrowLeft, Loader2, MailCheck, MapPin, PackageCheck, Zap } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { EASE } from "@/components/ui/motion";
-import { signIn, signUp } from "@/lib/account-actions";
+import { requestPasswordReset, signIn, signUp } from "@/lib/account-actions";
 import { Check, errorText, KindChoice, PasswordField, TextField } from "./fields";
 import { safeNext } from "@/lib/safe-next";
 import { markWelcomed } from "@/components/site/WelcomeBack";
@@ -87,7 +87,7 @@ function SignIn({ next }: { next?: string }) {
   const ar = lang === "ar";
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
-  const [forgot, setForgot] = useState(false);
+  const [forgot, setForgot] = useState<string | null>(null); // the email typed so far, when open
   const [pending, start] = useTransition();
 
   const submit = (fd: FormData) =>
@@ -100,36 +100,36 @@ function SignIn({ next }: { next?: string }) {
       router.refresh();
     });
 
+  const emailRef = useRef<HTMLInputElement>(null);
+
   return (
     <>
-      <h1 className="font-display text-[clamp(1.9rem,3vw,2.5rem)] font-semibold tracking-[-0.03em] max-lg:sr-only">{ar ? "تسجيل الدخول" : "Sign in"}</h1>
-      <p className="text-[0.95rem] text-muted lg:mt-2">{ar ? "مرحباً بعودتك. تابع طلباتك وأكمل الشراء بسرعة." : "Welcome back. Follow your orders and check out faster."}</p>
-      <form onSubmit={(e) => { e.preventDefault(); submit(new FormData(e.currentTarget)); }} className="mt-9 space-y-7">
-        <TextField label={ar ? "البريد الإلكتروني" : "Email"} name="email" type="email" required autoComplete="email" dir="ltr" />
-        <div>
-          <PasswordField label={ar ? "كلمة المرور" : "Password"} name="password" required autoComplete="current-password" />
-          <button type="button" onClick={() => setForgot(!forgot)} className="link-u mt-3 text-[0.88rem] text-ink-2">
-            {ar ? "نسيت كلمة المرور؟" : "Forgot your password?"}
-          </button>
-          <AnimatePresence>
-            {forgot && (
-              <motion.p initial={{ opacity: 0, height: 0 }} animate={{ opacity: 1, height: "auto" }} exit={{ opacity: 0, height: 0 }} className="overflow-hidden text-[0.86rem] text-muted">
-                <span className="mt-3 block rounded-xl bg-white/70 p-4">
-                  {ar ? "راسلنا على واتساب ببريدك الإلكتروني وسنرسل لك كلمة مرور مؤقتة." : "Message us on WhatsApp with your account email and we'll send you a temporary password."}{" "}
-                  <a href={`https://wa.me/${settings.whatsapp}?text=${encodeURIComponent(ar ? "مرحباً، نسيت كلمة مرور حسابي" : "Hello, I forgot my account password")}`} target="_blank" rel="noreferrer" className="font-medium text-ink underline underline-offset-2">
-                    WhatsApp
-                  </a>
-                </span>
-              </motion.p>
-            )}
-          </AnimatePresence>
-        </div>
-        <Err code={error} />
-        <div className="flex flex-wrap items-center justify-between gap-5 pt-2">
-          <Check name="remember" defaultChecked>{ar ? "تذكرني" : "Remember me"}</Check>
-          <Submit pending={pending}>{ar ? "دخول" : "Sign in"}</Submit>
-        </div>
-      </form>
+      <AnimatePresence mode="wait" initial={false}>
+        {forgot !== null ? (
+          <motion.div key="forgot" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.4, ease: EASE }}>
+            <Forgot initialEmail={forgot} whatsapp={settings.whatsapp} onBack={() => setForgot(null)} />
+          </motion.div>
+        ) : (
+          <motion.div key="signin" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.4, ease: EASE }}>
+            <h1 className="font-display text-[clamp(1.9rem,3vw,2.5rem)] font-semibold tracking-[-0.03em] max-lg:sr-only">{ar ? "تسجيل الدخول" : "Sign in"}</h1>
+            <p className="text-[0.95rem] text-muted lg:mt-2">{ar ? "مرحباً بعودتك. تابع طلباتك وأكمل الشراء بسرعة." : "Welcome back. Follow your orders and check out faster."}</p>
+            <form onSubmit={(e) => { e.preventDefault(); submit(new FormData(e.currentTarget)); }} className="mt-9 space-y-7">
+              <TextField ref={emailRef} label={ar ? "البريد الإلكتروني" : "Email"} name="email" type="email" required autoComplete="email" dir="ltr" />
+              <div>
+                <PasswordField label={ar ? "كلمة المرور" : "Password"} name="password" required autoComplete="current-password" />
+                <button type="button" onClick={() => setForgot(emailRef.current?.value ?? "")} className="link-u mt-3 text-[0.88rem] text-ink-2">
+                  {ar ? "نسيت كلمة المرور؟" : "Forgot your password?"}
+                </button>
+              </div>
+              <Err code={error} />
+              <div className="flex flex-wrap items-center justify-between gap-5 pt-2">
+                <Check name="remember" defaultChecked>{ar ? "تذكرني" : "Remember me"}</Check>
+                <Submit pending={pending}>{ar ? "دخول" : "Sign in"}</Submit>
+              </div>
+            </form>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       <ul className="mt-auto grid grid-cols-3 gap-3 border-t border-ink/10 pt-8 text-[0.8rem] leading-snug text-ink-2 max-lg:mt-12 sm:text-[0.86rem]">
         {[
@@ -143,6 +143,60 @@ function SignIn({ next }: { next?: string }) {
           </li>
         ))}
       </ul>
+    </>
+  );
+}
+
+function Forgot({ initialEmail, whatsapp, onBack }: { initialEmail: string; whatsapp: string; onBack: () => void }) {
+  const { lang } = useSite();
+  const ar = lang === "ar";
+  const [sent, setSent] = useState<null | "email" | "whatsapp">(null);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, start] = useTransition();
+  const wa = `https://wa.me/${whatsapp}?text=${encodeURIComponent(ar ? "مرحباً، نسيت كلمة مرور حسابي في تنفيذ" : "Hello, I forgot my TANFEEZ account password")}`;
+
+  return (
+    <>
+      <button type="button" onClick={onBack} className="group mb-6 inline-flex items-center gap-2 text-[0.88rem] text-ink/70 hover:text-ink">
+        <ArrowLeft className="h-4 w-4 stroke-[1.5] transition group-hover:-translate-x-0.5 rtl:rotate-180" />
+        {ar ? "العودة لتسجيل الدخول" : "Back to sign in"}
+      </button>
+      <h1 className="font-display text-[clamp(1.7rem,3vw,2.3rem)] font-semibold tracking-[-0.03em]">{ar ? "نسيت كلمة المرور؟" : "Forgot your password?"}</h1>
+      {sent === "email" ? (
+        <div className="mt-6 rounded-2xl bg-white/80 p-5">
+          <p className="flex items-center gap-2 font-medium"><MailCheck className="h-5 w-5 stroke-[1.6]" />{ar ? "تحقق من بريدك" : "Check your inbox"}</p>
+          <p className="mt-2 text-[0.92rem] leading-relaxed text-muted">
+            {ar ? "إذا كان هناك حساب بهذا البريد، فقد أرسلنا رابطاً لاختيار كلمة مرور جديدة. الرابط صالح لمدة ساعة واحدة. لا تنسَ مجلد الرسائل غير المرغوب فيها." : "If there's an account for that email, we've sent a link to choose a new password. It works for one hour. Don't forget to check your spam folder."}
+          </p>
+          <a href={wa} target="_blank" rel="noreferrer" className="mt-4 inline-block text-[0.86rem] underline underline-offset-2">{ar ? "لم يصلك شيء؟ راسلنا على واتساب" : "Nothing arrived? Message us on WhatsApp"}</a>
+        </div>
+      ) : sent === "whatsapp" ? (
+        <div className="mt-6 rounded-2xl bg-white/80 p-5">
+          <p className="text-[0.92rem] leading-relaxed text-ink-2">{ar ? "راسلنا على واتساب ببريد حسابك، وسنرسل لك كلمة مرور مؤقتة خلال دقائق." : "Message us on WhatsApp with your account email and we'll send you a temporary password within minutes."}</p>
+          <a href={wa} target="_blank" rel="noreferrer" className="mt-4 inline-flex h-11 items-center rounded-full bg-ink px-6 text-[0.9rem] font-medium text-white">WhatsApp</a>
+        </div>
+      ) : (
+        <>
+          <p className="mt-2 text-[0.95rem] text-muted">{ar ? "أدخل بريد حسابك وسنرسل لك رابطاً لإعادة تعيين كلمة المرور." : "Enter your account email and we'll send you a link to reset your password."}</p>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const email = String(new FormData(e.currentTarget).get("email") ?? "");
+              start(async () => {
+                setError(null);
+                const r = await requestPasswordReset(email);
+                if (!r.ok) return setError(r.error);
+                setSent(r.via);
+              });
+            }}
+            className="mt-8 space-y-7"
+          >
+            <TextField label={ar ? "البريد الإلكتروني" : "Email"} name="email" type="email" required autoComplete="email" dir="ltr" defaultValue={initialEmail} autoFocus />
+            <Err code={error} />
+            <Submit pending={pending}>{ar ? "أرسل الرابط" : "Send reset link"}</Submit>
+          </form>
+        </>
+      )}
     </>
   );
 }
@@ -193,7 +247,11 @@ function SignUp({ next, onSignIn }: { next?: string; onSignIn: () => void }) {
         </div>
         <div className="space-y-4 pt-1">
           <Check name="terms" required>
-            {ar ? "أوافق على شروط البيع وسياسة الخصوصية لدى تنفيذ." : "I agree to TANFEEZ's terms of sale and privacy policy."}
+            {ar ? "اطلعت على " : "I have read and agree to the "}
+            <Link href="/terms" target="_blank" className="underline underline-offset-2 hover:text-ink">{ar ? "شروط البيع" : "Terms of sale"}</Link>
+            {ar ? " و" : " and "}
+            <Link href="/privacy" target="_blank" className="underline underline-offset-2 hover:text-ink">{ar ? "سياسة الخصوصية" : "Privacy policy"}</Link>
+            {ar ? " وأوافق عليهما." : "."}
           </Check>
           <Check name="marketing">
             {ar ? "نعم، أرسلوا لي النشرة الإخبارية والمجموعات الجديدة والعروض الخاصة عبر البريد الإلكتروني أو واتساب." : "Yes, send me the TANFEEZ newsletter, new collections and private offers by email or WhatsApp."}

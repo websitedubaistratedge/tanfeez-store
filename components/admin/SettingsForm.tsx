@@ -61,6 +61,17 @@ export function SettingsForm({ settings, notify }: { settings: Settings; notify:
             </div>
           </Card>
           <Card className="space-y-4">
+            <div>
+              <h2 className="font-display font-semibold tracking-tight">Company &amp; legal</h2>
+              <p className="mt-1 text-sm text-muted">Shown in the website footer and on the Terms page. Payment providers and UAE consumer rules expect the trade licence to be visible.</p>
+            </div>
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Field label="Trade licence no."><input className={inputCls} value={s.company?.licence ?? ""} onChange={(e) => set("company", { licence: e.target.value, authority: s.company?.authority ?? "", trn: s.company?.trn ?? "" })} /></Field>
+              <Field label="Issued by" hint="e.g. Dubai DET"><input className={inputCls} value={s.company?.authority ?? ""} onChange={(e) => set("company", { licence: s.company?.licence ?? "", authority: e.target.value, trn: s.company?.trn ?? "" })} /></Field>
+              <Field label="VAT TRN" className="sm:col-span-2" hint="15 digits, if VAT-registered"><input className={inputCls} value={s.company?.trn ?? ""} onChange={(e) => set("company", { licence: s.company?.licence ?? "", authority: s.company?.authority ?? "", trn: e.target.value.replace(/[^\d]/g, "").slice(0, 15) })} /></Field>
+            </div>
+          </Card>
+          <Card className="space-y-4">
             <h2 className="font-display font-semibold tracking-tight">Bank transfer details</h2>
             <Field label="Bank"><input className={inputCls} value={s.bank.name} onChange={(e) => set("bank", { ...s.bank, name: e.target.value })} /></Field>
             <Field label="Account name"><input className={inputCls} value={s.bank.account} onChange={(e) => set("bank", { ...s.bank, account: e.target.value })} /></Field>

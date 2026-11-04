@@ -23,6 +23,8 @@ const SCHEMA = [
   // Customer accounts live outside the store so they're never loaded with the catalogue (lib/customers.ts).
   "CREATE TABLE IF NOT EXISTS customers (id TEXT PRIMARY KEY, email TEXT NOT NULL UNIQUE, data TEXT NOT NULL, secret TEXT NOT NULL, created TEXT NOT NULL)",
   "CREATE TABLE IF NOT EXISTS auth (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
+  // Password-reset links: only a hash of each token is kept, and it expires after an hour.
+  "CREATE TABLE IF NOT EXISTS resets (hash TEXT PRIMARY KEY, customer TEXT NOT NULL, expires INTEGER NOT NULL)",
 ];
 
 const clone = <T>(v: T): T => JSON.parse(JSON.stringify(v));

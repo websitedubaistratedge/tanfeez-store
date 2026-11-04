@@ -3,8 +3,10 @@
 import { headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { uploadStore } from "./uploads";
-import { authenticate, checkPasswordFor, createCustomer, currentCustomer, endSession, normEmail, saveCustomer, setPassword, startSession } from "./customers";
+import { authenticate, checkPasswordFor, checkResetToken, createCustomer, createResetToken, currentCustomer, deleteCustomer, endSession, findCustomerByEmail, normEmail, saveCustomer, setPassword, startSession } from "./customers";
+import { customerEmailReady, origin, sendPasswordReset } from "./notify";
 import type { Customer } from "./types";
+import { LEGAL_UPDATED } from "./legal";
 
 // Customer sign-up, sign-in and the "My account" forms. Errors come back as short codes
 // the forms translate (see components/account).
@@ -21,7 +23,7 @@ const MIN_PASSWORD = 8;
 const MAX_TRIES = 8;
 const LOCK_SECONDS = 15 * 60;
 const MAX_SIGNUPS = 5;
-async function limiter(kind: "fails" | "signups", max: number, ttl: number) {
+async function limiter(kind: "fails" | "signups" | "resets", max: number, ttl: number) {
   const h = await headers();
   const ip = h.get("cf-connecting-ip") || h.get("x-forwarded-for")?.split(",")[0].trim() || "local";
   const kv = await uploadStore().catch(() => null);
@@ -74,6 +76,8 @@ export async function signUp(fd: FormData): Promise<AccountResult> {
       area: "",
       address: "",
       marketing: !!fd.get("marketing"),
+      marketingAt: new Date().toISOString(),
+      termsAccepted: { at: new Date().toISOString(), version: LEGAL_UPDATED },
       lastLogin: new Date().toISOString(),
     },
     password
@@ -119,6 +123,7 @@ export async function updateProfile(fd: FormData): Promise<AccountResult> {
     area: clean(fd.get("area"), 120),
     address: clean(fd.get("address"), 300),
     marketing: !!fd.get("marketing"),
+    marketingAt: !!fd.get("marketing") !== c.marketing ? new Date().toISOString() : c.marketingAt,
   };
   await saveCustomer(next);
   revalidatePath("/", "layout");
@@ -139,5 +144,59 @@ export async function changePassword(fd: FormData): Promise<AccountResult> {
   if (next !== String(fd.get("confirm") ?? "")) return { ok: false, error: "match" };
   await setPassword(c.id, next);
   await startSession(c.id); // keep this device signed in; every other one is signed out
+  return { ok: true };
+}
+
+// ───────── Forgot password ─────────
+/**
+ * Emails a one-hour reset link if the address has an account. The answer is the same either
+ * way, so the form can't be used to find out who has an account. Without email set up yet,
+ * the customer is pointed to WhatsApp, where the team can issue a temporary password.
+ */
+export async function requestPasswordReset(email: string): Promise<{ ok: true; via: "email" | "whatsapp" } | { ok: false; error: string }> {
+  const e = normEmail(clean(email, 160));
+  if (!validEmail(e)) return { ok: false, error: "email" };
+  if (!(await customerEmailReady())) return { ok: true, via: "whatsapp" };
+  const limit = await limiter("resets", 5, 60 * 60);
+  if (limit.blocked) return { ok: false, error: "locked" };
+  await limit.hit();
+  const c = await findCustomerByEmail(e);
+  if (c) {
+    try {
+      const token = await createResetToken(c.id);
+      await sendPasswordReset(c.email, c.firstName, `${await origin()}/reset?token=${token}`);
+    } catch (err) {
+      console.error("[reset]", err);
+    }
+  }
+  return { ok: true, via: "email" };
+}
+
+export async function resetPassword(fd: FormData): Promise<AccountResult> {
+  const token = clean(fd.get("token"), 100);
+  const next = String(fd.get("password") ?? "");
+  if (next.length < MIN_PASSWORD || next.length > 200) return { ok: false, error: "short" };
+  if (next !== String(fd.get("confirm") ?? "")) return { ok: false, error: "match" };
+  const id = await checkResetToken(token, true);
+  if (!id) return { ok: false, error: "expired" };
+  await setPassword(id, next); // also signs out every other device
+  await startSession(id);
+  revalidatePath("/", "layout");
+  return { ok: true };
+}
+
+// ───────── Delete my account ─────────
+export async function deleteMyAccount(fd: FormData): Promise<AccountResult> {
+  const c = await currentCustomer();
+  if (!c) return { ok: false, error: "signedOut" };
+  const t = await limiter("fails", MAX_TRIES, LOCK_SECONDS);
+  if (t.blocked) return { ok: false, error: "locked" };
+  if (!(await checkPasswordFor(c.id, String(fd.get("password") ?? "")))) {
+    await t.hit();
+    return { ok: false, error: "current" };
+  }
+  await deleteCustomer(c.id); // orders stay on file, as UAE tax law requires
+  await endSession();
+  revalidatePath("/", "layout");
   return { ok: true };
 }

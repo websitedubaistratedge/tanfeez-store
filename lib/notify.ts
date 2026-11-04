@@ -255,7 +255,7 @@ const ready = (ch: Channel, cfg: NotifyConfig) =>
       ? cfg.whatsapp.on && waNumber(cfg.whatsapp.phone).length >= 10 && !!cfg.whatsapp.apiKey.trim()
       : cfg.email.on && canEmail(cfg);
 
-async function origin() {
+export async function origin() {
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
   const proto = h.get("x-forwarded-proto") ?? (/^(localhost|127\.)/.test(host) ? "http" : "https");
@@ -344,4 +344,29 @@ export async function telegramChat(token: string): Promise<{ ok: true; chatId: s
   } catch (e) {
     return { ok: false, error: e instanceof Error ? e.message : String(e) };
   }
+}
+
+// ───────── Account emails ─────────
+/** Whether customer emails (receipts, password resets) can be sent: Resend key + From address. */
+export async function customerEmailReady() {
+  const cfg = (await readDB()).settings.notify;
+  return !!cfg && canEmail(cfg);
+}
+
+export async function sendPasswordReset(to: string, firstName: string, link: string) {
+  const { settings } = await readDB();
+  const cfg = settings.notify;
+  if (!cfg || !canEmail(cfg)) return false;
+  const btn = "display:inline-block;background:#1d1b19;color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:14px";
+  await resend(cfg.email, {
+    to: [to],
+    subject: "Reset your TANFEEZ password",
+    html: emailShell(`
+      <h1 style="margin:0 0 8px;font-size:22px;font-weight:600">Reset your password</h1>
+      <p style="margin:0 0 4px;font-size:15px;color:#5f5a54" dir="rtl">إعادة تعيين كلمة المرور</p>
+      <p style="margin:14px 0 22px;color:#5f5a54;font-size:14px;line-height:1.55">Hello ${esc(firstName)}, we received a request to reset the password for your TANFEEZ account. The link below works once and expires in one hour.</p>
+      <p style="margin:0"><a href="${link}" style="${btn}">Choose a new password</a></p>
+      <p style="margin:24px 0 0;padding-top:18px;border-top:1px solid #efece8;color:#8a847d;font-size:12.5px;line-height:1.6">Didn't ask for this? You can ignore this email; your password stays the same.</p>`),
+  });
+  return true;
 }

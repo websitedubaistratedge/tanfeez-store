@@ -59,6 +59,7 @@ export function CheckoutView() {
         },
         payment,
         notes: String(fd.get("notes") || ""),
+        agreed: fd.get("agree") === "on",
       });
       if (r.ok) {
         clear();
@@ -189,7 +190,21 @@ export function CheckoutView() {
                 </motion.p>
               )}
             </AnimatePresence>
-            <button disabled={pending || !hydrated} className="mt-6 flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink text-[0.95rem] font-medium text-white transition hover:bg-ink-2 disabled:opacity-60">
+            <label className="mt-6 flex cursor-pointer items-start gap-3 text-[0.84rem] leading-snug text-ink-2">
+              <input type="checkbox" name="agree" required className="peer sr-only" />
+              <span className="relative mt-px flex h-[18px] w-[18px] shrink-0 items-center justify-center border border-ink/70 bg-white transition peer-checked:border-ink peer-focus-visible:ring-2 peer-focus-visible:ring-brand peer-checked:[&>span]:scale-100">
+                <span className="h-2.5 w-2.5 scale-0 bg-ink transition-transform duration-200" />
+              </span>
+              <span>
+                {ar ? "أوافق على " : "I agree to the "}
+                <Link href="/terms" target="_blank" className="underline underline-offset-2">{ar ? "شروط البيع" : "Terms of sale"}</Link>
+                {ar ? " و" : " and "}
+                <Link href="/returns" target="_blank" className="underline underline-offset-2">{ar ? "سياسة الإرجاع" : "Returns policy"}</Link>
+                {ar ? "، وأقرّ بقراءة " : ", and have read the "}
+                <Link href="/privacy" target="_blank" className="underline underline-offset-2">{ar ? "سياسة الخصوصية" : "Privacy policy"}</Link>.
+              </span>
+            </label>
+            <button disabled={pending || !hydrated} className="mt-5 flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink text-[0.95rem] font-medium text-white transition hover:bg-ink-2 disabled:opacity-60">
               {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Lock className="h-4 w-4" />}
               {payment === "tabby" || payment === "tamara"
                 ? ar

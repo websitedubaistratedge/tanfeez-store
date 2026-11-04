@@ -147,6 +147,17 @@ export function CustomerDetail({ customer, orders }: { customer: Customer; order
             </ul>
           </Card>
 
+          <Card className="space-y-2 text-sm">
+            <h2 className="font-display font-semibold tracking-tight">Consent record</h2>
+            <p className="text-muted">
+              Terms &amp; privacy: {customer.termsAccepted ? <>accepted {fmtDate(customer.termsAccepted.at)} <span className="text-faint">(version {customer.termsAccepted.version})</span></> : "accepted at sign-up"}
+            </p>
+            <p className="text-muted">
+              Newsletter &amp; offers: <span className={customer.marketing ? "font-medium text-emerald-700" : ""}>{customer.marketing ? "opted in" : "not opted in"}</span>
+              {customer.marketingAt && <span className="text-faint"> · since {fmtDate(customer.marketingAt)}</span>}
+            </p>
+          </Card>
+
           <Card className="space-y-3">
             <h2 className="font-display font-semibold tracking-tight">Sign-in &amp; security</h2>
             <p className="text-sm text-muted">Forgot their password? Create a temporary one and send it to them. Passwords are stored encrypted; nobody, including you, can see the old one.</p>

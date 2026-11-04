@@ -5,12 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Check as CheckIcon, KeyRound, Loader2, LogOut, Package, UserRound } from "lucide-react";
+import { Check as CheckIcon, KeyRound, Loader2, LogOut, Package, Trash2, UserRound } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { EASE } from "@/components/ui/motion";
 import { CircleArrow, PillLink } from "@/components/ui/buttons";
-import { changePassword, signOut, updateProfile } from "@/lib/account-actions";
+import { changePassword, deleteMyAccount, signOut, updateProfile } from "@/lib/account-actions";
 import { EMIRATES, emirateName, money } from "@/lib/i18n";
 import type { AccountInfo, OrderStatus } from "@/lib/types";
 import { Check, errorText, KindChoice, PasswordField, TextField } from "./fields";
@@ -91,7 +91,12 @@ export function AccountView({ me, since, orders, initial = "orders" }: { me: Acc
           <motion.div key={section} initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.45, ease: EASE }} className="min-w-0">
             {section === "orders" && <Orders orders={orders} />}
             {section === "details" && <Details me={me} />}
-            {section === "password" && <Password />}
+            {section === "password" && (
+              <div className="space-y-14">
+                <Password />
+                <DeleteAccount />
+              </div>
+            )}
           </motion.div>
         </AnimatePresence>
       </section>
@@ -258,5 +263,51 @@ function Password() {
       <PasswordField label={ar ? "تأكيد كلمة المرور الجديدة" : "Confirm new password"} name="confirm" required minLength={8} autoComplete="new-password" />
       <SaveRow state={state} pending={pending} label={ar ? "تحديث كلمة المرور" : "Update password"} />
     </form>
+  );
+}
+
+function DeleteAccount() {
+  const { lang } = useSite();
+  const ar = lang === "ar";
+  const router = useRouter();
+  const [open, setOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [pending, start] = useTransition();
+  return (
+    <div className="max-w-md border-t border-line pt-10">
+      <h2 className="font-display text-[1.15rem] font-semibold">{ar ? "حذف الحساب" : "Delete account"}</h2>
+      <p className="mt-1 text-[0.86rem] text-muted">
+        {ar ? "يحذف بيانات حسابك وعنوانك المحفوظ. نحتفظ بسجلات الطلبات السابقة كما يتطلب القانون." : "Removes your login and saved details. We keep records of past orders, as the law requires."}
+      </p>
+      {!open ? (
+        <button onClick={() => setOpen(true)} className="mt-4 inline-flex items-center gap-2 text-[0.88rem] font-medium text-red-700 hover:underline">
+          <Trash2 className="h-4 w-4" /> {ar ? "حذف حسابي" : "Delete my account"}
+        </button>
+      ) : (
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            const fd = new FormData(e.currentTarget);
+            start(async () => {
+              setError(null);
+              const r = await deleteMyAccount(fd);
+              if (!r.ok) return setError(r.error);
+              router.replace("/");
+              router.refresh();
+            });
+          }}
+          className="mt-5 space-y-5 rounded-2xl bg-red-50/60 p-5"
+        >
+          <PasswordField label={ar ? "أدخل كلمة المرور للتأكيد" : "Enter your password to confirm"} name="password" required autoComplete="current-password" />
+          {error && <p className="text-[0.86rem] text-red-700" role="alert">{errorText(error, ar)}</p>}
+          <div className="flex flex-wrap items-center gap-3">
+            <button disabled={pending} className="inline-flex h-11 items-center gap-2 rounded-full bg-red-700 px-6 text-[0.88rem] font-medium text-white transition hover:bg-red-800 disabled:opacity-60">
+              {pending && <Loader2 className="h-4 w-4 animate-spin" />} {ar ? "حذف نهائي" : "Delete permanently"}
+            </button>
+            <button type="button" onClick={() => setOpen(false)} className="text-[0.88rem] text-muted hover:text-ink">{ar ? "إلغاء" : "Cancel"}</button>
+          </div>
+        </form>
+      )}
+    </div>
   );
 }
