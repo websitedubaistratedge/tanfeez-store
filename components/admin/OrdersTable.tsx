@@ -70,7 +70,7 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
                   </div>
                   <div className="mt-1.5 flex items-center justify-between gap-3 text-[0.78rem] text-muted">
                     <span>{fmtDate(o.createdAt)} · {PAYMENT_LABEL[o.payment]}</span>
-                    <PaymentBadge status={pay.status} />
+                    {o.gateway?.state === "pending" ? <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[0.7rem] font-medium text-amber-800">Awaiting payment</span> : <PaymentBadge status={pay.status} />}
                   </div>
                 </Link>
               </li>
@@ -92,8 +92,8 @@ export function OrdersTable({ orders }: { orders: Order[] }) {
                   <td className="px-3 py-3"><span className="font-medium">{o.customer.name}</span><span className="block text-xs text-ink/45">{o.customer.emirate} · {o.customer.phone}</span></td>
                   <td className="px-3 py-3 text-ink/70">{o.items.reduce((s, i) => s + i.qty, 0)} item(s)</td>
                   <td className="px-3 py-3 text-ink/70">
-                    <span className="block">{PAYMENT_LABEL[o.payment]}</span>
-                    <span className="mt-1 inline-block"><PaymentBadge status={paymentOf(o).status} /></span>
+                    <span className="block">{PAYMENT_LABEL[o.payment]}{o.gateway && <span className="ms-1 text-[0.7rem] text-ink/45">· online{o.gateway.test ? " (test)" : ""}</span>}</span>
+                    <span className="mt-1 inline-block">{o.gateway?.state === "pending" ? <span className="rounded-full bg-amber-50 px-2 py-0.5 text-[0.7rem] font-medium text-amber-800">Awaiting payment</span> : <PaymentBadge status={paymentOf(o).status} />}</span>
                   </td>
                   <td className="px-3 py-3"><OrderBadge status={o.status} /></td>
                   <td className="px-4 py-3 text-right font-medium">{aed(o.total)}</td>

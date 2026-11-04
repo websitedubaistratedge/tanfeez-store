@@ -1,12 +1,13 @@
 "use server";
 
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { revalidatePath } from "next/cache";
 import { mutate, readDB, uid } from "./db";
 import { saveUpload } from "./uploads";
 import type { Lang, Message, Order, QuoteRequest } from "./types";
 import { configPrice, DEFAULT_MATERIALS, describeConfig } from "./configurator";
 import { notify } from "./notify";
+import { PROVIDER_FOR, ready, startPayment } from "./payments";
 import { currentCustomer, saveCustomer } from "./customers";
 import { LEGAL_UPDATED } from "./legal";
 
@@ -28,13 +29,19 @@ export type CheckoutInput = {
   agreed?: boolean;
 };
 
-export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; number: string } | { ok: false; error: string }> {
+export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; number: string; redirect?: string } | { ok: false; error: string }> {
   const c = input.customer;
   if (!clean(c.name) || digits(c.phone).length < 8 || !clean(c.address) || !clean(c.emirate))
     return { ok: false, error: "missing" };
   if (!input.items?.length) return { ok: false, error: "empty" };
   if (!input.agreed) return { ok: false, error: "terms" };
   const me = await currentCustomer();
+  const pay = (await readDB()).settings.payments;
+  if (input.payment === "card" && !ready(pay, "ziina")) return { ok: false, error: "gateway" };
+  // Online payment when the chosen method's provider is switched on in Admin → Payments;
+  // otherwise Tabby/Tamara orders are arranged by the team as before.
+  const provider = PROVIDER_FOR[input.payment as keyof typeof PROVIDER_FOR];
+  const online = !!provider && ready(pay, provider);
 
   const order = await mutate((db) => {
     const fabrics = db.settings.materials ?? DEFAULT_MATERIALS;
@@ -85,7 +92,7 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
       delivery,
       vat: Math.round((total / 1.05) * 0.05),
       total,
-      payment: (["bank", "tabby", "tamara"] as const).find((x) => x === input.payment) ?? "cod",
+      payment: (["bank", "tabby", "tamara", "card"] as const).find((x) => x === input.payment) ?? "cod",
       notes: clean(input.notes, 1000),
       customerId: me?.id,
       termsVersion: LEGAL_UPDATED,
@@ -102,6 +109,34 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
   if (me && !me.address)
     await saveCustomer({ ...me, phone: me.phone || order.customer.phone, emirate: order.customer.emirate, area: order.customer.area, address: order.customer.address }).catch(() => {});
   revalidatePath("/admin", "layout");
+
+  if (online) {
+    const history = me ? (await readDB()).orders.filter((o) => o.customerId === me.id && o.id !== order.id) : [];
+    const h = await headers();
+    const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
+    const origin = `${h.get("x-forwarded-proto") ?? (/^(localhost|127\.)/.test(host) ? "http" : "https")}://${host}`;
+    const lang = (await cookies()).get("lang")?.value === "ar" ? "ar" : "en";
+    const started = await startPayment(order, { origin, lang, customer: me, history });
+    await mutate((db) => {
+      const o = db.orders.find((x) => x.id === order.id);
+      if (!o) return;
+      if (started.ok) {
+        o.gateway = started.gateway;
+        return;
+      }
+      // The provider said no: release the stock and close this attempt.
+      for (const it of o.items) {
+        const p = db.products.find((x) => x.id === it.productId);
+        if (p) p.stock += it.qty;
+      }
+      o.status = "cancelled";
+      o.history.push({ status: "cancelled", at: new Date().toISOString() });
+      o.notes = [o.notes, `Online payment didn't start: ${started.message}`].filter(Boolean).join("\n");
+    });
+    // The team hears about it once the payment is confirmed (lib/payments.ts).
+    return started.ok ? { ok: true, number: order.number, redirect: started.url } : { ok: false, error: started.reason === "rejected" ? `${provider}_rejected` : "gateway" };
+  }
+
   await notify({ kind: "order", order });
   return { ok: true, number: order.number };
 }

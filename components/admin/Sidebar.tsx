@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { LayoutDashboard, Package, Layers, FolderKanban, ShoppingCart, ClipboardList, Inbox, Settings, LogOut, ExternalLink, Menu, X, Sparkles, Palette, Users } from "lucide-react";
+import { LayoutDashboard, Package, Layers, FolderKanban, ShoppingCart, ClipboardList, Inbox, Settings, LogOut, ExternalLink, Menu, X, Sparkles, Palette, Users, CreditCard } from "lucide-react";
 import clsx from "clsx";
 import { Logo } from "@/components/ui/Logo";
 import { logout } from "@/lib/admin-actions";
@@ -20,6 +20,7 @@ const NAV = [
   { href: "/admin/inspiration", label: "Inspiration", Icon: Sparkles },
   { href: "/admin/projects", label: "Projects", Icon: FolderKanban },
   { href: "/admin/messages", label: "Messages", Icon: Inbox, badge: "messages" },
+  { href: "/admin/payments", label: "Payments", Icon: CreditCard },
   { href: "/admin/settings", label: "Settings", Icon: Settings },
 ] as const;
 

@@ -1,6 +1,7 @@
 import "server-only";
 import { readDB } from "./db";
 import { DEFAULT_MATERIALS } from "./configurator";
+import { publicPayments } from "./payments";
 import { hasImage } from "./assets";
 import { tx } from "./i18n";
 import type { Lang } from "./types";
@@ -21,6 +22,7 @@ export async function getPublicSettings(lang: Lang): Promise<PublicSettings> {
     deliveryFees: s.deliveryFees,
     materials: s.materials ?? DEFAULT_MATERIALS,
     company: { licence: s.company?.licence ?? "", authority: s.company?.authority ?? "", trn: s.company?.trn ?? "" },
+    payments: publicPayments(s.payments),
   };
 }
 

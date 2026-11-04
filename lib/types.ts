@@ -85,6 +85,31 @@ export type OrderItem = {
 
 export type PaymentStatus = "unpaid" | "deposit" | "paid";
 
+export type GatewayProvider = "tabby" | "tamara" | "ziina";
+/**
+ * pending: sent to the provider's page · authorized: approved, not yet captured (Tabby/Tamara)
+ * paid: money confirmed · failed / cancelled: the attempt ended · refunded: fully refunded.
+ */
+export type GatewayState = "pending" | "authorized" | "paid" | "failed" | "cancelled" | "refunded";
+export type GatewayPayment = {
+  provider: GatewayProvider;
+  ref: string; // Tabby payment id · Tamara order id · Ziina payment intent id
+  state: GatewayState;
+  test: boolean;
+  captured: boolean;
+  refunded: number; // AED refunded so far
+  updatedAt: string;
+  log: { at: string; note: string }[];
+};
+
+/** Keys for online payments (Admin → Payments). Admin-only: never part of public settings. */
+export type PaymentsConfig = {
+  mode: "test" | "live";
+  tabby: { on: boolean; secretKey: string; publicKey: string; merchantCode: string; webhookSecret: string };
+  tamara: { on: boolean; apiToken: string; notificationToken: string; publicKey: string };
+  ziina: { on: boolean; apiKey: string; webhookSecret: string };
+};
+
 export type Order = {
   id: string;
   number: string;
@@ -101,7 +126,9 @@ export type Order = {
   delivery: number;
   vat: number; // VAT portion included in total
   total: number;
-  payment: "cod" | "bank" | "tabby" | "tamara";
+  payment: "cod" | "bank" | "tabby" | "tamara" | "card";
+  /** Set when the customer paid online through Tabby, Tamara or Ziina (see lib/payments.ts). */
+  gateway?: GatewayPayment;
   /** Set from the admin; older orders without it are treated as unpaid (or paid once delivered). */
   paymentStatus?: PaymentStatus;
   amountPaid?: number;
@@ -216,6 +243,7 @@ export type Settings = {
   bank: { name: string; iban: string; account: string };
   materials?: MaterialCatalog;
   notify?: NotifyConfig;
+  payments?: PaymentsConfig;
   /** Shown in the footer and legal pages once filled in (Admin → Settings → Company & legal). */
   company?: { licence: string; authority: string; trn: string };
 };

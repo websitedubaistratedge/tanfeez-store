@@ -18,7 +18,7 @@ const EVENTS: { id: keyof NotifyConfig["events"]; label: string }[] = [
 type Channel = "telegram" | "whatsapp" | "email";
 type Result = { ok: boolean; text: string } | null;
 
-function Secret({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder?: string }) {
+export function Secret({ value, onChange, placeholder }: { value: string; onChange: (v: string) => void; placeholder?: string }) {
   const [show, setShow] = useState(false);
   return (
     <div className="relative">
@@ -30,7 +30,7 @@ function Secret({ value, onChange, placeholder }: { value: string; onChange: (v:
   );
 }
 
-function Steps({ children }: { children: React.ReactNode }) {
+export function Steps({ children }: { children: React.ReactNode }) {
   const [open, setOpen] = useState(false);
   return (
     <div className="rounded-xl bg-plate/70">

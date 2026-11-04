@@ -4,11 +4,12 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { checkPassword, createSession, destroySession, isAdmin } from "./auth";
-import { DEMO_ID, mutate, resetDB, uid } from "./db";
+import { DEMO_ID, mutate, readDB, resetDB, uid } from "./db";
 import { saveUpload, uploadStore } from "./uploads";
-import { EMPTY_NOTIFY, sendTest, sendTestReceipt, telegramChat, type Channel } from "./notify";
+import { EMPTY_NOTIFY, origin, sendTest, sendTestReceipt, telegramChat, type Channel } from "./notify";
+import { capturePayment, EMPTY_PAYMENTS, refundPayment, registerWebhook, syncPayment, testConnection, voidPayment } from "./payments";
 import { changeEmail, deleteCustomer, getCustomer, saveCustomer, setPassword, signOutEverywhere } from "./customers";
-import type { Category, Customer, L10n, Look, MaterialCatalog, NotifyConfig, OrderStatus, PaymentStatus, Product, Project, RequestStatus, Settings } from "./types";
+import type { Category, Customer, GatewayProvider, L10n, Look, MaterialCatalog, NotifyConfig, PaymentsConfig, OrderStatus, PaymentStatus, Product, Project, RequestStatus, Settings } from "./types";
 
 async function guard() {
   if (!(await isAdmin())) throw new Error("Unauthorized");
@@ -202,6 +203,17 @@ export async function patchProject(id: string, patch: Partial<Pick<Project, "fea
 // ───────── Orders ─────────
 export async function setOrderStatus(id: string, status: OrderStatus) {
   await guard();
+  // Online payments follow the order: approved Tabby/Tamara money is captured when it leaves for
+  // delivery, and an approval is released if the order is cancelled before that.
+  const g = (await readDB()).orders.find((o) => o.id === id)?.gateway;
+  if (g?.state === "authorized" && !g.captured) {
+    try {
+      if (status === "delivery" || status === "delivered") await capturePayment(id);
+      if (status === "cancelled") await voidPayment(id);
+    } catch (e) {
+      console.error("[payments] on status change", e);
+    }
+  }
   await mutate((db) => {
     const o = db.orders.find((x) => x.id === id);
     if (!o || o.status === status) return;
@@ -272,6 +284,7 @@ export async function saveSettings(s: Settings) {
       ...s,
       materials: db.settings.materials, // edited separately in Admin → Fabrics
       notify: db.settings.notify, // edited separately in the Order alerts card
+      payments: db.settings.payments, // edited separately in Admin → Payments
       freeDeliveryOver: Math.max(0, Number(s.freeDeliveryOver) || 0),
       deliveryFees: Object.fromEntries(Object.entries(s.deliveryFees).map(([k, v]) => [k, Math.max(0, Number(v) || 0)])),
     };
@@ -505,4 +518,81 @@ export async function adminDeleteCustomer(id: string) {
   await guard();
   await deleteCustomer(id); // their orders stay, as placed
   revalidatePath("/admin/customers", "layout");
+}
+
+// ───────── Online payments (Admin → Payments) ─────────
+const keyStr = (v: unknown) => String(v ?? "").trim().slice(0, 600);
+function cleanPayments(c: Partial<PaymentsConfig>, prev?: PaymentsConfig): PaymentsConfig {
+  const e = prev ?? EMPTY_PAYMENTS;
+  return {
+    mode: c.mode === "live" ? "live" : "test",
+    tabby: {
+      on: !!c.tabby?.on,
+      secretKey: keyStr(c.tabby?.secretKey),
+      publicKey: keyStr(c.tabby?.publicKey),
+      merchantCode: keyStr(c.tabby?.merchantCode).slice(0, 80),
+      webhookSecret: e.tabby.webhookSecret, // set by "Connect webhook"
+    },
+    tamara: { on: !!c.tamara?.on, apiToken: keyStr(c.tamara?.apiToken), notificationToken: keyStr(c.tamara?.notificationToken), publicKey: keyStr(c.tamara?.publicKey) },
+    ziina: { on: !!c.ziina?.on, apiKey: keyStr(c.ziina?.apiKey), webhookSecret: e.ziina.webhookSecret },
+  };
+}
+
+export async function savePayments(input: PaymentsConfig) {
+  await guard();
+  await mutate((db) => {
+    db.settings.payments = cleanPayments(input, db.settings.payments);
+  });
+  refresh();
+}
+
+export async function testPaymentConnection(p: GatewayProvider, input: PaymentsConfig) {
+  await guard();
+  return testConnection(cleanPayments(input), p);
+}
+
+/** Registers our webhook URL with Tabby or Ziina, with a fresh shared secret, and saves the keys. */
+export async function connectPaymentWebhook(p: "tabby" | "ziina", input: PaymentsConfig): Promise<{ ok: boolean; message: string }> {
+  await guard();
+  const base = await origin();
+  if (!base.startsWith("https://")) return { ok: false, message: "Webhooks need the live website (https). Do this from the deployed admin." };
+  const secret = Buffer.from(crypto.getRandomValues(new Uint8Array(24))).toString("base64url");
+  const db = await readDB();
+  const cfg = cleanPayments(input, db.settings.payments);
+  try {
+    await registerWebhook(cfg, p, base, secret);
+  } catch (e) {
+    return { ok: false, message: e instanceof Error ? e.message : String(e) };
+  }
+  await mutate((d) => {
+    d.settings.payments = { ...cfg, [p]: { ...cfg[p], webhookSecret: secret } };
+  });
+  return { ok: true, message: `Connected: ${base}/api/payments/${p}` };
+}
+
+type PayResult = { ok: boolean; message?: string };
+const run = async (fn: () => Promise<unknown>): Promise<PayResult> => {
+  try {
+    await fn();
+    refresh();
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, message: e instanceof Error ? e.message : String(e) };
+  }
+};
+export async function adminSyncPayment(orderId: string) {
+  await guard();
+  return run(() => syncPayment(orderId));
+}
+export async function adminCapturePayment(orderId: string) {
+  await guard();
+  return run(() => capturePayment(orderId));
+}
+export async function adminVoidPayment(orderId: string) {
+  await guard();
+  return run(() => voidPayment(orderId));
+}
+export async function adminRefundPayment(orderId: string, amount: number, reason: string) {
+  await guard();
+  return run(() => refundPayment(orderId, Number(amount) || 0, String(reason ?? "").slice(0, 200)));
 }

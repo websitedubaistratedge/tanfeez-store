@@ -17,6 +17,8 @@ export type PublicSettings = {
   deliveryFees: Record<string, number>;
   materials: MaterialCatalog;
   company: { licence: string; authority: string; trn: string };
+  /** Online payment methods switched on in Admin → Payments. */
+  payments: { tabby: boolean; tamara: boolean; card: boolean };
 };
 
 type Ctx = {

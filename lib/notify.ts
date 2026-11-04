@@ -26,7 +26,7 @@ export const EMPTY_NOTIFY: NotifyConfig = {
 
 const EVENT_KEY = { order: "orders", quote: "quotes", samples: "samples", message: "messages" } as const;
 
-const PAYMENT = { cod: "Cash on delivery", bank: "Bank transfer", tabby: "Tabby (4 payments)", tamara: "Tamara (pay later)" } as const;
+const PAYMENT = { cod: "Cash on delivery", bank: "Bank transfer", tabby: "Tabby (4 payments)", tamara: "Tamara (pay later)", card: "Card" } as const;
 const SERVICE: Record<QuoteRequest["service"], string> = {
   fitout: "Fit-out",
   furniture: "Furniture",

@@ -23,6 +23,7 @@ export async function GET(req: Request) {
     .map(({ coll, doc }): PulseItem | null => {
       if (coll === "orders") {
         const o = doc as unknown as Order;
+        if (o.gateway && o.gateway.state === "pending") return null; // announced once the payment is confirmed
         return { key: `o:${o.id}`, kind: "order", title: `New order ${o.number}`, sub: `${o.customer.name} · ${aed(o.total)}`, href: `/admin/orders/${o.id}`, at: o.createdAt };
       }
       if (coll === "requests") {

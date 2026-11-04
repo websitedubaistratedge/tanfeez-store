@@ -125,7 +125,7 @@ export function ago(s: string) {
   return `${Math.floor(d / 86400)}d ago`;
 }
 
-export const PAYMENT_LABEL = { cod: "Pay on delivery", bank: "Bank transfer", tabby: "Tabby · pay in 4", tamara: "Tamara · pay in 3" } as const;
+export const PAYMENT_LABEL = { cod: "Pay on delivery", bank: "Bank transfer", tabby: "Tabby · pay in 4", tamara: "Tamara · pay in 3", card: "Card · Ziina" } as const;
 
 /** An order's payment state; orders saved before payment tracking count as paid once delivered. */
 export function paymentOf(o: { paymentStatus?: "unpaid" | "deposit" | "paid"; amountPaid?: number; status: string; total: number }) {
