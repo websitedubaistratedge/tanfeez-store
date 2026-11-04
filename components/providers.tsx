@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useMemo } from "react";
 import { t as translate, type TKey } from "@/lib/i18n";
-import type { Lang, MaterialCatalog } from "@/lib/types";
+import type { AccountInfo, Lang, MaterialCatalog } from "@/lib/types";
 
 export type PublicSettings = {
   phone: string;
@@ -23,6 +23,8 @@ type Ctx = {
   dir: "ltr" | "rtl";
   t: (k: TKey, v?: Record<string, string | number>) => string;
   settings: PublicSettings;
+  /** The signed-in customer, or null for guests. */
+  account: AccountInfo | null;
 };
 
 const SiteCtx = createContext<Ctx | null>(null);
@@ -30,10 +32,12 @@ const SiteCtx = createContext<Ctx | null>(null);
 export function SiteProvider({
   lang,
   settings,
+  account = null,
   children,
 }: {
   lang: Lang;
   settings: PublicSettings;
+  account?: AccountInfo | null;
   children: React.ReactNode;
 }) {
   const value = useMemo<Ctx>(
@@ -42,8 +46,9 @@ export function SiteProvider({
       dir: lang === "ar" ? "rtl" : "ltr",
       t: (k, v) => translate(lang, k, v),
       settings,
+      account,
     }),
-    [lang, settings]
+    [lang, settings, account]
   );
   return <SiteCtx.Provider value={value}>{children}</SiteCtx.Provider>;
 }

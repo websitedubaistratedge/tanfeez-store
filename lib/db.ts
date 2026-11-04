@@ -20,6 +20,9 @@ const SCHEMA = [
   "CREATE TABLE IF NOT EXISTS meta (key TEXT PRIMARY KEY, data TEXT NOT NULL)",
   // Writing a row here aborts a batch: used to reject a write based on a stale read.
   "CREATE TABLE IF NOT EXISTS guard (v INTEGER CHECK (v = 0))",
+  // Customer accounts live outside the store so they're never loaded with the catalogue (lib/customers.ts).
+  "CREATE TABLE IF NOT EXISTS customers (id TEXT PRIMARY KEY, email TEXT NOT NULL UNIQUE, data TEXT NOT NULL, secret TEXT NOT NULL, created TEXT NOT NULL)",
+  "CREATE TABLE IF NOT EXISTS auth (key TEXT PRIMARY KEY, value TEXT NOT NULL)",
 ];
 
 const clone = <T>(v: T): T => JSON.parse(JSON.stringify(v));
@@ -47,7 +50,7 @@ function freshSeed(): DB {
   return store;
 }
 
-async function d1(): Promise<D1Database | null> {
+export async function d1(): Promise<D1Database | null> {
   try {
     const { env } = await getCloudflareContext({ async: true });
     return (env as CloudflareEnv).DB ?? null;
@@ -123,7 +126,7 @@ async function migrate(db: D1Database) {
 }
 
 let ready: Promise<void> | null = null;
-function ensure(db: D1Database) {
+export function ensure(db: D1Database) {
   ready ??= (async () => {
     await db.batch(SCHEMA.map((s) => db.prepare(s)));
     const seeded = await db.prepare("SELECT 1 FROM meta WHERE key = 'version'").first();

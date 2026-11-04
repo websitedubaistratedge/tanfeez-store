@@ -106,6 +106,8 @@ export type Order = {
   paymentStatus?: PaymentStatus;
   amountPaid?: number;
   notes?: string;
+  /** Set when the order was placed while signed in to a customer account. */
+  customerId?: string;
   status: OrderStatus;
   history: { status: OrderStatus; at: string }[];
   createdAt: string;
@@ -142,6 +144,25 @@ export type Message = {
   read: boolean;
   createdAt: string;
 };
+
+// ── Customer accounts (stored in their own D1 table, see lib/customers.ts) ──
+export type Customer = {
+  id: string;
+  kind: "private" | "company";
+  firstName: string;
+  lastName: string;
+  company?: string;
+  email: string;
+  phone: string;
+  emirate: string;
+  area: string;
+  address: string;
+  marketing: boolean;
+  createdAt: string;
+  lastLogin?: string;
+};
+/** What the website (browser) may know about the signed-in customer. */
+export type AccountInfo = Omit<Customer, "createdAt" | "lastLogin">;
 
 // ── Fabrics & finishes (edited in Admin → Fabrics) ──
 export type Swatch = { id: string; name: L10n; hex: string };

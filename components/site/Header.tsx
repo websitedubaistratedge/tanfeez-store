@@ -4,7 +4,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useState, useTransition, useId } from "react";
-import { Building2, Heart, MapPin, Menu, Search, ShoppingBag, Sofa, X, Phone } from "lucide-react";
+import { Building2, Heart, MapPin, Menu, Search, ShoppingBag, Sofa, UserRound, X, Phone } from "lucide-react";
 import clsx from "clsx";
 import { Logo } from "@/components/ui/Logo";
 import { EASE } from "@/components/ui/motion";
@@ -14,6 +14,7 @@ import { setLang } from "@/lib/actions";
 import { lockScroll } from "./SmoothScroll";
 import { CircleArrow } from "@/components/ui/buttons";
 import { InstagramIcon, WhatsAppIcon } from "@/components/ui/icons";
+import { AccountButton, DrawerSignOut, useLoginHref } from "./AccountButton";
 
 type NavLink = { href: string; en: string; ar: string };
 const HOME_LINKS: NavLink[] = [
@@ -138,7 +139,8 @@ function SearchField({ compact = false }: { compact?: boolean }) {
 }
 
 export function Header() {
-  const { t, lang, settings } = useSite();
+  const { t, lang, settings, account } = useSite();
+  const loginHref = useLoginHref();
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [collapsed, setCollapsed] = useState(false);
@@ -169,7 +171,8 @@ export function Header() {
   if (pathname.startsWith("/admin")) return null;
 
   const Icons = (
-    <div className="flex items-center gap-1">
+    <div className="flex items-center gap-0.5 sm:gap-1">
+      <AccountButton />
       <Link href="/shop?w=1" className="relative hidden h-10 w-10 items-center justify-center rounded-full transition hover:bg-plate sm:flex" aria-label="Wishlist">
         <Heart className="h-[19px] w-[19px] stroke-[1.5]" />
         {hydrated && wish.length > 0 && <span className="absolute end-2 top-2 h-1.5 w-1.5 rounded-full bg-brand" />}
@@ -323,6 +326,17 @@ export function Header() {
                 </ul>
               </div>
               <div className="space-y-4 border-t border-line px-6 py-5">
+                <Link href={account ? "/account" : loginHref} className="flex items-center gap-3 rounded-2xl bg-plate px-4 py-3">
+                  <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-ink text-[0.8rem] font-semibold text-white">
+                    {account ? account.firstName.charAt(0).toUpperCase() : <UserRound className="h-4 w-4 stroke-[1.6]" />}
+                  </span>
+                  <span className="min-w-0 flex-1">
+                    <span className="block text-[0.95rem] font-medium">{account ? (lang === "ar" ? `مرحباً، ${account.firstName}` : `Hello, ${account.firstName}`) : lang === "ar" ? "تسجيل الدخول أو إنشاء حساب" : "Sign in or create an account"}</span>
+                    <span className="block truncate text-[0.8rem] text-muted">{account ? (lang === "ar" ? "طلباتي وبياناتي" : "My orders & details") : lang === "ar" ? "تتبّع طلباتك وأتمم الشراء أسرع" : "Track orders, check out faster"}</span>
+                  </span>
+                  <CircleArrow className="h-5 w-5 text-ink/40" />
+                </Link>
+                {account && <DrawerSignOut />}
                 <Link href="/quote" className="flex h-12 items-center justify-center rounded-full bg-ink text-[0.92rem] font-medium text-white">{t("nav.quote")}</Link>
                 <div className="flex items-center justify-between text-sm text-muted">
                   <a href={`tel:${settings.mobile.replace(/\s/g, "")}`} className="inline-flex items-center gap-2" dir="ltr"><Phone className="h-4 w-4" />{settings.mobile}</a>

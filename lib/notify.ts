@@ -183,20 +183,37 @@ function alertEmail(a: Alert, origin: string) {
     <p style="margin:22px 0 0"><a href="${origin + a.path}" style="display:inline-block;background:#1d1b19;color:#fff;text-decoration:none;padding:11px 22px;border-radius:999px;font-size:14px">Open in admin</a></p>`);
 }
 
-function receiptEmail(o: Order, origin: string) {
+type Store = { phone: string; whatsapp: string; email: string };
+
+/** The customer's order confirmation (English with an Arabic greeting). */
+function receiptEmail(o: Order, origin: string, store: Store) {
+  const btn = "display:inline-block;background:#1d1b19;color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:14px";
   const lines = o.items
-    .map((i) => `<tr><td style="padding:8px 0">${i.qty} × ${esc(i.name)}${i.finish ? `<br><span style="color:#8a847d;font-size:13px">${esc(i.finish)}</span>` : ""}</td><td style="padding:8px 0;text-align:right;white-space:nowrap">${aed(i.price * i.qty)}</td></tr>`)
+    .map(
+      (i) =>
+        `<tr><td style="padding:10px 0;border-bottom:1px solid #efece8">${i.qty} × ${esc(i.name)}${[i.finish, i.size].filter(Boolean).length ? `<br><span style="color:#8a847d;font-size:13px">${esc([i.finish, i.size].filter(Boolean).join(" · "))}</span>` : ""}</td><td style="padding:10px 0;border-bottom:1px solid #efece8;text-align:right;white-space:nowrap;vertical-align:top">${aed(i.price * i.qty)}</td></tr>`
+    )
     .join("");
+  const c = o.customer;
   return emailShell(`
-    <h1 style="margin:0 0 6px;font-size:22px;font-weight:600">Thank you, ${esc(o.customer.name.split(" ")[0])}.</h1>
-    <p style="margin:0 0 4px;font-size:15px" dir="rtl">شكراً لطلبك من تنفيذ.</p>
-    <p style="margin:0 0 20px;color:#5f5a54;font-size:14px">We've received order <b>${o.number}</b>. Our team will call you within one working day to confirm the details and delivery date.</p>
-    <table style="border-collapse:collapse;font-size:14px;width:100%;border-top:1px solid #e8e4df">${lines}
-      <tr><td style="padding:8px 0;border-top:1px solid #e8e4df;color:#8a847d">Delivery</td><td style="padding:8px 0;border-top:1px solid #e8e4df;text-align:right">${o.delivery ? aed(o.delivery) : "Free"}</td></tr>
-      <tr><td style="padding:8px 0;font-weight:600">Total (incl. VAT)</td><td style="padding:8px 0;text-align:right;font-weight:600">${aed(o.total)}</td></tr>
+    <p style="margin:0 0 6px;font-size:13px;color:#8a847d">Order ${o.number}</p>
+    <h1 style="margin:0 0 6px;font-size:24px;font-weight:600;letter-spacing:-0.02em">Thank you, ${esc(c.name.split(" ")[0])}.</h1>
+    <p style="margin:0 0 4px;font-size:15px;color:#5f5a54" dir="rtl">شكراً لطلبك من تنفيذ. سيتواصل معك فريقنا قريباً لتأكيد موعد التوصيل.</p>
+    <p style="margin:12px 0 22px;color:#5f5a54;font-size:14px;line-height:1.55">We've received your order. Our team will call you within one working day to confirm the details and agree a delivery and installation date.</p>
+    <table style="border-collapse:collapse;font-size:14px;width:100%">${lines}
+      <tr><td style="padding:10px 0;color:#8a847d">Delivery &amp; installation</td><td style="padding:10px 0;text-align:right">${o.delivery ? aed(o.delivery) : "Free"}</td></tr>
+      <tr><td style="padding:4px 0 10px;font-weight:600;font-size:16px">Total <span style="font-weight:400;color:#8a847d;font-size:12px">incl. VAT ${aed(o.vat)}</span></td><td style="padding:4px 0 10px;text-align:right;font-weight:600;font-size:16px">${aed(o.total)}</td></tr>
     </table>
-    <p style="margin:16px 0 0;color:#5f5a54;font-size:14px">Payment: ${PAYMENT[o.payment]}</p>
-    <p style="margin:22px 0 0"><a href="${origin}/track?n=${encodeURIComponent(o.number)}" style="display:inline-block;background:#1d1b19;color:#fff;text-decoration:none;padding:11px 22px;border-radius:999px;font-size:14px">Track your order</a></p>`);
+    <table style="border-collapse:collapse;font-size:13px;width:100%;margin-top:14px;background:#F7F6F4;border-radius:12px">
+      <tr><td style="padding:14px 16px;vertical-align:top;width:50%"><span style="color:#8a847d">Delivering to</span><br>${esc(c.name)}<br>${esc([c.address, c.area, c.emirate].filter(Boolean).join(", "))}<br>${esc(c.phone)}</td>
+      <td style="padding:14px 16px;vertical-align:top"><span style="color:#8a847d">Payment</span><br>${PAYMENT[o.payment]}</td></tr>
+    </table>
+    <p style="margin:24px 0 0">
+      <a href="${origin}${o.customerId ? "/account" : `/track?n=${encodeURIComponent(o.number)}`}" style="${btn}">${o.customerId ? "View in my account" : "Track your order"}</a>
+    </p>
+    <p style="margin:24px 0 0;padding-top:18px;border-top:1px solid #efece8;color:#8a847d;font-size:12.5px;line-height:1.6">
+      Questions? Reply to this email, call ${esc(store.phone)} or WhatsApp <a href="https://wa.me/${esc(store.whatsapp)}" style="color:#1d1b19">us here</a>.
+    </p>`);
 }
 
 async function resend(cfg: NotifyConfig["email"], msg: { to: string[]; subject: string; html: string; replyTo?: string }) {
@@ -218,8 +235,17 @@ async function sendOne(ch: Channel, cfg: NotifyConfig, ev: AlertEvent, origin: s
   const to = recipients(cfg.email.to);
   if (!to.length) throw new Error("Email: add at least one address to send alerts to");
   await resend(cfg.email, { to, subject: a.title, html: alertEmail(a, origin), replyTo: a.email?.includes("@") ? a.email : undefined });
-  if (ev.kind === "order" && cfg.email.receipts && ev.order.customer.email.includes("@"))
-    await resend(cfg.email, { to: [ev.order.customer.email], subject: `Your TANFEEZ order ${ev.order.number}`, html: receiptEmail(ev.order, origin) });
+}
+
+const canEmail = (cfg: NotifyConfig) => !!cfg.email.apiKey.trim() && !!cfg.email.from.trim();
+
+async function sendReceipt(cfg: NotifyConfig, o: Order, origin: string, store: Store, to = o.customer.email) {
+  await resend(cfg.email, {
+    to: [to],
+    subject: `Your TANFEEZ order ${o.number} is confirmed`,
+    html: receiptEmail(o, origin, store),
+    replyTo: recipients(cfg.email.to)[0] || store.email || undefined,
+  });
 }
 
 const ready = (ch: Channel, cfg: NotifyConfig) =>
@@ -227,7 +253,7 @@ const ready = (ch: Channel, cfg: NotifyConfig) =>
     ? cfg.telegram.on && !!cfg.telegram.token.trim() && !!cfg.telegram.chatId.trim()
     : ch === "whatsapp"
       ? cfg.whatsapp.on && waNumber(cfg.whatsapp.phone).length >= 10 && !!cfg.whatsapp.apiKey.trim()
-      : cfg.email.on && !!cfg.email.apiKey.trim() && !!cfg.email.from.trim();
+      : cfg.email.on && canEmail(cfg);
 
 async function origin() {
   const h = await headers();
@@ -239,13 +265,19 @@ async function origin() {
 /** Queue alerts for a new order/request/message. Runs after the response; never throws. */
 export async function notify(ev: AlertEvent) {
   try {
-    const cfg = (await readDB()).settings.notify;
-    if (!cfg || !cfg.events[EVENT_KEY[ev.kind]]) return;
-    const channels = (["telegram", "whatsapp", "email"] as const).filter((ch) => ready(ch, cfg));
-    if (!channels.length) return;
+    const { settings } = await readDB();
+    const cfg = settings.notify;
+    if (!cfg) return;
+    // Team alerts follow the "Alert me about" choices; the customer's confirmation is its own switch.
+    const channels = cfg.events[EVENT_KEY[ev.kind]] ? (["telegram", "whatsapp", "email"] as const).filter((ch) => ready(ch, cfg)) : [];
+    const receipt = ev.kind === "order" && cfg.email.receipts && canEmail(cfg) && ev.order.customer.email.includes("@");
+    if (!channels.length && !receipt) return;
     const base = await origin();
     after(async () => {
-      const results = await Promise.allSettled(channels.map((ch) => sendOne(ch, cfg, ev, base)));
+      const results = await Promise.allSettled([
+        ...channels.map((ch) => sendOne(ch, cfg, ev, base)),
+        ...(receipt && ev.kind === "order" ? [sendReceipt(cfg, ev.order, base, settings)] : []),
+      ]);
       for (const r of results) if (r.status === "rejected") console.error("[alerts]", r.reason);
     });
   } catch (e) {
@@ -257,11 +289,34 @@ export async function notify(ev: AlertEvent) {
 export async function sendTest(ch: Channel, cfg: NotifyConfig): Promise<{ ok: true } | { ok: false; error: string }> {
   if (!ready(ch, { ...cfg, [ch]: { ...cfg[ch], on: true } }))
     return { ok: false, error: ch === "whatsapp" ? "Add the phone number and API key first." : ch === "telegram" ? "Add the bot token and chat ID first." : "Add the API key and From address first." };
+  try {
+    await sendOne(ch, cfg, { kind: "order", order: sampleOrder() }, await origin());
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+/** Email the customer confirmation for a sample order to the team's address, to see what customers get. */
+export async function sendTestReceipt(cfg: NotifyConfig): Promise<{ ok: true; to: string } | { ok: false; error: string }> {
+  if (!canEmail(cfg)) return { ok: false, error: "Add the Resend API key and From address first." };
+  const to = recipients(cfg.email.to)[0];
+  if (!to) return { ok: false, error: "Add your own email under “Send alerts to” — the preview goes there." };
+  try {
+    const { settings } = await readDB();
+    await sendReceipt(cfg, { ...sampleOrder(), notes: "" }, await origin(), settings, to);
+    return { ok: true, to };
+  } catch (e) {
+    return { ok: false, error: e instanceof Error ? e.message : String(e) };
+  }
+}
+
+function sampleOrder(): Order {
   const now = new Date().toISOString();
-  const order: Order = {
+  return {
     id: "test",
     number: "TNF-TEST",
-    customer: { name: "Test customer", phone: "050 000 0000", email: "", emirate: "Dubai", area: "Jumeirah", address: "—" },
+    customer: { name: "Test Customer", phone: "050 000 0000", email: "", emirate: "Dubai", area: "Jumeirah", address: "Villa 12, Street 4" },
     items: [{ productId: "", slug: "", name: "Lune modular sofa", image: "", price: 12400, qty: 1, finish: "Boucle · Sand", size: "3-seater" }],
     subtotal: 12400,
     delivery: 0,
@@ -273,12 +328,6 @@ export async function sendTest(ch: Channel, cfg: NotifyConfig): Promise<{ ok: tr
     history: [{ status: "new", at: now }],
     createdAt: now,
   };
-  try {
-    await sendOne(ch, { ...cfg, email: { ...cfg.email, receipts: false } }, { kind: "order", order }, await origin());
-    return { ok: true };
-  } catch (e) {
-    return { ok: false, error: e instanceof Error ? e.message : String(e) };
-  }
 }
 
 /** The chat that most recently messaged the bot, so nobody has to dig for a chat ID. */

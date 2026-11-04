@@ -5,18 +5,20 @@ import { CartDrawer } from "@/components/site/CartDrawer";
 import { SmoothScroll } from "@/components/site/SmoothScroll";
 import { WhatsAppFab } from "@/components/site/WhatsAppFab";
 import { MobileTabBar } from "@/components/site/MobileTabBar";
+import { WelcomeBack } from "@/components/site/WelcomeBack";
 import { QuickView } from "@/components/shop/QuickView";
 import { INTRO_SCRIPT, Preloader } from "@/components/site/Preloader";
 import { getLang } from "@/lib/lang";
 import { getPublicSettings } from "@/lib/data";
+import { accountInfo, currentCustomer } from "@/lib/customers";
 
 export const dynamic = "force-dynamic";
 
 export default async function SiteLayout({ children }: { children: React.ReactNode }) {
   const lang = await getLang();
-  const settings = await getPublicSettings(lang);
+  const [settings, me] = await Promise.all([getPublicSettings(lang), currentCustomer()]);
   return (
-    <SiteProvider lang={lang} settings={settings}>
+    <SiteProvider lang={lang} settings={settings} account={me && accountInfo(me)}>
       <Preloader />
       <script dangerouslySetInnerHTML={{ __html: INTRO_SCRIPT }} />
       <SmoothScroll />
@@ -30,6 +32,7 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
       <CartDrawer />
       <QuickView />
       <WhatsAppFab />
+      <WelcomeBack />
     </SiteProvider>
   );
 }

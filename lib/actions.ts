@@ -7,6 +7,7 @@ import { saveUpload } from "./uploads";
 import type { Lang, Message, Order, QuoteRequest } from "./types";
 import { configPrice, DEFAULT_MATERIALS, describeConfig } from "./configurator";
 import { notify } from "./notify";
+import { currentCustomer, saveCustomer } from "./customers";
 
 export async function setLang(lang: Lang) {
   (await cookies()).set("lang", lang, { path: "/", maxAge: 60 * 60 * 24 * 365, sameSite: "lax" });
@@ -29,6 +30,7 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
   if (!clean(c.name) || digits(c.phone).length < 8 || !clean(c.address) || !clean(c.emirate))
     return { ok: false, error: "missing" };
   if (!input.items?.length) return { ok: false, error: "empty" };
+  const me = await currentCustomer();
 
   const order = await mutate((db) => {
     const fabrics = db.settings.materials ?? DEFAULT_MATERIALS;
@@ -81,6 +83,7 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
       total,
       payment: (["bank", "tabby", "tamara"] as const).find((x) => x === input.payment) ?? "cod",
       notes: clean(input.notes, 1000),
+      customerId: me?.id,
       status: "new",
       history: [{ status: "new", at }],
       createdAt: at,
@@ -90,6 +93,9 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
   }).catch(() => null);
 
   if (!order) return { ok: false, error: "invalid" };
+  // First order from an account: remember the delivery details for next time.
+  if (me && !me.address)
+    await saveCustomer({ ...me, phone: me.phone || order.customer.phone, emirate: order.customer.emirate, area: order.customer.area, address: order.customer.address }).catch(() => {});
   revalidatePath("/admin", "layout");
   await notify({ kind: "order", order });
   return { ok: true, number: order.number };

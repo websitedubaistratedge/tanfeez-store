@@ -101,6 +101,11 @@ export function OrderDetail({ order: o, bank }: { order: Order; bank: Settings["
           <Card>
             <h2 className="mb-3 font-display font-semibold tracking-tight">Customer</h2>
             <p className="font-medium">{o.customer.name}</p>
+            {o.customerId ? (
+              <Link href={`/admin/customers/${o.customerId}`} className="no-print mt-1 inline-flex items-center gap-1.5 rounded-full bg-band px-2.5 py-0.5 text-[0.74rem] font-medium hover:bg-plate">Has an account · view</Link>
+            ) : (
+              <span className="no-print mt-1 inline-block text-[0.74rem] text-muted">Guest checkout</span>
+            )}
             <ul className="mt-3 space-y-2 text-sm text-ink/70">
               <li><a href={`tel:${phone}`} className="flex items-center gap-2 hover:text-ink"><Phone className="h-4 w-4" />{o.customer.phone}</a></li>
               {o.customer.email && <li><a href={`mailto:${o.customer.email}`} className="flex items-center gap-2 hover:text-ink"><Mail className="h-4 w-4" />{o.customer.email}</a></li>}

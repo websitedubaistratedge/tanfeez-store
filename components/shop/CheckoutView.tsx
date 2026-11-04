@@ -4,23 +4,23 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState, useTransition } from "react";
-import { Check, CreditCard, Loader2, Lock } from "lucide-react";
+import { Check, CreditCard, Loader2, Lock, UserRound } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { cartTotal, useCart, useHydrated } from "@/lib/store";
 import { EMIRATES, emirateName, money } from "@/lib/i18n";
 import { placeOrder } from "@/lib/actions";
 import { EASE } from "@/components/ui/motion";
-import { OutlineLink, PillLink } from "@/components/ui/buttons";
+import { CircleArrow, OutlineLink, PillLink } from "@/components/ui/buttons";
 import { TabbyBadge, TamaraBadge } from "@/components/shop/Configurator";
 import type { Order } from "@/lib/types";
 
 export function CheckoutView() {
-  const { t, lang, settings } = useSite();
+  const { t, lang, settings, account: me } = useSite();
   const ar = lang === "ar";
   const { items, clear } = useCart();
   const hydrated = useHydrated();
-  const [emirate, setEmirate] = useState("Dubai");
+  const [emirate, setEmirate] = useState(me?.emirate || "Dubai");
   const [payment, setPayment] = useState<Order["payment"]>("tabby");
   const [error, setError] = useState(false);
   const [done, setDone] = useState<string | null>(null);
@@ -71,13 +71,32 @@ export function CheckoutView() {
   return (
     <section className="mx-auto max-w-[1440px] px-5 pb-24 pt-10 md:px-10 md:pt-14">
       <h1 className="mb-10 font-display text-[clamp(2.2rem,4.5vw,3.6rem)] font-semibold tracking-[-0.03em]">{t("checkout.title")}</h1>
-      <form action={submit} className="grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <form onSubmit={(e) => { e.preventDefault(); submit(new FormData(e.currentTarget)); }} className="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="space-y-12 lg:col-span-7">
           <Step n={1} title={t("checkout.contact")}>
+            {me ? (
+              <div className="mb-6 flex items-center gap-3 rounded-2xl bg-plate px-4 py-3 text-[0.88rem]">
+                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-ink text-[0.75rem] font-semibold text-white">{me.firstName.charAt(0).toUpperCase()}</span>
+                <span className="min-w-0 flex-1 truncate">
+                  {ar ? "مسجّل الدخول باسم " : "Signed in as "}<b className="font-medium">{me.firstName} {me.lastName}</b>
+                  <span className="text-muted"> · {ar ? "سيُحفظ الطلب في حسابك" : "this order is saved to your account"}</span>
+                </span>
+              </div>
+            ) : (
+              <Link href="/login?next=/checkout" className="group mb-6 flex items-center gap-3 rounded-2xl border border-line px-4 py-3 text-[0.88rem] transition hover:border-ink">
+                <UserRound className="h-5 w-5 shrink-0 stroke-[1.5]" />
+                <span className="min-w-0 flex-1">
+                  {ar ? "لديك حساب؟ " : "Have an account? "}
+                  <b className="font-medium underline underline-offset-2">{ar ? "سجّل الدخول" : "Sign in"}</b>
+                  <span className="text-muted">{ar ? " لملء بياناتك تلقائياً، أو تابع كضيف." : " to fill this in for you, or continue as a guest."}</span>
+                </span>
+                <CircleArrow className="h-5 w-5 shrink-0 text-ink/40 transition group-hover:text-ink" />
+              </Link>
+            )}
             <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
-              <Field label={t("checkout.name")} name="name" required autoComplete="name" />
-              <Field label={t("checkout.phone")} name="phone" required type="tel" autoComplete="tel" placeholder="+971 5x xxx xxxx" dir="ltr" />
-              <div className="sm:col-span-2"><Field label={t("checkout.email")} name="email" type="email" required autoComplete="email" dir="ltr" /></div>
+              <Field label={t("checkout.name")} name="name" required autoComplete="name" defaultValue={me ? `${me.firstName} ${me.lastName}` : undefined} />
+              <Field label={t("checkout.phone")} name="phone" required type="tel" autoComplete="tel" placeholder="+971 5x xxx xxxx" dir="ltr" defaultValue={me?.phone} />
+              <div className="sm:col-span-2"><Field label={t("checkout.email")} name="email" type="email" required autoComplete="email" dir="ltr" defaultValue={me?.email} /></div>
             </div>
           </Step>
 
@@ -91,8 +110,8 @@ export function CheckoutView() {
               ))}
             </div>
             <div className="grid gap-x-8 gap-y-5 sm:grid-cols-2">
-              <Field label={t("checkout.area")} name="area" required />
-              <Field label={t("checkout.address")} name="address" required autoComplete="street-address" />
+              <Field label={t("checkout.area")} name="area" required defaultValue={me?.area} />
+              <Field label={t("checkout.address")} name="address" required autoComplete="street-address" defaultValue={me?.address} />
               <label className="sm:col-span-2">
                 <span className="text-[0.82rem] text-muted">{t("checkout.notes")}</span>
                 <textarea name="notes" rows={2} className="field resize-none" />
@@ -255,7 +274,7 @@ function Row({ k, v, muted }: { k: string; v: string; muted?: boolean }) {
 }
 
 function Success({ number }: { number: string }) {
-  const { t } = useSite();
+  const { t, lang, account } = useSite();
   return (
     <section className="flex min-h-[78vh] items-center justify-center px-5 py-20 text-center">
       <div>
@@ -275,7 +294,7 @@ function Success({ number }: { number: string }) {
           <span className="font-display text-[1.2rem] font-semibold" dir="ltr">{number}</span>
         </motion.div>
         <div className="mt-10 flex flex-wrap justify-center gap-3">
-          <PillLink href={`/track?n=${number}`}>{t("checkout.track")}</PillLink>
+          <PillLink href={account ? "/account" : `/track?n=${number}`}>{account ? (lang === "ar" ? "طلباتي" : "View in my account") : t("checkout.track")}</PillLink>
           <OutlineLink href="/shop">{t("cart.continue")}</OutlineLink>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { Bell, BellRing, Check, ChevronDown, Eye, EyeOff, Loader2, Mail, Message
 import clsx from "clsx";
 import { Btn, Card, Field, inputCls, Toggle } from "./ui";
 import { chime, soundOn, setSoundOn } from "./LiveAlerts";
-import { findTelegramChat, saveNotifications, testNotification } from "@/lib/admin-actions";
+import { findTelegramChat, saveNotifications, testNotification, testReceipt } from "@/lib/admin-actions";
 import type { NotifyConfig } from "@/lib/types";
 
 const EVENTS: { id: keyof NotifyConfig["events"]; label: string }[] = [
@@ -88,8 +88,8 @@ export function AlertsCard({ initial }: { initial: NotifyConfig }) {
   const [c, setC] = useState(initial);
   const [saved, setSaved] = useState(false);
   const [pending, start] = useTransition();
-  const [testing, setTesting] = useState<Channel | "chat" | null>(null);
-  const [results, setResults] = useState<Partial<Record<Channel | "chat", Result>>>({});
+  const [testing, setTesting] = useState<Channel | "chat" | "receipt" | null>(null);
+  const [results, setResults] = useState<Partial<Record<Channel | "chat" | "receipt", Result>>>({});
   const [perm, setPerm] = useState<NotificationPermission | "unsupported">("default");
   const [sound, setSound] = useState(true);
 
@@ -110,6 +110,12 @@ export function AlertsCard({ initial }: { initial: NotifyConfig }) {
     setResults((r) => ({ ...r, [ch]: null }));
     const res = await testNotification(ch, c).catch((e) => ({ ok: false as const, error: String(e) }));
     setResults((r) => ({ ...r, [ch]: res.ok ? { ok: true, text: "Sent — check your phone." } : { ok: false, text: res.error } }));
+    setTesting(null);
+  };
+  const previewReceipt = async () => {
+    setTesting("receipt");
+    const res = await testReceipt(c).catch((e) => ({ ok: false as const, error: String(e) }));
+    setResults((r) => ({ ...r, receipt: res.ok ? { ok: true, text: `Preview sent to ${res.to}.` } : { ok: false, text: res.error } }));
     setTesting(null);
   };
   const findChat = async () => {
@@ -226,7 +232,14 @@ export function AlertsCard({ initial }: { initial: NotifyConfig }) {
             <Field label="From"><input className={inputCls} value={c.email.from} onChange={(e) => patch("email", { from: e.target.value })} placeholder="TANFEEZ <orders@your-domain>" /></Field>
             <Field label="Send alerts to" hint="comma-separated"><input className={inputCls} value={c.email.to} onChange={(e) => patch("email", { to: e.target.value })} placeholder="sales@…, owner@…" /></Field>
           </div>
-          <Toggle checked={c.email.receipts} onChange={(receipts) => patch("email", { receipts })} label="Also email customers an order confirmation" />
+          <div className="rounded-xl border border-line p-3.5">
+            <Toggle checked={c.email.receipts} onChange={(receipts) => patch("email", { receipts })} label="Order confirmation to customers" />
+            <p className="mt-2 text-[0.76rem] leading-relaxed text-muted">Every customer who leaves an email at checkout gets a confirmation with their items, total, delivery address and a tracking link. Works even with team email alerts off.</p>
+            <button type="button" onClick={previewReceipt} disabled={testing === "receipt"} className="mt-2 inline-flex items-center gap-1.5 text-[0.8rem] font-medium underline underline-offset-2 disabled:opacity-50">
+              {testing === "receipt" && <Loader2 className="h-3.5 w-3.5 animate-spin" />} Email me a preview
+            </button>
+            {results.receipt && <p className={clsx("mt-1 text-[0.78rem]", results.receipt.ok ? "text-emerald-700" : "text-red-600")}>{results.receipt.text}</p>}
+          </div>
           <Steps>
             <li>Create a free account at <a className="underline" href="https://resend.com" target="_blank" rel="noreferrer">resend.com</a> and make an API key.</li>
             <li>To try it straight away, use <code>onboarding@resend.dev</code> as From and send alerts to the email you signed up with.</li>

@@ -6,8 +6,9 @@ import { revalidatePath } from "next/cache";
 import { checkPassword, createSession, destroySession, isAdmin } from "./auth";
 import { DEMO_ID, mutate, resetDB, uid } from "./db";
 import { saveUpload, uploadStore } from "./uploads";
-import { EMPTY_NOTIFY, sendTest, telegramChat, type Channel } from "./notify";
-import type { Category, L10n, Look, MaterialCatalog, NotifyConfig, OrderStatus, PaymentStatus, Product, Project, RequestStatus, Settings } from "./types";
+import { EMPTY_NOTIFY, sendTest, sendTestReceipt, telegramChat, type Channel } from "./notify";
+import { changeEmail, deleteCustomer, getCustomer, saveCustomer, setPassword, signOutEverywhere } from "./customers";
+import type { Category, Customer, L10n, Look, MaterialCatalog, NotifyConfig, OrderStatus, PaymentStatus, Product, Project, RequestStatus, Settings } from "./types";
 
 async function guard() {
   if (!(await isAdmin())) throw new Error("Unauthorized");
@@ -448,7 +449,60 @@ export async function testNotification(channel: Channel, input: NotifyConfig) {
   return sendTest(channel, cleanNotify(input));
 }
 
+export async function testReceipt(input: NotifyConfig) {
+  await guard();
+  return sendTestReceipt(cleanNotify(input));
+}
+
 export async function findTelegramChat(token: string) {
   await guard();
   return telegramChat(str(token, 120));
+}
+
+// ───────── Customer accounts ─────────
+export async function adminSaveCustomer(id: string, input: Partial<Customer>): Promise<{ ok: boolean; error?: string }> {
+  await guard();
+  const c = await getCustomer(id);
+  if (!c) return { ok: false, error: "This account no longer exists." };
+  const email = str(input.email, 160).toLowerCase();
+  if (email && email !== c.email) {
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { ok: false, error: "That email address isn't valid." };
+    if (!(await changeEmail(id, email))) return { ok: false, error: "Another account already uses that email." };
+  }
+  await saveCustomer({
+    ...c,
+    email: email || c.email,
+    kind: input.kind === "company" ? "company" : "private",
+    firstName: str(input.firstName, 80) || c.firstName,
+    lastName: str(input.lastName, 80) || c.lastName,
+    company: str(input.company, 120) || undefined,
+    phone: str(input.phone, 40),
+    emirate: str(input.emirate, 40) || "Dubai",
+    area: str(input.area, 120),
+    address: str(input.address, 300),
+    marketing: !!input.marketing,
+  });
+  revalidatePath("/admin/customers", "layout");
+  return { ok: true };
+}
+
+/** A readable one-time password for the customer; they can change it in My account. */
+export async function adminResetCustomerPassword(id: string) {
+  await guard();
+  const words = "oak,teak,linen,brass,stone,velvet,walnut,marble,cedar,sand,olive,amber,ivory,slate,maple,pearl,coral,cotton,silk,birch".split(",");
+  const rnd = (n: number) => crypto.getRandomValues(new Uint32Array(1))[0] % n;
+  const temp = `${words[rnd(20)]}-${words[rnd(20)]}-${words[rnd(20)]}-${rnd(9000) + 1000}`;
+  if (!(await setPassword(id, temp))) return null;
+  return temp;
+}
+
+export async function adminSignOutCustomer(id: string) {
+  await guard();
+  await signOutEverywhere(id);
+}
+
+export async function adminDeleteCustomer(id: string) {
+  await guard();
+  await deleteCustomer(id); // their orders stay, as placed
+  revalidatePath("/admin/customers", "layout");
 }
