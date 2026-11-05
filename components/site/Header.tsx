@@ -365,7 +365,9 @@ export function Header() {
                             {opens ? (
                               <button onClick={() => setSub(opens)} className={cls} aria-haspopup="true">
                                 {label(l)}
-                                <ChevronRight className="h-5 w-5 stroke-[1.4] text-ink/40 transition group-hover:translate-x-0.5 group-hover:text-ink rtl:rotate-180" />
+                                <span className="me-px flex h-[18px] w-[18px] items-center justify-center rounded-full border border-ink/30 text-ink/40 transition group-hover:border-ink group-hover:text-ink">
+                                  <ChevronRight className="h-3 w-3 stroke-[1.8] rtl:rotate-180" />
+                                </span>
                               </button>
                             ) : (
                               <Link href={l.href} className={cls}>
@@ -379,14 +381,6 @@ export function Header() {
                     </motion.ul>
                   )}
                 </AnimatePresence>
-                <p className="mb-3 mt-8 text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted">{t("nav.shop")}</p>
-                <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5">
-                  {CATS.map((c) => (
-                    <li key={c.slug}>
-                      <Link href={`/shop?c=${c.slug}`} className="link-u text-[0.95rem] text-ink/80">{lang === "ar" ? c.ar : c.en}</Link>
-                    </li>
-                  ))}
-                </ul>
               </div>
               <div className="space-y-4 border-t border-line px-6 py-5">
                 <Link href={account ? "/account" : loginHref} className="flex items-center gap-3 rounded-2xl bg-plate px-4 py-3">
