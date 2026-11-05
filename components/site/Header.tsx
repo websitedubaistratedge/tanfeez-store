@@ -29,7 +29,6 @@ const HOME_LINKS: NavLink[] = [
 const BUSINESS_LINKS: NavLink[] = [
   { href: "/business", en: "Fit-out", ar: "التجهيز" },
   { href: "/projects", en: "Projects", ar: "المشاريع" },
-  { href: "/business#pieces", en: "Retail pieces", ar: "قطع تجارية" },
   { href: "/services", en: "Services", ar: "الخدمات" },
   { href: "/business#process", en: "How we work", ar: "كيف نعمل" },
   { href: "/contact", en: "Contact", ar: "تواصل" },
