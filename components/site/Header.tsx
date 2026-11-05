@@ -341,12 +341,12 @@ export function Header() {
                       </button>
                       <p className="mb-2 font-serif text-[1.35rem] leading-none text-ink-2">{label(SUBMENUS[sub].title)}</p>
                       <ul>
-                        {[...SUBMENUS[sub].links, SUBMENUS[sub].all].map((l, i, all) => (
+                        {[...SUBMENUS[sub].links, SUBMENUS[sub].all].map((l, i) => (
                           <motion.li key={l.href} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 + i * 0.035, duration: 0.4, ease: EASE }}>
                             <Link
                               href={l.href}
                               onClick={() => setMenu(false)}
-                              className={clsx("group flex items-center justify-between border-b border-line py-3.5 font-display tracking-tight", i === all.length - 1 ? "text-[1.15rem] font-semibold" : "text-[1.45rem] font-medium")}
+                              className="group flex items-center justify-between border-b border-line py-4 font-display text-[1.15rem] font-medium tracking-tight"
                             >
                               {label(l)}
                               <CircleArrow className="h-5 w-5 text-ink/30 transition group-hover:text-ink" />
@@ -359,18 +359,18 @@ export function Header() {
                     <motion.ul key="main" initial={{ opacity: 0, x: lang === "ar" ? 24 : -24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: lang === "ar" ? 24 : -24 }} transition={{ duration: 0.35, ease: EASE }}>
                       {[{ href: "/", en: "Home", ar: "الرئيسية" }, ...LINKS, { href: "/track", en: "Track order", ar: "تتبع الطلب" }].map((l, i) => {
                         const opens = !biz ? SUB_FOR[l.href] : undefined;
-                        const cls = "group flex w-full items-center justify-between border-b border-line py-4 text-start font-display text-[1.6rem] font-medium tracking-tight";
+                        const cls = "group flex w-full items-center justify-between border-b border-line py-4 text-start font-display text-[1.15rem] font-medium tracking-tight";
                         return (
                           <motion.li key={l.href} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.04, duration: 0.5, ease: EASE }}>
                             {opens ? (
                               <button onClick={() => setSub(opens)} className={cls} aria-haspopup="true">
                                 {label(l)}
-                                <ChevronRight className="h-6 w-6 stroke-[1.4] text-ink/40 transition group-hover:translate-x-0.5 group-hover:text-ink rtl:rotate-180" />
+                                <ChevronRight className="h-5 w-5 stroke-[1.4] text-ink/40 transition group-hover:translate-x-0.5 group-hover:text-ink rtl:rotate-180" />
                               </button>
                             ) : (
                               <Link href={l.href} className={cls}>
                                 {label(l)}
-                                <CircleArrow className="h-6 w-6 text-ink/30 transition group-hover:text-ink" />
+                                <CircleArrow className="h-5 w-5 text-ink/30 transition group-hover:text-ink" />
                               </Link>
                             )}
                           </motion.li>
