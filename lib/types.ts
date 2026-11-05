@@ -28,6 +28,10 @@ export type Product = {
   dimensions: string;
   leadTimeDays: number;
   finishes: Finish[];
+  /** Which configurator colour (swatch id) the main photo shows. */
+  photoColour?: string;
+  /** Photos of the piece in other colours, by swatch id; shown when that colour is picked. */
+  colourImages?: Record<string, string>;
   sizes: string[];
   featured: boolean;
   isNew: boolean;

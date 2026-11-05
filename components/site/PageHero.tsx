@@ -1,10 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft } from "lucide-react";
 import { EASE, SplitLines } from "@/components/ui/motion";
 import { useSite } from "@/components/providers";
+import { BackButton } from "@/components/ui/BackButton";
 
 /** Inner-page header: Natuzzi-style warm band; content below can overlap its lower edge. */
 export function PageHero({
@@ -28,10 +27,7 @@ export function PageHero({
   return (
     <section className={`bg-band ${overlap ? "pb-28 md:pb-36" : "pb-12 md:pb-16"}`}>
       <div className="mx-auto max-w-[1440px] px-5 pt-8 md:px-10 md:pt-10">
-        <Link href={b.href} className="group inline-flex items-center gap-2 text-[0.88rem] text-ink/70 hover:text-ink">
-          <ArrowLeft className="h-4 w-4 stroke-[1.5] transition group-hover:-translate-x-0.5 rtl:rotate-180 rtl:group-hover:translate-x-0.5" />
-          {b.label}
-        </Link>
+        <BackButton fallback={b.href} />
         <div className="mt-8 grid gap-8 md:mt-12 lg:grid-cols-[1.3fr_1fr] lg:items-end">
           <div>
             {eyebrow && (

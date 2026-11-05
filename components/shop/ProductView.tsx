@@ -14,9 +14,10 @@ import { EASE, Reveal } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
 import { ProductCard } from "./ProductCard";
 import { AnimatedPrice, Configurator, Installments, fabricStyle, type Config } from "./Configurator";
-import { configPrice, defaultConfig, describeConfig, isUpholstered, materialsFor } from "@/lib/configurator";
+import { configPrice, defaultConfig, describeConfig, isUpholstered, materialsFor, photoFor } from "@/lib/configurator";
+import { BackButton } from "@/components/ui/BackButton";
 
-export function ProductView({ product: p, related, category, rooms = [] }: { product: Product; related: Product[]; category?: Category; rooms?: { image: string; title: string; x: number; y: number }[] }) {
+export function ProductView({ product: p, related, category, rooms = [], colour }: { product: Product; related: Product[]; category?: Category; rooms?: { image: string; title: string; x: number; y: number }[]; colour?: string }) {
   const { t, lang, settings } = useSite();
   const cat = settings.materials;
   const add = useCart((s) => s.add);
@@ -24,7 +25,12 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
   const wish = useWishlist();
   const hydrated = useHydrated();
   const [img, setImg] = useState(0);
-  const [cfg, setCfg] = useState<Config>(() => defaultConfig(p, cat));
+  const [cfg, setCfg] = useState<Config>(() => {
+    // Arriving from a shop card's colour dot opens the piece in that colour.
+    const start = defaultConfig(p, cat);
+    const m = colour && materialsFor(p, cat).find((x) => x.colours.some((c) => c.id === colour));
+    return m ? { ...start, material: m.id, colour: colour! } : start;
+  });
   const [qty, setQty] = useState(1);
   const [added, setAdded] = useState(false);
   const [zoom, setZoom] = useState<{ x: number; y: number } | null>(null);
@@ -39,8 +45,24 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
   const cfgLabel = describeConfig(p, cfg, lang, cat);
   const mat = materialsFor(p, cat).find((m) => m.id === cfg.material);
   const swatch = mat?.colours.find((c) => c.id === cfg.colour);
+  // The studio shot follows the chosen colour when we have a photo of it.
+  const colourPhoto = photoFor(p, swatch?.id);
+  const hero = colourPhoto ?? p.images[0];
+  const shownSwatch = !colourPhoto && p.photoColour ? materialsFor(p, cat).flatMap((m) => m.colours).find((c) => c.id === p.photoColour) : undefined;
   // Gallery: studio shot, then the piece in real rooms, then the original workshop photos.
-  const gallery = [p.images[0], ...rooms.map((r) => r.image), ...p.images.slice(1)];
+  const gallery = [hero, ...rooms.map((r) => r.image), ...p.images.slice(1)];
+  const mobileRail = useRef<HTMLDivElement>(null);
+  // Picking a colour brings the studio shot back into view.
+  useEffect(() => {
+    setImg(0);
+    mobileRail.current?.scrollTo({ left: 0, behavior: "smooth" });
+  }, [hero]);
+  // Fetch the other colour photos in the background so switching is instant.
+  useEffect(() => {
+    const urls = Object.values(p.colourImages ?? {});
+    const t = setTimeout(() => urls.forEach((u) => (new window.Image().src = u)), 1200);
+    return () => clearTimeout(t);
+  }, [p.colourImages]);
   const roomTitle = (src: string) => rooms.find((r) => r.image === src)?.title;
   // Square crops of wide room photos centre on this piece, not the middle of the room.
   const focus = (src: string) => {
@@ -59,7 +81,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
   const studio = (src: string) => src.includes("/products-v2/");
 
   const onAdd = () => {
-    add({ productId: p.id, slug: p.slug, name: p.name, image: p.images[0], price, finish: describeConfig(p, cfg, "en", cat), size: p.sizes[cfg.size], material: cfg.material, colour: cfg.colour }, qty);
+    add({ productId: p.id, slug: p.slug, name: p.name, image: hero, price, finish: describeConfig(p, cfg, "en", cat), size: p.sizes[cfg.size], material: cfg.material, colour: cfg.colour }, qty);
     setAdded(true);
     setTimeout(() => setAdded(false), 1600);
     setTimeout(() => setCart(true), 350);
@@ -98,10 +120,18 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
   return (
     <>
       <section className="mx-auto max-w-[1440px] px-5 pb-12 pt-0 md:px-10 md:pb-16 md:pt-8">
+        <div className="-mx-5 flex h-11 items-center px-5 md:hidden">
+          <BackButton fallback={p.category === "commercial" ? "/business#pieces" : "/shop"} />
+        </div>
         <nav className="mb-6 hidden items-center gap-2 text-[0.82rem] text-muted md:flex">
-          <Link href="/shop" className="hover:text-ink">{t("nav.shop")}</Link>
+          <BackButton fallback={p.category === "commercial" ? "/business#pieces" : "/shop"} className="me-3 border-e border-line pe-4" />
+          {p.category === "commercial" ? (
+            <Link href="/business#pieces" className="hover:text-ink">{lang === "ar" ? "للأعمال" : "For business"}</Link>
+          ) : (
+            <Link href="/shop" className="hover:text-ink">{t("nav.shop")}</Link>
+          )}
           <span>/</span>
-          {category && (
+          {category && p.category !== "commercial" && (
             <>
               <Link href={`/shop?c=${category.slug}`} className="hover:text-ink">{tx(category.name, lang)}</Link>
               <span>/</span>
@@ -116,6 +146,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
             {/* Phones: full-bleed, swipe between photos */}
             <div className="-mx-5 md:hidden">
               <div
+                ref={mobileRail}
                 className="no-scrollbar flex snap-x snap-mandatory overflow-x-auto"
                 onScroll={(e) => {
                   const el = e.currentTarget;
@@ -137,7 +168,10 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
                 {!p.priceOnRequest && swatch ? (
                   <span className="flex min-w-0 items-center gap-2 text-[0.8rem] text-ink/80">
                     <span className="h-5 w-5 shrink-0 rounded-full ring-1 ring-black/10" style={fabricStyle(swatch.hex, !isUpholstered(p))} />
-                    <span className="truncate">{cfgLabel}</span>
+                    <span className="truncate">
+                      {cfgLabel}
+                      {shownSwatch && <span className="text-muted"> · {lang === "ar" ? `الصورة: ${shownSwatch.name.ar}` : `photo: ${shownSwatch.name.en}`}</span>}
+                    </span>
                   </span>
                 ) : (
                   <span />
@@ -173,7 +207,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
                   onPointerLeave={() => setZoom(null)}
                 >
                   <AnimatePresence mode="popLayout" initial={false}>
-                    <motion.div key={img} className="absolute inset-0" initial={{ opacity: 0, scale: 1.03 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6, ease: EASE }}>
+                    <motion.div key={gallery[img]} className="absolute inset-0" initial={{ opacity: 0, scale: 1.03 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.6, ease: EASE }}>
                       <Image
                         src={gallery[img]}
                         alt={tx(p.name, lang)}
@@ -205,6 +239,11 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
                         <span>
                           <span className="block text-[0.68rem] uppercase tracking-[0.14em] text-muted">{lang === "ar" ? "اختيارك" : "Your finish"}</span>
                           <span className="block text-[0.85rem] font-medium">{cfgLabel}</span>
+                          {shownSwatch && (
+                            <span className="block text-[0.72rem] text-muted">
+                              {lang === "ar" ? `الصورة باللون ${shownSwatch.name.ar} · يُصنع بلونك المختار` : `Photo shows ${shownSwatch.name.en} · made in your choice`}
+                            </span>
+                          )}
                         </span>
                       </motion.div>
                     </AnimatePresence>
@@ -365,7 +404,7 @@ export function ProductView({ product: p, related, category, rooms = [] }: { pro
           >
             <div className="mx-auto flex max-w-[1440px] items-center gap-4 px-5 py-3 md:px-10">
               <div className="relative hidden h-12 w-12 shrink-0 overflow-hidden bg-plate sm:block">
-                <Image src={p.images[0]} alt="" fill sizes="48px" className="object-cover" />
+                <Image src={hero} alt="" fill sizes="48px" className="object-cover" />
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[0.9rem] font-medium">{tx(p.name, lang)}</p>

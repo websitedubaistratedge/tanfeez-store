@@ -10,6 +10,7 @@ import { useSite } from "@/components/providers";
 import { useCart, useHydrated, useQuickView, useUI, useWishlist } from "@/lib/store";
 import { money, tx } from "@/lib/i18n";
 import type { Product } from "@/lib/types";
+import { photographedColours } from "@/lib/configurator";
 
 /** Short material line like "Bouclé • curved plywood" from the materials sentence. */
 export function materialTags(p: Product, lang: "en" | "ar") {
@@ -21,7 +22,7 @@ export function materialTags(p: Product, lang: "en" | "ar") {
 }
 
 export function ProductCard({ product: p, priority = false, sizes }: { product: Product; priority?: boolean; sizes?: string }) {
-  const { t, lang } = useSite();
+  const { t, lang, settings } = useSite();
   const uid = useId();
   const add = useCart((s) => s.add);
   const setCart = useUI((s) => s.setCart);
@@ -32,6 +33,10 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
   const [added, setAdded] = useState(false);
   const [swatch, setSwatch] = useState(0);
   const price = p.salePrice || p.price;
+  // With colour photos, the dots switch the card photo; otherwise they're the listed finishes.
+  const shots = photographedColours(p, settings.materials);
+  const [shot, setShot] = useState(0);
+  const cover = shots[shot]?.image ?? p.images[0];
 
   const quickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
@@ -41,7 +46,7 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
       name: p.name,
       image: p.images[0],
       price,
-      finish: p.finishes[swatch] ? tx(p.finishes[swatch].name, "en") : undefined,
+      finish: shots.length ? undefined : p.finishes[swatch] ? tx(p.finishes[swatch].name, "en") : undefined,
       size: p.sizes[0],
     });
     setAdded(true);
@@ -54,10 +59,14 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
   return (
     <article className="group">
       <div className="relative">
-      <Link href={`/shop/${p.slug}`} className="block" aria-label={tx(p.name, lang)}>
+      <Link href={`/shop/${p.slug}${shot > 0 && shots[shot] ? `?colour=${shots[shot].id}` : ""}`} className="block" aria-label={tx(p.name, lang)}>
         <motion.div layoutId={`qv-${uid}`} className="relative aspect-square overflow-hidden bg-plate">
           <div className="absolute inset-0 transition-transform duration-[1600ms] ease-[cubic-bezier(.16,1,.3,1)] will-change-transform group-hover:scale-[1.07]">
-            <Image src={p.images[0]} alt={tx(p.name, lang)} fill priority={priority} sizes={imgSizes} className="object-cover" />
+            <AnimatePresence initial={false}>
+              <motion.div key={cover} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.45 }}>
+                <Image src={cover} alt={tx(p.name, lang)} fill priority={priority && shot === 0} sizes={imgSizes} className="object-cover" />
+              </motion.div>
+            </AnimatePresence>
           </div>
           {/* soft shade from the floor up, so the action bar reads on light plates */}
           <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/[0.08] via-transparent to-transparent opacity-0 transition-opacity duration-700 group-hover:opacity-100" />
@@ -140,7 +149,22 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
           <p className="truncate text-[0.75rem] text-muted lg:whitespace-normal lg:text-[0.8rem]">{materialTags(p, lang)}</p>
           {p.salePrice && <span className="hidden shrink-0 text-[0.78rem] text-faint line-through tabular-nums lg:inline">{money(p.price, lang)}</span>}
         </div>
-        {p.finishes.length > 0 && (
+        {shots.length > 1 ? (
+          <div className="mt-2.5 flex items-center gap-1.5 lg:mt-3">
+            {shots.slice(0, 6).map((c, i) => (
+              <button
+                key={c.id}
+                onClick={() => setShot(i)}
+                onMouseEnter={() => setShot(i)}
+                title={tx(c.name, lang)}
+                aria-label={tx(c.name, lang)}
+                className={clsx("h-3.5 w-3.5 rounded-full ring-offset-2 transition-all duration-300 hover:scale-125", shot === i ? "ring-1 ring-ink" : "ring-1 ring-black/10")}
+                style={{ background: c.hex }}
+              />
+            ))}
+            {shots.length > 6 && <span className="ms-1 text-[0.75rem] text-muted">+{shots.length - 6}</span>}
+          </div>
+        ) : p.finishes.length > 0 && (
           <div className="mt-2.5 flex items-center gap-1.5 lg:mt-3">
             {p.finishes.slice(0, 5).map((f, i) => (
               <button

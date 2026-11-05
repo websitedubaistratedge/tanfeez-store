@@ -5,6 +5,7 @@ import seed from "@/data/seed.json";
 import type { DB } from "./types";
 import { defaultLooks } from "./looks";
 import { DEFAULT_MATERIALS } from "./configurator";
+import colourPhotos from "./generated/colour-photos.json";
 
 // Persistence lives in Cloudflare D1. Each catalogue/order/request record is one
 // row (JSON) in `docs`, keyed by collection + id; settings and counters live in
@@ -107,7 +108,42 @@ const MIGRATIONS: Migration[] = [
       });
     },
   },
+  {
+    // Free delivery now applies across the UAE: update the store banner if it still has the old wording.
+    id: "2026-11-05-uae-free-delivery",
+    sql: [
+      [
+        "UPDATE meta SET data = json_set(data, '$.announcement.en', ?, '$.announcement.ar', ?) WHERE key = 'settings' AND json_extract(data, '$.announcement.en') = ?",
+        "Free delivery & installation across the UAE on orders over AED 5,000",
+        "توصيل وتركيب مجاني لجميع أنحاء الإمارات للطلبات فوق 5,000 درهم",
+        "Free delivery & installation across Dubai on orders over AED 5,000",
+      ],
+    ],
+  },
 ];
+
+// Colour photos (scripts/colour-photos.mjs): added to products without touching photos an admin
+// already set. The id follows the photo list, so new photos are picked up on the next deploy.
+const photoMap = colourPhotos as Record<string, { photoColour?: string; colourImages: Record<string, string> }>;
+const photoKey = Object.entries(photoMap).map(([s, v]) => `${s}:${v.photoColour}:${Object.keys(v.colourImages).join(",")}`).join("|");
+let photoHash = 0;
+for (let i = 0; i < photoKey.length; i++) photoHash = (photoHash * 31 + photoKey.charCodeAt(i)) | 0;
+MIGRATIONS.push({
+  id: `colour-photos-${(photoHash >>> 0).toString(36)}`,
+  sql: Object.entries(photoMap)
+    .filter(([, v]) => v.photoColour || Object.keys(v.colourImages).length)
+    .map(([slug, v]): [string, ...unknown[]] => {
+    const paths: unknown[] = [];
+    if (v.photoColour) paths.push("$.photoColour", v.photoColour);
+    for (const [colour, url] of Object.entries(v.colourImages)) paths.push(`$.colourImages."${colour}"`, url);
+    const marks = Array.from({ length: paths.length / 2 }, () => "?, ?").join(", ");
+    return [
+      `UPDATE docs SET data = json_insert(json_insert(data, '$.colourImages', json('{}')), ${marks}) WHERE coll = 'products' AND json_extract(data, '$.slug') = ?`,
+      ...paths,
+      slug,
+    ];
+  }),
+});
 
 async function migrate(db: D1Database) {
   const row = await db.prepare("SELECT data FROM meta WHERE key = 'migrations'").first<{ data: string }>();

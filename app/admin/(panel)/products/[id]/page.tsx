@@ -2,6 +2,7 @@ import { notFound } from "next/navigation";
 import { readDB } from "@/lib/db";
 import { ProductForm } from "@/components/admin/ProductForm";
 import type { Product } from "@/lib/types";
+import { DEFAULT_MATERIALS } from "@/lib/configurator";
 
 export default async function ProductEdit({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -32,5 +33,5 @@ export default async function ProductEdit({ params }: { params: Promise<{ id: st
   };
   const product = id === "new" ? blank : db.products.find((p) => p.id === id);
   if (!product) notFound();
-  return <ProductForm product={product} categories={db.categories} />;
+  return <ProductForm product={product} categories={db.categories} materials={db.settings.materials ?? DEFAULT_MATERIALS} />;
 }

@@ -53,7 +53,7 @@ export function SettingsForm({ settings, notify }: { settings: Settings; notify:
           </Card>
           <Card className="space-y-4">
             <h2 className="font-display font-semibold tracking-tight">Delivery &amp; installation fees (AED)</h2>
-            <Field label="Free delivery in Dubai over"><input type="number" className={inputCls} value={s.freeDeliveryOver} onChange={(e) => set("freeDeliveryOver", Number(e.target.value))} /></Field>
+            <Field label="Free delivery across the UAE over"><input type="number" className={inputCls} value={s.freeDeliveryOver} onChange={(e) => set("freeDeliveryOver", Number(e.target.value))} /></Field>
             <div className="grid grid-cols-2 gap-3">
               {Object.entries(s.deliveryFees).map(([k, v]) => (
                 <Field key={k} label={k}><input type="number" min={0} className={inputCls} value={v} onChange={(e) => set("deliveryFees", { ...s.deliveryFees, [k]: Number(e.target.value) })} /></Field>

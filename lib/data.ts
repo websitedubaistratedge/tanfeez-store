@@ -43,6 +43,23 @@ export async function getActiveProducts() {
   return db.products.filter((p) => p.status === "active").map(withStudio);
 }
 
+/** Pieces made for shops, kiosks and receptions: shown under For business, not in the home shop. */
+export const BUSINESS_CATEGORIES = new Set(["commercial"]);
+export const isBusinessProduct = (p: { category: string }) => BUSINESS_CATEGORIES.has(p.category);
+
+/** Furniture for homes: what Shop all, the home page and search show. */
+export async function getHomeProducts() {
+  return (await getActiveProducts()).filter((p) => !isBusinessProduct(p));
+}
+
+export async function getBusinessProducts() {
+  return (await getActiveProducts()).filter(isBusinessProduct);
+}
+
+export async function getHomeCategories() {
+  return (await getCategories()).filter((c) => !BUSINESS_CATEGORIES.has(c.slug));
+}
+
 /** Categories in display order; only those with at least one live product. */
 export async function getCategories() {
   const db = await readDB();

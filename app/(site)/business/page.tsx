@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { getProjects } from "@/lib/data";
+import { getBusinessProducts, getProjects } from "@/lib/data";
 import { BusinessView } from "@/components/pages/BusinessView";
 
 export const metadata: Metadata = {
@@ -8,5 +8,6 @@ export const metadata: Metadata = {
 };
 
 export default async function BusinessPage() {
-  return <BusinessView projects={await getProjects()} />;
+  const [projects, pieces] = await Promise.all([getProjects(), getBusinessProducts()]);
+  return <BusinessView projects={projects} pieces={pieces} />;
 }

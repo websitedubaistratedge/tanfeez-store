@@ -14,6 +14,7 @@ import { EASE } from "@/components/ui/motion";
 import { CircleArrow, OutlineLink, PillLink } from "@/components/ui/buttons";
 import { TabbyBadge, TamaraBadge } from "@/components/shop/Configurator";
 import type { Order } from "@/lib/types";
+import { BackButton } from "@/components/ui/BackButton";
 
 export function CheckoutView() {
   const { t, lang, settings, account: me } = useSite();
@@ -28,7 +29,7 @@ export function CheckoutView() {
 
   const subtotal = cartTotal(items);
   const fee = settings.deliveryFees[emirate] ?? 300;
-  const delivery = emirate === "Dubai" && subtotal >= settings.freeDeliveryOver ? 0 : fee;
+  const delivery = subtotal >= settings.freeDeliveryOver ? 0 : fee;
   const total = subtotal + delivery;
   const vat = Math.round((total / 1.05) * 0.05);
 
@@ -76,6 +77,7 @@ export function CheckoutView() {
 
   return (
     <section className="mx-auto max-w-[1440px] px-5 pb-24 pt-10 md:px-10 md:pt-14">
+      <BackButton fallback="/shop" className="mb-6" />
       <h1 className="mb-10 font-display text-[clamp(2.2rem,4.5vw,3.6rem)] font-semibold tracking-[-0.03em]">{t("checkout.title")}</h1>
       <form onSubmit={(e) => { e.preventDefault(); submit(new FormData(e.currentTarget)); }} className="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="space-y-12 lg:col-span-7">

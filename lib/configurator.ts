@@ -83,6 +83,9 @@ export function materialsFor(p: Pick<Product, "category">, cat: MaterialCatalog 
 export function defaultConfig(p: Product, cat: MaterialCatalog = DEFAULT_MATERIALS): { material: string; colour: string; size: number } {
   const mats = materialsFor(p, cat);
   if (!mats.length) return { material: "", colour: "", size: 0 };
+  // Start on the colour the main photo shows, when we know it.
+  const shown = p.photoColour && mats.find((m) => m.colours.some((c) => c.id === p.photoColour));
+  if (shown) return { material: shown.id, colour: p.photoColour!, size: 0 };
   const text = `${p.materials.en} ${p.finishes.map((f) => f.name.en).join(" ")}`.toLowerCase();
   const order = ["leather", "velvet", "bouclé", "boucle", "linen", "walnut", "lacquer", "ash", "oak"];
   const hit = order.find((k) => text.includes(k));
@@ -122,4 +125,18 @@ export function describeConfig(p: Product, cfg: { material?: string; colour?: st
   const m = materialsFor(p, cat).find((x) => x.id === cfg.material);
   const c = m?.colours.find((x) => x.id === cfg.colour);
   return [m?.name[lang], c?.name[lang]].filter(Boolean).join(" · ");
+}
+
+/** The photo for a chosen colour: its own photo, the main photo if that's the colour shown, or null. */
+export function photoFor(p: Pick<Product, "images" | "photoColour" | "colourImages">, colour?: string) {
+  if (!colour) return null;
+  if (p.colourImages?.[colour]) return p.colourImages[colour];
+  return colour === p.photoColour ? p.images[0] : null;
+}
+
+/** Every colour of this piece we have a photo of, main photo first. */
+export function photographedColours(p: Pick<Product, "category" | "images" | "photoColour" | "colourImages">, cat: MaterialCatalog = DEFAULT_MATERIALS) {
+  const all = materialsFor(p, cat).flatMap((m) => m.colours.map((c) => ({ ...c, material: m.id })));
+  const ids = [p.photoColour, ...Object.keys(p.colourImages ?? {})].filter((x, i, a): x is string => !!x && a.indexOf(x) === i);
+  return ids.map((id) => all.find((c) => c.id === id)).filter((c): c is Swatch & { material: string } => !!c).map((c) => ({ ...c, image: photoFor(p, c.id)! }));
 }

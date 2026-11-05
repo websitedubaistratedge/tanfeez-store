@@ -4,12 +4,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowLeft, ChevronDown } from "lucide-react";
+import { ChevronDown } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { EASE } from "@/components/ui/motion";
 import { CircleArrow } from "@/components/ui/buttons";
 import { LEGAL_UPDATED, privacy, returnsPolicy, terms, type LegalBlock } from "@/lib/legal";
+import { BackButton } from "@/components/ui/BackButton";
 
 const DOCS = { terms, privacy, returns: returnsPolicy } as const;
 export type LegalKind = keyof typeof DOCS;
@@ -47,10 +48,7 @@ export function LegalView({ kind }: { kind: LegalKind }) {
     <>
       <section className="bg-band">
         <div className="mx-auto max-w-[1440px] px-5 pb-12 pt-8 md:px-10 md:pb-16 md:pt-10">
-          <Link href="/" className="group inline-flex items-center gap-2 text-[0.88rem] text-ink/70 hover:text-ink">
-            <ArrowLeft className="h-4 w-4 stroke-[1.5] transition group-hover:-translate-x-0.5 rtl:rotate-180" />
-            {ar ? "الرئيسية" : "Home"}
-          </Link>
+          <BackButton />
           <div className="mt-8 grid gap-6 md:mt-12 lg:grid-cols-[1.3fr_1fr] lg:items-end">
             <div>
               <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }} className="font-serif text-[1.35rem] leading-none text-ink-2 md:text-[1.6rem]">

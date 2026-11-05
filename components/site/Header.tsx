@@ -4,7 +4,8 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "framer-motion";
 import { useEffect, useState, useTransition, useId } from "react";
-import { Building2, Heart, MapPin, Menu, Search, ShoppingBag, Sofa, UserRound, X, Phone } from "lucide-react";
+import { ArrowLeft, Building2, ChevronRight, Heart, MapPin, Menu, Search, ShoppingBag, Sofa, UserRound, X, Phone } from "lucide-react";
+import { ROOMS } from "@/lib/rooms";
 import clsx from "clsx";
 import { Logo } from "@/components/ui/Logo";
 import { EASE } from "@/components/ui/motion";
@@ -19,8 +20,8 @@ import { AccountButton, DrawerSignOut, useLoginHref } from "./AccountButton";
 type NavLink = { href: string; en: string; ar: string };
 const HOME_LINKS: NavLink[] = [
   { href: "/shop", en: "Shop all", ar: "تسوّق الكل" },
-  { href: "/shop?c=sofas", en: "Living", ar: "المعيشة" },
-  { href: "/shop?c=beds", en: "Bedroom", ar: "النوم" },
+  { href: "/shop?c=living", en: "Living", ar: "المعيشة" },
+  { href: "/shop?c=bedroom", en: "Bedroom", ar: "النوم" },
   { href: "/inspiration", en: "Inspiration", ar: "إلهام" },
   { href: "/about", en: "About", ar: "من نحن" },
   { href: "/contact", en: "Contact", ar: "تواصل" },
@@ -28,6 +29,7 @@ const HOME_LINKS: NavLink[] = [
 const BUSINESS_LINKS: NavLink[] = [
   { href: "/business", en: "Fit-out", ar: "التجهيز" },
   { href: "/projects", en: "Projects", ar: "المشاريع" },
+  { href: "/business#pieces", en: "Retail pieces", ar: "قطع تجارية" },
   { href: "/services", en: "Services", ar: "الخدمات" },
   { href: "/business#process", en: "How we work", ar: "كيف نعمل" },
   { href: "/contact", en: "Contact", ar: "تواصل" },
@@ -95,8 +97,28 @@ const CATS = [
   { slug: "storage", en: "Wardrobes & storage", ar: "الخزائن" },
   { slug: "tables", en: "Tables & vanities", ar: "الطاولات والتسريحات" },
   { slug: "joinery", en: "Stairs, doors & joinery", ar: "السلالم والأبواب والنجارة" },
-  { slug: "commercial", en: "Retail & commercial", ar: "التجاري" },
 ];
+
+/** Phone menu: these entries open a list of their categories instead of going straight to a page. */
+type SubId = "shop" | "living" | "bedroom";
+const SUB_FOR: Record<string, SubId> = { "/shop": "shop", "/shop?c=living": "living", "/shop?c=bedroom": "bedroom" };
+const SUBMENUS: Record<SubId, { title: NavLink; links: NavLink[]; all: NavLink }> = {
+  shop: {
+    title: { href: "/shop", en: "Shop all", ar: "تسوّق الكل" },
+    links: CATS.map((c) => ({ href: `/shop?c=${c.slug}`, en: c.en, ar: c.ar })),
+    all: { href: "/shop", en: "View all furniture", ar: "عرض كل الأثاث" },
+  },
+  living: {
+    title: { href: "/shop?c=living", en: "Living", ar: "المعيشة" },
+    links: ROOMS.living.links,
+    all: { href: "/shop?c=living", en: "View all living", ar: "عرض كل قطع المعيشة" },
+  },
+  bedroom: {
+    title: { href: "/shop?c=bedroom", en: "Bedroom", ar: "النوم" },
+    links: ROOMS.bedroom.links,
+    all: { href: "/shop?c=bedroom", en: "View all bedroom", ar: "عرض كل قطع النوم" },
+  },
+};
 
 export function LangToggle({ className }: { className?: string }) {
   const { lang, t } = useSite();
@@ -166,6 +188,10 @@ export function Header() {
     if (y < prev - 2) setHidden(false);
   });
   useEffect(() => setMenu(false), [pathname, setMenu]);
+  const [sub, setSub] = useState<SubId | null>(null);
+  useEffect(() => {
+    if (!menuOpen) setSub(null);
+  }, [menuOpen]);
   useEffect(() => lockScroll(menuOpen), [menuOpen]);
 
   if (pathname.startsWith("/admin")) return null;
@@ -306,16 +332,53 @@ export function Header() {
               <div className="flex-1 overflow-y-auto px-6 py-6">
                 <ModeSwitch className="mb-6" />
                 <div className="mb-6 sm:hidden"><SearchField /></div>
-                <ul>
-                  {[{ href: "/", en: "Home", ar: "الرئيسية" }, ...LINKS, { href: "/track", en: "Track order", ar: "تتبع الطلب" }].map((l, i) => (
-                    <motion.li key={l.href} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.04, duration: 0.5, ease: EASE }}>
-                      <Link href={l.href} className="group flex items-center justify-between border-b border-line py-4 font-display text-[1.6rem] font-medium tracking-tight">
-                        {label(l)}
-                        <CircleArrow className="h-6 w-6 text-ink/30 transition group-hover:text-ink" />
-                      </Link>
-                    </motion.li>
-                  ))}
-                </ul>
+                <AnimatePresence mode="wait" initial={false}>
+                  {sub ? (
+                    <motion.div key={sub} initial={{ opacity: 0, x: lang === "ar" ? -24 : 24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: lang === "ar" ? -24 : 24 }} transition={{ duration: 0.35, ease: EASE }}>
+                      <button onClick={() => setSub(null)} className="group -ms-1 mb-2 inline-flex items-center gap-2 py-2 text-[0.92rem] text-ink/70 hover:text-ink">
+                        <ArrowLeft className="h-4 w-4 stroke-[1.6] transition group-hover:-translate-x-0.5 rtl:rotate-180 rtl:group-hover:translate-x-0.5" />
+                        {lang === "ar" ? "القائمة" : "Back to menu"}
+                      </button>
+                      <p className="mb-2 font-serif text-[1.35rem] leading-none text-ink-2">{label(SUBMENUS[sub].title)}</p>
+                      <ul>
+                        {[...SUBMENUS[sub].links, SUBMENUS[sub].all].map((l, i, all) => (
+                          <motion.li key={l.href} initial={{ opacity: 0, x: 12 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.05 + i * 0.035, duration: 0.4, ease: EASE }}>
+                            <Link
+                              href={l.href}
+                              onClick={() => setMenu(false)}
+                              className={clsx("group flex items-center justify-between border-b border-line py-3.5 font-display tracking-tight", i === all.length - 1 ? "text-[1.15rem] font-semibold" : "text-[1.45rem] font-medium")}
+                            >
+                              {label(l)}
+                              <CircleArrow className="h-5 w-5 text-ink/30 transition group-hover:text-ink" />
+                            </Link>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </motion.div>
+                  ) : (
+                    <motion.ul key="main" initial={{ opacity: 0, x: lang === "ar" ? 24 : -24 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: lang === "ar" ? 24 : -24 }} transition={{ duration: 0.35, ease: EASE }}>
+                      {[{ href: "/", en: "Home", ar: "الرئيسية" }, ...LINKS, { href: "/track", en: "Track order", ar: "تتبع الطلب" }].map((l, i) => {
+                        const opens = !biz ? SUB_FOR[l.href] : undefined;
+                        const cls = "group flex w-full items-center justify-between border-b border-line py-4 text-start font-display text-[1.6rem] font-medium tracking-tight";
+                        return (
+                          <motion.li key={l.href} initial={{ opacity: 0, x: -16 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.1 + i * 0.04, duration: 0.5, ease: EASE }}>
+                            {opens ? (
+                              <button onClick={() => setSub(opens)} className={cls} aria-haspopup="true">
+                                {label(l)}
+                                <ChevronRight className="h-6 w-6 stroke-[1.4] text-ink/40 transition group-hover:translate-x-0.5 group-hover:text-ink rtl:rotate-180" />
+                              </button>
+                            ) : (
+                              <Link href={l.href} className={cls}>
+                                {label(l)}
+                                <CircleArrow className="h-6 w-6 text-ink/30 transition group-hover:text-ink" />
+                              </Link>
+                            )}
+                          </motion.li>
+                        );
+                      })}
+                    </motion.ul>
+                  )}
+                </AnimatePresence>
                 <p className="mb-3 mt-8 text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted">{t("nav.shop")}</p>
                 <ul className="grid grid-cols-2 gap-x-4 gap-y-2.5">
                   {CATS.map((c) => (

@@ -6,7 +6,7 @@ import { Check, Info, Loader2, Package, X } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { EMIRATES, emirateName, money } from "@/lib/i18n";
-import { configPrice, isUpholstered, materialsFor, sizeDelta, type Material, type Swatch } from "@/lib/configurator";
+import { configPrice, isUpholstered, materialsFor, photoFor, sizeDelta, type Material, type Swatch } from "@/lib/configurator";
 import { requestSamples } from "@/lib/actions";
 import { EASE } from "@/components/ui/motion";
 import { lockScroll } from "@/components/site/SmoothScroll";
@@ -139,7 +139,7 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
             const on = m.id === mat.id;
             const add = Math.round(((p.salePrice || p.price) * m.delta) / 50) * 50;
             return (
-              <button key={m.id} onClick={() => setCfg({ ...cfg, material: m.id, colour: m.colours[0].id })} className={clsx("relative flex items-start gap-3 border p-3 text-start transition", on ? "border-ink" : "border-line hover:border-ink/40")}>
+              <button key={m.id} onClick={() => setCfg({ ...cfg, material: m.id, colour: (m.colours.find((c) => photoFor(p, c.id)) ?? m.colours[0]).id })} className={clsx("relative flex items-start gap-3 border p-3 text-start transition", on ? "border-ink" : "border-line hover:border-ink/40")}>
                 {on && <motion.span layoutId={`mat-${p.id}`} className="absolute inset-0 border-[1.5px] border-ink" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
                 <span className="mt-0.5 h-8 w-8 shrink-0 rounded-full ring-1 ring-black/10" style={fabricStyle(m.colours[0].hex, wood)} />
                 <span className="min-w-0">
@@ -169,12 +169,21 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
                 onClick={() => setCfg({ ...cfg, colour: c.id })}
                 title={tx(c.name)}
                 aria-label={tx(c.name)}
-                className={clsx("h-11 w-11 rounded-full ring-offset-[3px] transition-shadow", c.id === colour.id ? "ring-[1.5px] ring-ink" : "ring-1 ring-black/10 hover:ring-black/30")}
+                className={clsx("relative h-11 w-11 rounded-full ring-offset-[3px] transition-shadow", c.id === colour.id ? "ring-[1.5px] ring-ink" : "ring-1 ring-black/10 hover:ring-black/30")}
                 style={fabricStyle(c.hex, wood)}
-              />
+              >
+                {/* A small dot marks colours you can see photographed. */}
+                {photoFor(p, c.id) && <span className="absolute -end-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-brand ring-2 ring-white" />}
+              </motion.button>
             ))}
           </AnimatePresence>
         </div>
+        {(p.photoColour || p.colourImages) && (
+          <p className="mt-3 flex items-center gap-2 text-[0.76rem] text-muted">
+            <span className="h-2 w-2 rounded-full bg-brand" />
+            {ar ? "ألوان مصوّرة: اختر لترى القطعة بها" : "Photographed: pick one to see the piece in it"}
+          </p>
+        )}
       </div>
 
       {/* Size */}

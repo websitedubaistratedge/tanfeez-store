@@ -26,7 +26,7 @@ const CAPS = {
 const IMAGES = {
   fitout: "/images/projects/hovi-digital-lab-1.jpg",
   furniture: "/images/projects/vox-cinema-theatre-1.jpg",
-  technical: "/images/projects/55-car-care-1.jpg",
+  technical: "/images/lifestyle/technical-works.jpg",
 };
 
 function ServiceBlock({ k, i }: { k: keyof typeof CAPS; i: number }) {

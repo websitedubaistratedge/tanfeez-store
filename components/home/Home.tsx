@@ -810,14 +810,14 @@ const FAQ = {
   en: [
     ["How long does a made-to-order piece take?", "Most sofas, beds and tables are ready in 7–21 days. Larger joinery such as wardrobes, media walls and staircases takes 3–5 weeks after the site measurement."],
     ["Can I change the size, fabric or finish?", "Yes. Every piece is built in our Dubai workshop, so dimensions, fabrics, leathers, wood species and lacquer colours can be tailored. Use “Request a quote” on any product."],
-    ["Do you deliver and install across the UAE?", "Our own team delivers and installs in all seven emirates. Delivery is free in Dubai on orders over AED 5,000."],
+    ["Do you deliver and install across the UAE?", "Our own team delivers and installs in all seven emirates. Delivery is free across the UAE on orders over AED 5,000."],
     ["How can I pay?", "Split any order into 4 interest-free payments with Tabby or 3 with Tamara, or pay by card or cash on delivery, or by bank transfer. Online card payment and Apple Pay are coming soon."],
     ["Do you take on commercial fit-out projects?", "Fit-out is where we started. We deliver turnkey retail, F&B, office and hospitality interiors, including shop drawings and mall approvals."],
   ],
   ar: [
     ["كم تستغرق القطعة المصنوعة حسب الطلب؟", "معظم الكنب والأسرّة والطاولات جاهزة خلال 7–21 يوماً. أما النجارة الكبيرة مثل الخزائن وجدران التلفاز والسلالم فتستغرق 3–5 أسابيع بعد أخذ القياسات."],
     ["هل يمكنني تغيير المقاس أو القماش أو اللون؟", "نعم. كل قطعة تُصنع في ورشتنا بدبي، لذا يمكن تخصيص الأبعاد والأقمشة والجلود وأنواع الخشب وألوان اللاكر. استخدم «اطلب عرض سعر» في أي منتج."],
-    ["هل توصلون وتركّبون في جميع الإمارات؟", "يقوم فريقنا الخاص بالتوصيل والتركيب في الإمارات السبع. التوصيل مجاني في دبي للطلبات فوق 5,000 درهم."],
+    ["هل توصلون وتركّبون في جميع الإمارات؟", "يقوم فريقنا الخاص بالتوصيل والتركيب في الإمارات السبع. التوصيل مجاني في جميع أنحاء الإمارات للطلبات فوق 5,000 درهم."],
     ["ما طرق الدفع المتاحة؟", "قسّم أي طلب على 4 دفعات بدون فوائد مع تابي أو 3 دفعات مع تمارا، أو ادفع بالبطاقة أو نقداً عند التسليم أو بالتحويل البنكي. الدفع الإلكتروني وApple Pay قريباً."],
     ["هل تنفذون مشاريع تجهيز تجارية؟", "التجهيز الداخلي هو بدايتنا. ننفذ مشاريع متكاملة للمحلات والمطاعم والمكاتب والضيافة، بما في ذلك الرسومات التنفيذية وموافقات المولات."],
   ],

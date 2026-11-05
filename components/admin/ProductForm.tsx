@@ -7,10 +7,12 @@ import { ArrowLeft, Check, Loader2, Plus, Trash2, ExternalLink } from "lucide-re
 import clsx from "clsx";
 import { Btn, Card, Field, inputCls, PageHeader, Toggle } from "./ui";
 import { ImageUploader } from "./ImageUploader";
+import { ColourPhotos } from "./ColourPhotos";
+import { materialsFor, type MaterialCatalog } from "@/lib/configurator";
 import { deleteProduct, saveProduct } from "@/lib/admin-actions";
 import type { Category, Product } from "@/lib/types";
 
-export function ProductForm({ product, categories }: { product: Product; categories: Category[] }) {
+export function ProductForm({ product, categories, materials }: { product: Product; categories: Category[]; materials: MaterialCatalog }) {
   const router = useRouter();
   const [p, setP] = useState<Product>(product);
   const [sizes, setSizes] = useState(product.sizes.join(", "));
@@ -63,6 +65,11 @@ export function ProductForm({ product, categories }: { product: Product; categor
             <h2 className="mb-4 font-display font-semibold tracking-tight">Images</h2>
             <ImageUploader value={p.images} onChange={(v) => set("images", v)} />
           </Card>
+          {!p.priceOnRequest && materialsFor(p, materials).length > 0 && (
+            <Card>
+              <ColourPhotos product={p} materials={materials} onChange={(patch) => setP((x) => ({ ...x, ...patch }))} />
+            </Card>
+          )}
 
           <Card className="space-y-4">
             <h2 className="font-display font-semibold tracking-tight">Details</h2>

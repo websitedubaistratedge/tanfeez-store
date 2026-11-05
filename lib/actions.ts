@@ -68,7 +68,7 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
     if (!lines.length) throw new Error("no valid items");
     const subtotal = lines.reduce((s, l) => s + l.price * l.qty, 0);
     const fee = db.settings.deliveryFees[c.emirate] ?? 300;
-    const delivery = c.emirate === "Dubai" && subtotal >= db.settings.freeDeliveryOver ? 0 : fee;
+    const delivery = subtotal >= db.settings.freeDeliveryOver ? 0 : fee;
     const total = subtotal + delivery;
     const n = `TNF-${db.counters.order++}`;
     const at = new Date().toISOString();

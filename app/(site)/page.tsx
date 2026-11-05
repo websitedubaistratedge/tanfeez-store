@@ -1,5 +1,5 @@
 import { Categories, Clients, QuickShop, Collections, Faq, HelpCTA, Hero, Heritage, ProjectsShowcase, Spotlight, Tailored } from "@/components/home/Home";
-import { getActiveProducts, getCategories, getLooks, getProjects } from "@/lib/data";
+import { getHomeCategories, getHomeProducts, getLooks, getProjects } from "@/lib/data";
 import { getLang } from "@/lib/lang";
 import { hasImage } from "@/lib/assets";
 import { resolveLooks } from "@/lib/looks";
@@ -12,7 +12,7 @@ function pick(...candidates: string[]) {
 }
 
 export default async function Home() {
-  const [products, categories, projects, lang, looks] = await Promise.all([getActiveProducts(), getCategories(), getProjects(), getLang(), getLooks()]);
+  const [products, categories, projects, lang, looks] = await Promise.all([getHomeProducts(), getHomeCategories(), getProjects(), getLang(), getLooks()]);
   const ar = lang === "ar";
   const bySlug = (s: string) => products.find((p) => p.slug === s);
   const pickMany = (slugs: string[]) => slugs.map(bySlug).filter((p): p is NonNullable<typeof p> => !!p);

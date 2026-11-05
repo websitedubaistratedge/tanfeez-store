@@ -12,6 +12,7 @@ import { requestPasswordReset, signIn, signUp } from "@/lib/account-actions";
 import { Check, errorText, KindChoice, PasswordField, TextField } from "./fields";
 import { safeNext } from "@/lib/safe-next";
 import { markWelcomed } from "@/components/site/WelcomeBack";
+import { BackButton } from "@/components/ui/BackButton";
 
 type Tab = "in" | "up";
 
@@ -23,8 +24,11 @@ export function AuthView({ mode, next }: { mode: Tab; next?: string }) {
 
   return (
     <section className="mx-auto max-w-[1440px] lg:px-10 lg:py-10">
+      <div className="px-5 pt-6 md:px-10 lg:px-0 lg:pb-6 lg:pt-0">
+        <BackButton />
+      </div>
       {/* Phone / tablet: heading + tabs */}
-      <div className="px-5 pt-8 md:px-10 lg:hidden">
+      <div className="px-5 pt-5 md:px-10 lg:hidden">
         <p className="font-serif text-[1.35rem] leading-none text-ink-2">{ar ? "حسابك في تنفيذ" : "Your TANFEEZ account"}</p>
         <div className="relative mt-6 grid grid-cols-2 border-b border-line">
           {(["in", "up"] as const).map((k) => (

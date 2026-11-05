@@ -10,7 +10,9 @@ import { useSite } from "@/components/providers";
 import { CountUp, EASE, Reveal, SplitLines } from "@/components/ui/motion";
 import { CircleArrow, OutlineLink, PillLink } from "@/components/ui/buttons";
 import { Clients, ProjectsShowcase } from "@/components/home/Home";
-import type { Project, Sector } from "@/lib/types";
+import type { Product, Project, Sector } from "@/lib/types";
+import { ProductCard } from "@/components/shop/ProductCard";
+import { BackButton } from "@/components/ui/BackButton";
 
 const SECTORS: { id: Sector; en: string; ar: string; dEn: string; dAr: string }[] = [
   { id: "retail", en: "Retail & luxury", ar: "التجزئة والفخامة", dEn: "Flagships, department-store concessions, kiosks", dAr: "متاجر رئيسية وأقسام داخل المولات وأكشاك" },
@@ -41,10 +43,10 @@ const STEPS = {
 const CAPS = [
   { href: "/services", img: "/images/projects/hovi-digital-lab-1.jpg", en: "Turnkey fit-out", ar: "تجهيز متكامل", dEn: "Design, build and handover under one contract.", dAr: "تصميم وتنفيذ وتسليم بعقد واحد." },
   { href: "/services", img: "/images/craft/workshop.jpg", en: "Joinery & contract furniture", ar: "نجارة وأثاث للمشاريع", dEn: "Counters, display units, seating in volume.", dAr: "كاونترات ووحدات عرض ومقاعد بالكميات." },
-  { href: "/services", img: "/images/projects/55-car-care-1.jpg", en: "Technical & maintenance", ar: "الخدمات الفنية والصيانة", dEn: "MEP, AMCs and post-occupancy care.", dAr: "تمديدات وعقود صيانة ورعاية بعد التشغيل." },
+  { href: "/services", img: "/images/lifestyle/technical-works.jpg", en: "Technical & maintenance", ar: "الخدمات الفنية والصيانة", dEn: "MEP, AMCs and post-occupancy care.", dAr: "تمديدات وعقود صيانة ورعاية بعد التشغيل." },
 ];
 
-export function BusinessView({ projects }: { projects: Project[] }) {
+export function BusinessView({ projects, pieces = [] }: { projects: Project[]; pieces?: Product[] }) {
   const { lang } = useSite();
   const ar = lang === "ar";
   const featured = projects.filter((p) => p.featured);
@@ -53,6 +55,30 @@ export function BusinessView({ projects }: { projects: Project[] }) {
       <BizHero projects={projects} />
       <Stats count={projects.length} />
       <Sectors projects={projects} />
+      {pieces.length > 0 && (
+        <section id="pieces" className="scroll-mt-24 py-16 md:py-24">
+          <div className="mx-auto max-w-[1440px] px-5 md:px-10">
+            <div className="mb-8 flex flex-wrap items-end justify-between gap-4 md:mb-12">
+              <div>
+                <p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.6rem]">{ar ? "للمتاجر والضيافة" : "For shops, malls & hospitality"}</p>
+                <h2 className="mt-3 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+                  <SplitLines lines={[ar ? "قطع تجارية حسب الطلب" : "Retail & reception pieces"]} />
+                </h2>
+              </div>
+              <p className="max-w-md text-[0.95rem] text-muted">
+                {ar ? "أكشاك ومناضد استقبال ووحدات عرض نصنعها في ورشتنا في دبي بمقاسات مشروعك. اطلب عرض سعر لكل قطعة." : "Kiosks, reception counters and display walls built in our Dubai workshop to your site's measurements. Each is quoted to your project."}
+              </p>
+            </div>
+            <div className="grid grid-cols-2 gap-x-3 gap-y-8 md:gap-x-5 lg:grid-cols-4">
+              {pieces.map((p, i) => (
+                <Reveal key={p.id} delay={i * 0.06}>
+                  <ProductCard product={p} sizes="(min-width:1024px) 25vw, 50vw" />
+                </Reveal>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
       <Process />
       <ProjectsShowcase projects={featured.length ? featured : projects} />
 
@@ -100,6 +126,7 @@ function BizHero({ projects }: { projects: Project[] }) {
     <section ref={ref} className="relative overflow-hidden border-b border-line">
       <div className="mx-auto grid max-w-[1440px] gap-10 px-5 pb-12 pt-10 md:px-10 md:pt-14 lg:min-h-[calc(100svh-120px)] lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-0">
         <motion.div style={{ y: lift }} className="lg:col-span-6">
+          <BackButton className="mb-8" />
           <p className="fade-up font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{ar ? "تنفيذ للأعمال" : "TANFEEZ for business"}</p>
           <h1 className="mt-3 font-display text-[clamp(2.5rem,5.4vw,5rem)] font-semibold leading-[0.98] tracking-[-0.035em]">
             <SplitLines lines={ar ? ["نبني المساحات", "التي تعيش فيها", "العلامات التجارية."] : ["We build the", "spaces brands", "live in."]} />

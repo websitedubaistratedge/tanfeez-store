@@ -14,6 +14,7 @@ import { changePassword, deleteMyAccount, signOut, updateProfile } from "@/lib/a
 import { EMIRATES, emirateName, money } from "@/lib/i18n";
 import type { AccountInfo, OrderStatus } from "@/lib/types";
 import { Check, errorText, KindChoice, PasswordField, TextField } from "./fields";
+import { BackButton } from "@/components/ui/BackButton";
 
 export type AccountOrder = {
   number: string;
@@ -50,6 +51,7 @@ export function AccountView({ me, since, orders, initial = "orders" }: { me: Acc
       <section className="bg-band">
         <div className="mx-auto flex max-w-[1440px] flex-wrap items-end justify-between gap-6 px-5 pb-10 pt-10 md:px-10 md:pb-14 md:pt-14">
           <div>
+            <BackButton className="mb-6" />
             <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }} className="font-serif text-[1.35rem] leading-none text-ink-2 md:text-[1.6rem]">
               {ar ? "حسابي" : "My account"}
             </motion.p>

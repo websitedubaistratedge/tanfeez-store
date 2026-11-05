@@ -166,7 +166,13 @@
    "status": "active",
    "rating": 4.9,
    "reviews": 12,
-   "createdAt": "2026-06-03T19:00:00.000Z"
+   "createdAt": "2026-06-03T19:00:00.000Z",
+   "photoColour": "cognac",
+   "colourImages": {
+    "black": "/images/products-v2/colours/chesterfield-heritage-sofa-black.jpg",
+    "emerald": "/images/products-v2/colours/chesterfield-heritage-sofa-emerald.jpg",
+    "navy": "/images/products-v2/colours/chesterfield-heritage-sofa-navy.jpg"
+   }
   },
   {
    "id": "prd_002",
@@ -226,7 +232,13 @@
    "status": "active",
    "rating": 5,
    "reviews": 31,
-   "createdAt": "2026-06-06T19:00:00.000Z"
+   "createdAt": "2026-06-06T19:00:00.000Z",
+   "photoColour": "charcoal",
+   "colourImages": {
+    "blush": "/images/products-v2/colours/velvet-chaise-daybed-blush.jpg",
+    "emerald": "/images/products-v2/colours/velvet-chaise-daybed-emerald.jpg",
+    "ivory": "/images/products-v2/colours/velvet-chaise-daybed-ivory.jpg"
+   }
   },
   {
    "id": "prd_003",
@@ -287,7 +299,13 @@
    "status": "active",
    "rating": 4.8,
    "reviews": 8,
-   "createdAt": "2026-06-09T19:00:00.000Z"
+   "createdAt": "2026-06-09T19:00:00.000Z",
+   "colourImages": {
+    "ivory": "/images/products-v2/colours/harbour-lounge-set-ivory.jpg",
+    "ocean": "/images/products-v2/colours/harbour-lounge-set-ocean.jpg",
+    "sage": "/images/products-v2/colours/harbour-lounge-set-sage.jpg",
+    "stone": "/images/products-v2/colours/harbour-lounge-set-stone.jpg"
+   }
   },
   {
    "id": "prd_004",
@@ -348,7 +366,13 @@
    "status": "active",
    "rating": 4.7,
    "reviews": 22,
-   "createdAt": "2026-06-12T19:00:00.000Z"
+   "createdAt": "2026-06-12T19:00:00.000Z",
+   "photoColour": "stone",
+   "colourImages": {
+    "ivory": "/images/products-v2/colours/cloud-curve-sofa-ivory.jpg",
+    "ochre": "/images/products-v2/colours/cloud-curve-sofa-ochre.jpg",
+    "sage": "/images/products-v2/colours/cloud-curve-sofa-sage.jpg"
+   }
   },
   {
    "id": "prd_005",
@@ -409,7 +433,13 @@
    "status": "active",
    "rating": 5,
    "reviews": 17,
-   "createdAt": "2026-06-15T19:00:00.000Z"
+   "createdAt": "2026-06-15T19:00:00.000Z",
+   "photoColour": "ivory",
+   "colourImages": {
+    "charcoal": "/images/products-v2/colours/alba-modular-corner-charcoal.jpg",
+    "clay": "/images/products-v2/colours/alba-modular-corner-clay.jpg",
+    "ocean": "/images/products-v2/colours/alba-modular-corner-ocean.jpg"
+   }
   },
   {
    "id": "prd_006",
@@ -470,7 +500,13 @@
    "status": "active",
    "rating": 4.9,
    "reviews": 5,
-   "createdAt": "2026-06-18T19:00:00.000Z"
+   "createdAt": "2026-06-18T19:00:00.000Z",
+   "photoColour": "sand",
+   "colourImages": {
+    "graphite": "/images/products-v2/colours/riviera-channel-sofa-graphite.jpg",
+    "ink": "/images/products-v2/colours/riviera-channel-sofa-ink.jpg",
+    "sage": "/images/products-v2/colours/riviera-channel-sofa-sage.jpg"
+   }
   },
   {
    "id": "prd_007",
@@ -531,7 +567,9 @@
    "status": "active",
    "rating": 4.9,
    "reviews": 41,
-   "createdAt": "2026-06-21T19:00:00.000Z"
+   "createdAt": "2026-06-21T19:00:00.000Z",
+   "photoColour": "emerald",
+   "colourImages": {}
   },
   {
    "id": "prd_008",
@@ -585,7 +623,13 @@
    "status": "active",
    "rating": 5,
    "reviews": 12,
-   "createdAt": "2026-06-24T19:00:00.000Z"
+   "createdAt": "2026-06-24T19:00:00.000Z",
+   "photoColour": "cognac",
+   "colourImages": {
+    "black": "/images/products-v2/colours/milano-leather-sofa-black.jpg",
+    "navy": "/images/products-v2/colours/milano-leather-sofa-navy.jpg",
+    "tobacco": "/images/products-v2/colours/milano-leather-sofa-tobacco.jpg"
+   }
   },
   {
    "id": "prd_009",
@@ -639,7 +683,11 @@
    "status": "active",
    "rating": 4.8,
    "reviews": 31,
-   "createdAt": "2026-06-27T19:00:00.000Z"
+   "createdAt": "2026-06-27T19:00:00.000Z",
+   "photoColour": "stone",
+   "colourImages": {
+    "oat": "/images/products-v2/colours/sahara-l-sofa-oat.jpg"
+   }
   },
   {
    "id": "prd_010",
@@ -700,7 +748,9 @@
    "status": "active",
    "rating": 4.7,
    "reviews": 8,
-   "createdAt": "2026-06-30T19:00:00.000Z"
+   "createdAt": "2026-06-30T19:00:00.000Z",
+   "photoColour": "ocean",
+   "colourImages": {}
   },
   {
    "id": "prd_011",
@@ -760,7 +810,9 @@
    "status": "active",
    "rating": 5,
    "reviews": 22,
-   "createdAt": "2026-07-03T19:00:00.000Z"
+   "createdAt": "2026-07-03T19:00:00.000Z",
+   "photoColour": "navy",
+   "colourImages": {}
   },
   {
    "id": "prd_012",
@@ -813,7 +865,9 @@
    "status": "active",
    "rating": 4.9,
    "reviews": 17,
-   "createdAt": "2026-07-06T19:00:00.000Z"
+   "createdAt": "2026-07-06T19:00:00.000Z",
+   "photoColour": "cognac",
+   "colourImages": {}
   },
   {
    "id": "prd_013",
@@ -875,7 +929,9 @@
    "status": "active",
    "rating": 4.9,
    "reviews": 5,
-   "createdAt": "2026-07-09T19:00:00.000Z"
+   "createdAt": "2026-07-09T19:00:00.000Z",
+   "photoColour": "blush",
+   "colourImages": {}
   },
   {
    "id": "prd_014",
@@ -1084,7 +1140,9 @@
    "status": "active",
    "rating": 5,
    "reviews": 8,
-   "createdAt": "2026-07-21T19:00:00.000Z"
+   "createdAt": "2026-07-21T19:00:00.000Z",
+   "photoColour": "stone",
+   "colourImages": {}
   },
   {
    "id": "prd_018",
@@ -5595,8 +5653,8 @@
    "ar": "السبت – الخميس · 8:00 – 18:00"
   },
   "announcement": {
-   "en": "Free delivery & installation across Dubai on orders over AED 5,000",
-   "ar": "توصيل وتركيب مجاني في دبي للطلبات فوق 5,000 درهم"
+   "en": "Free delivery & installation across the UAE on orders over AED 5,000",
+   "ar": "توصيل وتركيب مجاني لجميع أنحاء الإمارات للطلبات فوق 5,000 درهم"
   },
   "freeDeliveryOver": 5000,
   "deliveryFees": {

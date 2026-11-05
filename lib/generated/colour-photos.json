@@ -1,0 +1,88 @@
+{
+  "alba-modular-corner": {
+    "photoColour": "ivory",
+    "colourImages": {
+      "charcoal": "/images/products-v2/colours/alba-modular-corner-charcoal.jpg",
+      "clay": "/images/products-v2/colours/alba-modular-corner-clay.jpg",
+      "ocean": "/images/products-v2/colours/alba-modular-corner-ocean.jpg"
+    }
+  },
+  "chesterfield-heritage-sofa": {
+    "photoColour": "cognac",
+    "colourImages": {
+      "black": "/images/products-v2/colours/chesterfield-heritage-sofa-black.jpg",
+      "emerald": "/images/products-v2/colours/chesterfield-heritage-sofa-emerald.jpg",
+      "navy": "/images/products-v2/colours/chesterfield-heritage-sofa-navy.jpg"
+    }
+  },
+  "cloud-curve-sofa": {
+    "photoColour": "stone",
+    "colourImages": {
+      "ivory": "/images/products-v2/colours/cloud-curve-sofa-ivory.jpg",
+      "ochre": "/images/products-v2/colours/cloud-curve-sofa-ochre.jpg",
+      "sage": "/images/products-v2/colours/cloud-curve-sofa-sage.jpg"
+    }
+  },
+  "harbour-lounge-set": {
+    "colourImages": {
+      "ivory": "/images/products-v2/colours/harbour-lounge-set-ivory.jpg",
+      "ocean": "/images/products-v2/colours/harbour-lounge-set-ocean.jpg",
+      "sage": "/images/products-v2/colours/harbour-lounge-set-sage.jpg",
+      "stone": "/images/products-v2/colours/harbour-lounge-set-stone.jpg"
+    }
+  },
+  "milano-leather-sofa": {
+    "photoColour": "cognac",
+    "colourImages": {
+      "black": "/images/products-v2/colours/milano-leather-sofa-black.jpg",
+      "navy": "/images/products-v2/colours/milano-leather-sofa-navy.jpg",
+      "tobacco": "/images/products-v2/colours/milano-leather-sofa-tobacco.jpg"
+    }
+  },
+  "riviera-channel-sofa": {
+    "photoColour": "sand",
+    "colourImages": {
+      "graphite": "/images/products-v2/colours/riviera-channel-sofa-graphite.jpg",
+      "ink": "/images/products-v2/colours/riviera-channel-sofa-ink.jpg",
+      "sage": "/images/products-v2/colours/riviera-channel-sofa-sage.jpg"
+    }
+  },
+  "sahara-l-sofa": {
+    "photoColour": "stone",
+    "colourImages": {
+      "oat": "/images/products-v2/colours/sahara-l-sofa-oat.jpg"
+    }
+  },
+  "velvet-chaise-daybed": {
+    "photoColour": "charcoal",
+    "colourImages": {
+      "blush": "/images/products-v2/colours/velvet-chaise-daybed-blush.jpg",
+      "emerald": "/images/products-v2/colours/velvet-chaise-daybed-emerald.jpg",
+      "ivory": "/images/products-v2/colours/velvet-chaise-daybed-ivory.jpg"
+    }
+  },
+  "velluto-tufted-sofa": {
+    "photoColour": "emerald",
+    "colourImages": {}
+  },
+  "coral-shell-lounge-chair": {
+    "photoColour": "ocean",
+    "colourImages": {}
+  },
+  "nord-leather-armchair": {
+    "photoColour": "navy",
+    "colourImages": {}
+  },
+  "wingback-chesterfield-chair": {
+    "photoColour": "cognac",
+    "colourImages": {}
+  },
+  "blush-couture-bed": {
+    "photoColour": "blush",
+    "colourImages": {}
+  },
+  "atelier-storage-bed": {
+    "photoColour": "stone",
+    "colourImages": {}
+  }
+}

@@ -11,6 +11,7 @@ import type { Project } from "@/lib/types";
 import { EASE, Reveal, SplitLines } from "@/components/ui/motion";
 import { OutlineLink, PillLink } from "@/components/ui/buttons";
 import { lockScroll } from "@/components/site/SmoothScroll";
+import { BackButton } from "@/components/ui/BackButton";
 
 export function CaseStudy({ project: p, next }: { project: Project; next: Project }) {
   const { t, lang } = useSite();
@@ -41,9 +42,7 @@ export function CaseStudy({ project: p, next }: { project: Project; next: Projec
   return (
     <>
       <section className="mx-auto max-w-[1440px] px-5 pt-8 md:px-10 md:pt-10">
-        <Link href="/projects" className="group inline-flex items-center gap-2 text-[0.88rem] text-ink/70 hover:text-ink">
-          <ArrowLeft className="h-4 w-4 stroke-[1.5] rtl:rotate-180" /> {t("projects.title")}
-        </Link>
+        <BackButton fallback="/projects" />
         <div className="mt-8 grid gap-6 md:mt-12 lg:grid-cols-[1.4fr_1fr] lg:items-end">
           <div>
             <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.8, ease: EASE }} className="font-serif text-[1.4rem] leading-none text-ink-2 md:text-[1.7rem]">

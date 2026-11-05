@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useMemo, useState, useEffect } from "react";
-import { ArrowDownUp, Check, SlidersHorizontal, X } from "lucide-react";
+import { ArrowDownUp, ArrowLeft, Check, SlidersHorizontal, X } from "lucide-react";
+import { useSearchParams } from "next/navigation";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { PageHero } from "@/components/site/PageHero";
@@ -15,6 +16,8 @@ import { EASE } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
 import { useHydrated, useWishlist } from "@/lib/store";
 import { lockScroll } from "@/components/site/SmoothScroll";
+import { isRoom, ROOMS, SUBSETS } from "@/lib/rooms";
+import { BackButton } from "@/components/ui/BackButton";
 
 type Sort = "featured" | "newest" | "low" | "high";
 const PRICES = [
@@ -44,6 +47,10 @@ export function ShopView({
   const wish = useWishlist((s) => s.ids);
   const hydrated = useHydrated();
   const [cat, setCat] = useState(initialCategory);
+  // Follow the address bar: menu links and "All furniture" change ?c= on this same page.
+  const params = useSearchParams();
+  const urlCat = params.get("c") ?? "all";
+  useEffect(() => setCat(urlCat), [urlCat]);
   const [q, setQ] = useState(initialQuery);
   const [sort, setSort] = useState<Sort>("featured");
   const [inStock, setInStock] = useState(false);
@@ -68,7 +75,10 @@ export function ShopView({
     return products
       .filter((p) => {
         if (onlyWish && hydrated && !wish.includes(p.id)) return false;
-        if (cat !== "all" && p.category !== cat) return false;
+        if (cat !== "all" && p.category !== cat) {
+          const group = isRoom(cat) ? ROOMS[cat] : SUBSETS[cat];
+          if (!group?.has(p)) return false;
+        }
         if (inStock && (p.priceOnRequest || p.stock <= 0)) return false;
         if (madeToOrder && !p.priceOnRequest) return false;
         if (band && (p.priceOnRequest || eff(p) < band.min || eff(p) >= band.max)) return false;
@@ -103,7 +113,10 @@ export function ShopView({
     setQ("");
   };
 
-  const current = categories.find((c) => c.slug === cat);
+  const found = categories.find((c) => c.slug === cat);
+  // Rooms (Living, Bedroom) and small sub-groups (Vanities) read like a category in titles.
+  const group = isRoom(cat) ? ROOMS[cat] : SUBSETS[cat];
+  const current = found ?? (group ? { name: { en: group.en, ar: group.ar }, blurb: isRoom(cat) ? ROOMS[cat].blurb : { en: "", ar: "" } } : undefined);
   const priceLabel = (b: (typeof PRICES)[number]) =>
     b.max === Infinity ? `${money(b.min, lang)}+` : b.min === 0 ? `< ${money(b.max, lang)}` : `${money(b.min, lang)} – ${money(b.max, lang)}`;
 
@@ -115,16 +128,58 @@ export function ShopView({
     if ((i + 1) % 8 === 0 && editorial[k] && i < list.length - 1) cells.push({ kind: "e", e: editorial[k], k });
   });
 
+  // The filter groups, shared by the desktop side panel and the phone sheet.
+  const filterGroups = (
+    <>
+      {(cat === "all" || isRoom(cat)) && (
+        <Group title={ar ? "الفئة" : "Category"}>
+          <Row on={cat === "all"} onClick={() => selectCat("all")}>{t("shop.all")}</Row>
+          {categories
+            .filter((c) => !isRoom(cat) || products.some((p) => p.category === c.slug && ROOMS[cat].has(p)))
+            .map((c) => (
+              <Row key={c.slug} on={cat === c.slug} onClick={() => selectCat(c.slug)}>{tx(c.name, lang)}</Row>
+            ))}
+        </Group>
+      )}
+      <Group title={ar ? "السعر" : "Price"}>
+        {PRICES.map((b) => (
+          <Row key={b.id} on={price === b.id} onClick={() => setPrice(price === b.id ? null : b.id)}>{priceLabel(b)}</Row>
+        ))}
+      </Group>
+      <Group title={ar ? "اللون" : "Colour"}>
+        <div className="flex flex-wrap gap-2.5">
+          {colours.map((c) => (
+            <button key={c.hex} onClick={() => setColour(colour === c.hex ? null : c.hex)} title={c.name} aria-label={c.name} className={clsx("h-8 w-8 rounded-full ring-1 ring-black/10 ring-offset-2 transition", colour === c.hex && "ring-2 ring-ink")} style={{ background: c.hex }} />
+          ))}
+        </div>
+      </Group>
+      <Group title={ar ? "التوفر" : "Availability"}>
+        <Row on={inStock} onClick={() => setInStock((v) => !v)}>{t("shop.inStock")}</Row>
+        <Row on={madeToOrder} onClick={() => setMadeToOrder((v) => !v)}>{t("shop.madeToOrder")}</Row>
+        <Row on={onlyWish} onClick={() => setOnlyWish((v) => !v)}>{ar ? "المفضلة فقط" : "Wishlist only"}</Row>
+      </Group>
+    </>
+  );
+
   return (
     <>
       {/* Phones: a compact title and story-style category circles instead of the tall band */}
-      <div className="pt-5 md:hidden">
+      <div className="pt-4 md:hidden">
+        <BackButton fallback="/" className="mx-5 mb-4" />
         <div className="flex items-end justify-between gap-4 px-5">
           <h1 className="font-display text-[1.9rem] font-semibold leading-none tracking-[-0.03em]">
             {onlyWish ? (ar ? "المفضلة" : "Your wishlist") : current ? tx(current.name, lang) : ar ? "المتجر" : "Shop"}
           </h1>
           <span className="pb-0.5 text-[0.8rem] text-muted tabular-nums">{list.length} {t("v2.items")}</span>
         </div>
+        {/* Inside a category, only its products: the category row is just for browsing Shop all. */}
+        {cat !== "all" && (
+          <Link href="/shop" className="group mx-5 mt-3 inline-flex items-center gap-1.5 text-[0.85rem] text-ink/60 hover:text-ink">
+            <ArrowLeft className="h-3.5 w-3.5 stroke-[1.6] transition group-hover:-translate-x-0.5 rtl:rotate-180" />
+            {ar ? "كل الأثاث" : "All furniture"}
+          </Link>
+        )}
+        {cat === "all" && (
         <div className="no-scrollbar mt-5 flex gap-4 overflow-x-auto px-5 pb-1">
           {[{ id: "all", slug: "all", name: { en: "All", ar: "الكل" }, image: "/images/lifestyle/hero.jpg" }, ...categories].map((c) => (
             <button key={c.slug} onClick={() => selectCat(c.slug)} className="flex w-[64px] shrink-0 flex-col items-center gap-1.5">
@@ -135,17 +190,19 @@ export function ShopView({
             </button>
           ))}
         </div>
+        )}
       </div>
 
       <div className="hidden md:block">
       <PageHero
-        overlap
-        back={{ href: "/", label: t("nav.home") }}
+        overlap={cat === "all"}
+        back={cat === "all" ? { href: "/", label: t("nav.home") } : { href: "/shop", label: ar ? "كل الأثاث" : "All furniture" }}
         eyebrow={current ? tx(current.blurb, lang) : t("shop.sub")}
         title={[onlyWish ? (ar ? "المفضلة" : "Your wishlist") : current ? tx(current.name, lang) : t("shop.title")]}
       />
 
-      {/* Category image strip overlapping the band */}
+      {/* Category image strip overlapping the band (Shop all only) */}
+      {cat === "all" && (
       <div className="relative -mt-24 md:-mt-28">
         <div className="no-scrollbar mx-auto flex max-w-[1440px] gap-2 overflow-x-auto px-5 md:px-10">
           {[{ id: "all", slug: "all", name: { en: "All furniture", ar: "كل الأثاث" }, image: "/images/lifestyle/hero.jpg" }, ...categories].map((c, i) => (
@@ -165,24 +222,27 @@ export function ShopView({
           ))}
         </div>
       </div>
+      )}
 
       </div>
 
       {/* Sticky filter bar */}
       <div className="sticky top-0 z-30 mt-4 border-y border-line bg-white/95 backdrop-blur md:mt-10">
         <div className="mx-auto flex max-w-[1440px] items-center gap-2 px-5 py-2.5 md:px-10 md:py-3">
-          <button onClick={() => setSheet(true)} className="inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-ink px-5 text-[0.88rem] font-medium text-white">
+          <button onClick={() => setSheet(true)} className="inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-ink px-5 text-[0.88rem] font-medium text-white lg:hidden">
             <SlidersHorizontal className="h-4 w-4 stroke-[1.5]" />
             {t("v2.allFilters")}
             {activeCount > 0 && <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[11px] font-semibold text-ink">{activeCount}</span>}
           </button>
-          <div className="no-scrollbar hidden flex-1 gap-2 overflow-x-auto md:flex">
-            <Chip on={inStock} onClick={() => setInStock((v) => !v)}>{t("shop.inStock")}</Chip>
-            <Chip on={madeToOrder} onClick={() => setMadeToOrder((v) => !v)}>{t("shop.madeToOrder")}</Chip>
-            {PRICES.map((b) => (
-              <Chip key={b.id} on={price === b.id} onClick={() => setPrice(price === b.id ? null : b.id)}>{priceLabel(b)}</Chip>
-            ))}
-          </div>
+          <p className="hidden items-center gap-2 text-[0.88rem] font-medium lg:flex">
+            <SlidersHorizontal className="h-4 w-4 stroke-[1.5]" />
+            {ar ? "تصفية" : "Filters"}
+            {activeCount > 0 && (
+              <button onClick={clearAll} className="ms-2 text-[0.8rem] font-normal text-muted underline underline-offset-2 hover:text-ink">
+                {t("v2.clear")} ({activeCount})
+              </button>
+            )}
+          </p>
           <span className="ms-auto hidden shrink-0 text-[0.85rem] text-muted sm:block">
             {list.length} {t("v2.items")}
           </span>
@@ -198,7 +258,12 @@ export function ShopView({
         </div>
       </div>
 
-      <section className="mx-auto max-w-[1440px] px-4 pb-16 pt-5 md:px-10 md:pb-24 md:pt-8">
+      <section className="mx-auto max-w-[1440px] px-4 pb-16 pt-5 md:px-10 md:pb-24 md:pt-8 lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[250px_minmax(0,1fr)]">
+        {/* Desktop: filters in a side panel */}
+        <aside className="hidden lg:block" data-lenis-prevent>
+          <div className="no-scrollbar sticky top-24 max-h-[calc(100vh-7rem)] space-y-8 overflow-y-auto pb-6">{filterGroups}</div>
+        </aside>
+        <div className="min-w-0">
         {q && (
           <p className="mb-6 text-[0.95rem] text-muted">
             “{q}” · <button onClick={() => setQ("")} className="underline">{t("v2.clear")}</button>
@@ -213,7 +278,7 @@ export function ShopView({
             </div>
           </div>
         ) : (
-          <motion.div layout className="grid grid-cols-2 gap-x-3 gap-y-7 md:grid-cols-3 md:gap-x-2 md:gap-y-10 xl:grid-cols-4">
+          <motion.div layout className="grid grid-cols-2 gap-x-3 gap-y-7 md:grid-cols-3 md:gap-x-2 md:gap-y-10 2xl:grid-cols-4">
             <AnimatePresence mode="popLayout">
               {cells.map((c) =>
                 c.kind === "p" ? (
@@ -237,6 +302,7 @@ export function ShopView({
             </AnimatePresence>
           </motion.div>
         )}
+        </div>
       </section>
 
       {/* Filter sheet */}
@@ -264,29 +330,7 @@ export function ShopView({
                     </Row>
                   ))}
                 </Group>
-                <Group title={ar ? "الفئة" : "Category"}>
-                  <Row on={cat === "all"} onClick={() => selectCat("all")}>{t("shop.all")}</Row>
-                  {categories.map((c) => (
-                    <Row key={c.slug} on={cat === c.slug} onClick={() => selectCat(c.slug)}>{tx(c.name, lang)}</Row>
-                  ))}
-                </Group>
-                <Group title={ar ? "السعر" : "Price"}>
-                  {PRICES.map((b) => (
-                    <Row key={b.id} on={price === b.id} onClick={() => setPrice(price === b.id ? null : b.id)}>{priceLabel(b)}</Row>
-                  ))}
-                </Group>
-                <Group title={ar ? "اللون" : "Colour"}>
-                  <div className="flex flex-wrap gap-2.5">
-                    {colours.map((c) => (
-                      <button key={c.hex} onClick={() => setColour(colour === c.hex ? null : c.hex)} title={c.name} aria-label={c.name} className={clsx("h-9 w-9 rounded-full ring-1 ring-black/10 ring-offset-2 transition", colour === c.hex && "ring-2 ring-ink")} style={{ background: c.hex }} />
-                    ))}
-                  </div>
-                </Group>
-                <Group title={ar ? "التوفر" : "Availability"}>
-                  <Row on={inStock} onClick={() => setInStock((v) => !v)}>{t("shop.inStock")}</Row>
-                  <Row on={madeToOrder} onClick={() => setMadeToOrder((v) => !v)}>{t("shop.madeToOrder")}</Row>
-                  <Row on={onlyWish} onClick={() => setOnlyWish((v) => !v)}>{ar ? "المفضلة فقط" : "Wishlist only"}</Row>
-                </Group>
+                {filterGroups}
               </div>
               <div className="flex gap-3 border-t border-line p-5">
                 <button onClick={clearAll} className="h-12 flex-1 rounded-full border border-line text-[0.92rem] font-medium">{t("v2.clear")}</button>
@@ -302,14 +346,6 @@ export function ShopView({
   );
 }
 
-function Chip({ on, onClick, children }: { on: boolean; onClick: () => void; children: React.ReactNode }) {
-  return (
-    <button onClick={onClick} className={clsx("inline-flex h-10 shrink-0 items-center gap-1.5 rounded-full border px-4 text-[0.88rem] transition", on ? "border-ink bg-ink text-white" : "border-line hover:border-ink")}>
-      {on && <Check className="h-3.5 w-3.5" />}
-      {children}
-    </button>
-  );
-}
 function Group({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <div>

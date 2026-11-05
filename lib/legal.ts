@@ -15,7 +15,7 @@ const licence = (s: Store, ar: boolean) =>
     .filter(Boolean)
     .join(" ");
 
-export const LEGAL_UPDATED = "2026-11-04";
+export const LEGAL_UPDATED = "2026-11-05";
 const COMPANY = { en: "TANFEEZ Aamal Technical Contracting LLC", ar: "تنفيذ أعمال للمقاولات الفنية ذ.م.م" };
 const aed = (n: number, ar: boolean) => (ar ? `${n.toLocaleString("en-US")} د.إ` : `AED ${n.toLocaleString("en-US")}`);
 
@@ -55,7 +55,7 @@ export function terms(ar: boolean, s: Store): LegalDoc {
           title: "التصنيع والتوصيل والتركيب",
           body: [
             "مدة التجهيز الظاهرة في صفحة المنتج تقديرية، وسنتفق معك على موعد التوصيل. نوصّل ونركّب في جميع إمارات الدولة، وتظهر رسوم التوصيل لكل إمارة عند الدفع.",
-            `التوصيل والتركيب مجاني داخل دبي للطلبات التي تزيد قيمتها عن ${aed(s.freeDeliveryOver, true)}.`,
+            `التوصيل والتركيب مجاني في جميع أنحاء الإمارات للطلبات التي تزيد قيمتها عن ${aed(s.freeDeliveryOver, true)}.`,
             "يرجى التأكد من إمكانية إدخال القطع (المصاعد والأبواب والسلالم) وإبلاغنا مسبقاً بأي قيود، وأن يكون شخص بالغ موجوداً عند التوصيل. افحص القطع عند الاستلام وأبلغنا بأي ملاحظات.",
           ],
         },
@@ -128,7 +128,7 @@ export function terms(ar: boolean, s: Store): LegalDoc {
         title: "Production, delivery and installation",
         body: [
           "The lead time on each product page is an estimate; we'll agree the delivery date with you. We deliver and install across all seven emirates, and the delivery fee for your emirate is shown at checkout.",
-          `Delivery and installation are free within Dubai on orders over ${aed(s.freeDeliveryOver, false)}.`,
+          `Delivery and installation are free across the UAE on orders over ${aed(s.freeDeliveryOver, false)}.`,
           "Please make sure the pieces can get in (lifts, doors, stairs) and tell us about any building restrictions in advance, and have an adult present at delivery. Check your pieces when they arrive and let us know of anything that isn't right.",
         ],
       },
