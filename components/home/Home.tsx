@@ -147,10 +147,10 @@ export function Hero({ image, look }: { image: string; look?: Product }) {
           <span className="h-1.5 w-1.5 rounded-full bg-brand" />
           {lang === "ar" ? "تنفيذ · منذ 2021" : "TANFEEZ · Est. 2021"}
         </p>
-        <p className="font-serif text-[1.35rem] leading-tight text-ink-2 lg:text-[2.3rem]">
+        <p className="font-serif text-[1.35rem] leading-tight text-ink-2 lg:text-[2rem]">
           <WordsRise text={t("v2.heroSerif")} delay={0.3} />
         </p>
-        <h1 className="mt-1 max-w-[48rem] font-display text-[clamp(2.15rem,4.7vw,4.6rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+        <h1 className="mt-1 max-w-[38rem] font-display text-[clamp(1.72rem,3.76vw,3.68rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
           <WordsRise text={t("v2.heroTitle")} delay={0.55} />
         </h1>
         <div className="fade-up mt-6 grid grid-cols-[1fr_auto] gap-2 lg:mt-9 lg:flex lg:flex-wrap lg:gap-3" style={{ animationDelay: "1.05s" }}>
@@ -249,7 +249,7 @@ function CategoryTile({ c, cover, count, big = false, priority = false }: { c: C
       </div>
       <div className="absolute bottom-3 start-3 flex items-center gap-3 bg-white py-3 pe-3 ps-4 shadow-[0_8px_30px_-12px_rgba(0,0,0,0.18)] transition-all duration-700 ease-[cubic-bezier(.16,1,.3,1)] group-hover:pe-4 md:bottom-4 md:start-4">
         <div>
-          <p className={clsx("font-display font-semibold leading-tight tracking-[-0.02em]", big ? "text-[clamp(1.3rem,2vw,1.8rem)]" : "text-[1.05rem]")}>{tx(c.name, lang)}</p>
+          <p className={clsx("font-display font-semibold leading-tight tracking-[-0.02em]", big ? "text-[clamp(1.04rem,1.6vw,1.44rem)]" : "text-[1.05rem]")}>{tx(c.name, lang)}</p>
           <p className="mt-0.5 text-[0.76rem] text-muted">
             {count} {lang === "ar" ? "قطعة" : count === 1 ? "piece" : "pieces"}
           </p>
@@ -294,8 +294,8 @@ export function Categories({ categories, covers, counts }: { categories: Categor
     <section className="hidden py-16 lg:block lg:py-24">
       <div className="mx-auto mb-8 flex max-w-[1440px] items-end justify-between gap-6 px-5 md:mb-10 md:px-10">
         <div>
-          <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{lang === "ar" ? "تسوّق حسب الغرفة" : "Shop by room"}</p></Reveal>
-          <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+          <Reveal><p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.57rem]">{lang === "ar" ? "تسوّق حسب الغرفة" : "Shop by room"}</p></Reveal>
+          <h2 className="mt-1 font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
             <SplitLines lines={[t("v2.lookingFor")]} />
           </h2>
         </div>
@@ -369,8 +369,8 @@ export function Spotlight({ products }: { products: Product[] }) {
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <div className="mb-6 flex items-end justify-between gap-4 md:mb-12">
           <div className="min-w-0">
-            <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{lang === "ar" ? "مختاراتنا" : "The edit"}</p></Reveal>
-            <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+            <Reveal><p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.57rem]">{lang === "ar" ? "مختاراتنا" : "The edit"}</p></Reveal>
+            <h2 className="mt-1 font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
               <SplitLines lines={[lang === "ar" ? "قطع تستحق مكانها" : "Pieces worth the space"]} />
             </h2>
           </div>
@@ -421,7 +421,7 @@ export function Spotlight({ products }: { products: Product[] }) {
               <motion.div key={p.id} initial="hidden" animate="show" exit="out" variants={{ show: { transition: { staggerChildren: 0.07 } } }}>
                 {[
                   <p key="eb" className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted">{materialTags(p, lang)}</p>,
-                  <h3 key="h" className="mt-2 font-display md:mt-3 text-[clamp(2rem,3.4vw,3rem)] font-semibold leading-[1.02] tracking-[-0.03em]">{tx(p.name, lang)}</h3>,
+                  <h3 key="h" className="mt-2 font-display md:mt-3 text-[clamp(1.6rem,2.72vw,2.4rem)] font-semibold leading-[1.02] tracking-[-0.03em]">{tx(p.name, lang)}</h3>,
                   <p key="d" className="mt-5 hidden max-w-md font-serif md:block text-[1.2rem] leading-relaxed text-ink-2">{tx(p.description, lang)}</p>,
                   <div key="sw" className="mt-3 flex items-center gap-2 md:mt-6">
                     {/* The colours this piece is actually available in */}
@@ -505,8 +505,8 @@ export function Collections({ groups }: { groups: { id: string; label: string; p
     <section className="py-12 md:py-24">
       <div className="mx-auto mb-6 flex max-w-[1440px] flex-col justify-between gap-4 px-5 md:mb-12 md:flex-row md:items-end md:gap-6 md:px-10">
         <div>
-          <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{t("v2.newIn")}</p></Reveal>
-          <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+          <Reveal><p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.57rem]">{t("v2.newIn")}</p></Reveal>
+          <h2 className="mt-1 font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
             <SplitLines lines={[t("v2.newInTitle")]} />
           </h2>
         </div>
@@ -578,8 +578,8 @@ export function Tailored({ products }: { products: Product[] }) {
   return (
     <section className="hidden overflow-hidden py-12 md:block md:py-28">
       <div className="mx-auto max-w-[1100px] px-5 md:px-10">
-        <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{t("v2.tailoredSerif")}</p></Reveal>
-        <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+        <Reveal><p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.57rem]">{t("v2.tailoredSerif")}</p></Reveal>
+        <h2 className="mt-1 font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
           <SplitLines lines={[t("v2.tailoredTitle")]} />
         </h2>
         <Reveal delay={0.1}><p className="mt-4 max-w-3xl font-serif text-[1.2rem] leading-relaxed text-ink-2">{t("v2.tailoredD")}</p></Reveal>
@@ -630,8 +630,8 @@ export function ProjectsShowcase({ projects }: { projects: Project[] }) {
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <div className="grid gap-10 lg:grid-cols-12 lg:gap-16">
           <div className="lg:col-span-5">
-            <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{t("v2.projectsSerif")}</p></Reveal>
-            <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+            <Reveal><p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.57rem]">{t("v2.projectsSerif")}</p></Reveal>
+            <h2 className="mt-1 font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
               <SplitLines lines={[t("v2.projectsTitle")]} />
             </h2>
             <Reveal delay={0.1}><p className="mt-4 font-serif text-[1.15rem] leading-relaxed text-ink-2">{t("v2.projectsD")}</p></Reveal>
@@ -752,7 +752,7 @@ export function HelpCTA() {
           <ParallaxImg src="/images/craft/craftsman.jpg" />
         </Reveal>
         <div className="max-w-xl rounded-2xl bg-band p-6 md:rounded-none md:bg-transparent md:p-0">
-          <h2 className="font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+          <h2 className="font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
             <SplitLines lines={[t("v2.helpTitle")]} />
           </h2>
           <Reveal delay={0.1}><p className="mt-4 font-serif text-[1.2rem] leading-relaxed text-ink-2">{t("v2.helpD")}</p></Reveal>
@@ -795,7 +795,7 @@ export function Heritage({ projectCount }: { projectCount: number }) {
       </div>
       <div className="mx-auto mt-12 grid max-w-[1100px] gap-12 px-5 md:mt-16 md:px-10 lg:grid-cols-[1.2fr_1fr]">
         <div>
-          <h2 className="font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+          <h2 className="font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
             <SplitLines lines={[t("v2.heritageTitle")]} />
           </h2>
           <Reveal delay={0.1}><p className="mt-4 font-serif text-[1.2rem] leading-relaxed text-ink-2">{t("v2.heritageD")}</p></Reveal>
@@ -804,7 +804,7 @@ export function Heritage({ projectCount }: { projectCount: number }) {
         <dl className="grid grid-cols-2 gap-x-6 gap-y-8 self-end">
           {stats.map((s, i) => (
             <Reveal key={i} delay={i * 0.06} className="border-t border-ink pt-3">
-              <dd className="font-display text-[2.4rem] font-semibold leading-none tracking-[-0.03em]">
+              <dd className="font-display text-[2.09rem] font-semibold leading-none tracking-[-0.03em]">
                 <CountUp to={s.v} suffix={s.s} />
               </dd>
               <dt className="mt-2 text-[0.82rem] text-muted">{s.l}</dt>
@@ -838,7 +838,7 @@ export function Faq() {
   return (
     <section className="border-t border-line py-12 md:py-24">
       <div className="mx-auto grid max-w-[1100px] gap-10 px-5 md:px-10 lg:grid-cols-[1fr_2fr]">
-        <h2 className="font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">{t("v2.faqTitle")}</h2>
+        <h2 className="font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">{t("v2.faqTitle")}</h2>
         <ul className="border-t border-line">
           {FAQ[lang].map(([q, a], i) => (
             <li key={i} className="border-b border-line">

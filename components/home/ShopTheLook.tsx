@@ -64,8 +64,8 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
         {!standalone && (
           <div className="mb-6 flex items-end justify-between gap-6 md:mb-10">
             <div>
-              <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{lang === "ar" ? "تسوّق الإطلالة" : "Shop the look"}</p></Reveal>
-              <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+              <Reveal><p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.57rem]">{lang === "ar" ? "تسوّق الإطلالة" : "Shop the look"}</p></Reveal>
+              <h2 className="mt-1 font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
                 <SplitLines lines={[lang === "ar" ? "غرف حقيقية، قطع حقيقية" : "Real rooms, real pieces"]} />
               </h2>
             </div>
@@ -113,7 +113,7 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
             <AnimatePresence mode="wait">
               <motion.div key={look.id} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -8 }} transition={{ duration: 0.6, ease: EASE }} className="flex flex-1 flex-col">
                 <p className="hidden text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted lg:block">{lang === "ar" ? "الإطلالة" : "The look"}</p>
-                <h3 className="mt-2 font-display text-[clamp(1.6rem,2.4vw,2.2rem)] font-semibold leading-[1.05] tracking-[-0.025em]">{tx(look.title, lang)}</h3>
+                <h3 className="mt-2 font-display text-[clamp(1.28rem,1.92vw,1.76rem)] font-semibold leading-[1.05] tracking-[-0.025em]">{tx(look.title, lang)}</h3>
                 <p className="mt-1.5 font-serif text-[1.05rem] leading-relaxed text-ink-2 lg:mt-3 lg:text-[1.1rem]">{tx(look.mood, lang)}</p>
 
                 {/* Phones: the pieces as a swipeable row */}

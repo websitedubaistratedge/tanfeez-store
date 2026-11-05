@@ -47,7 +47,7 @@ function ServiceBlock({ k, i }: { k: keyof typeof CAPS; i: number }) {
         </div>
         <div>
           <Reveal><p className="font-serif text-[1.4rem] leading-none text-ink-2" dir="ltr">0{i + 1}</p></Reveal>
-          <h2 className="mt-2 font-display text-[clamp(2rem,3.6vw,3rem)] font-semibold tracking-[-0.03em]">
+          <h2 className="mt-2 font-display text-[clamp(1.6rem,2.88vw,2.4rem)] font-semibold tracking-[-0.03em]">
             <SplitLines lines={[t(`services.${k}`)]} />
           </h2>
           <Reveal delay={0.1}><p className="mt-4 max-w-lg font-serif text-[1.2rem] leading-relaxed text-ink-2">{t(`services.${k}D`)}</p></Reveal>
@@ -78,14 +78,14 @@ export function ServicesView() {
 
       <section className="bg-band py-16 md:py-24">
         <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-          <Reveal><p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{t("home.processEyebrow")}</p></Reveal>
-          <h2 className="mt-1 max-w-2xl font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+          <Reveal><p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.57rem]">{t("home.processEyebrow")}</p></Reveal>
+          <h2 className="mt-1 max-w-2xl font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
             <SplitLines lines={[t("home.processTitle")]} />
           </h2>
           <ol className="mt-12 grid gap-px overflow-hidden bg-ink/10 sm:grid-cols-2 lg:grid-cols-5">
             {steps.map((n, i) => (
               <Reveal as="li" key={n} delay={i * 0.07} className="bg-band p-6 md:p-8">
-                <span className="font-serif text-[2.4rem] leading-none text-ink/30" dir="ltr">0{n}</span>
+                <span className="font-serif text-[2.09rem] leading-none text-ink/30" dir="ltr">0{n}</span>
                 <h3 className="mt-6 font-display text-[1.25rem] font-semibold">{t(`process.s${n}`)}</h3>
                 <p className="mt-2 text-[0.9rem] leading-relaxed text-muted">{t(`process.s${n}d`)}</p>
               </Reveal>

@@ -38,7 +38,7 @@ export function CheckoutView() {
   if (hydrated && items.length === 0) {
     return (
       <section className="flex min-h-[70vh] flex-col items-center justify-center px-5 text-center">
-        <p className="font-serif text-[2.2rem]">{t("cart.empty")}</p>
+        <p className="font-serif text-[1.91rem]">{t("cart.empty")}</p>
         <p className="mt-2 text-muted">{t("cart.emptyD")}</p>
         <div className="mt-8"><PillLink href="/shop">{t("cart.continue")}</PillLink></div>
       </section>
@@ -78,7 +78,7 @@ export function CheckoutView() {
   return (
     <section className="mx-auto max-w-[1440px] px-5 pb-24 pt-10 md:px-10 md:pt-14">
       <BackButton fallback="/shop" className="mb-6" />
-      <h1 className="mb-10 font-display text-[clamp(2.2rem,4.5vw,3.6rem)] font-semibold tracking-[-0.03em]">{t("checkout.title")}</h1>
+      <h1 className="mb-10 font-display text-[clamp(1.76rem,3.6vw,2.88rem)] font-semibold tracking-[-0.03em]">{t("checkout.title")}</h1>
       <form onSubmit={(e) => { e.preventDefault(); submit(new FormData(e.currentTarget)); }} className="grid gap-12 lg:grid-cols-12 lg:gap-16">
         <div className="space-y-12 lg:col-span-7">
           <Step n={1} title={t("checkout.contact")}>
@@ -197,7 +197,7 @@ export function CheckoutView() {
             </dl>
             <div className="mt-5 flex items-baseline justify-between border-t border-ink/10 pt-5">
               <span className="font-medium">{t("checkout.total")}</span>
-              <motion.span key={total} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} className="text-[1.6rem] font-semibold">{money(total, lang)}</motion.span>
+              <motion.span key={total} initial={{ opacity: 0.4 }} animate={{ opacity: 1 }} className="text-[1.39rem] font-semibold">{money(total, lang)}</motion.span>
             </div>
             <AnimatePresence>
               {error && (
@@ -338,7 +338,7 @@ export function Success({ number }: { number: string }) {
           <path d="M103 0 160 57 133 84 103 54 26 131 0 105 31 74 31 32 56 32 56 47Z" fill="#1a1a1a" />
           <motion.path d="M210 34 237 61 134 164 76 106 103 79 134 110Z" fill="#FFCB06" initial={{ scale: 1.8, opacity: 0, x: 30, y: -30 }} animate={{ scale: 1, opacity: 1, x: 0, y: 0 }} transition={{ type: "spring", stiffness: 220, damping: 16, delay: 0.3 }} style={{ transformOrigin: "150px 110px" }} />
         </svg>
-        <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8, ease: EASE }} className="mt-10 font-display text-[clamp(1.9rem,4vw,3rem)] font-semibold tracking-[-0.03em]">
+        <motion.h1 initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5, duration: 0.8, ease: EASE }} className="mt-10 font-display text-[clamp(1.52rem,3.2vw,2.4rem)] font-semibold tracking-[-0.03em]">
           {t("checkout.thanks")}
         </motion.h1>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.7 }} className="mx-auto mt-3 max-w-md font-serif text-[1.15rem] text-ink-2">

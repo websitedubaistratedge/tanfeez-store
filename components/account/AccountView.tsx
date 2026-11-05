@@ -53,10 +53,10 @@ export function AccountView({ me, since, orders, initial = "orders" }: { me: Acc
         <div className="mx-auto flex max-w-[1440px] flex-wrap items-end justify-between gap-6 px-5 pb-10 pt-10 md:px-10 md:pb-14 md:pt-14">
           <div>
             <BackButton className="mb-6" />
-            <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }} className="font-serif text-[1.35rem] leading-none text-ink-2 md:text-[1.6rem]">
+            <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }} className="font-serif text-[1.35rem] leading-none text-ink-2 md:text-[1.39rem]">
               {ar ? "حسابي" : "My account"}
             </motion.p>
-            <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.9, ease: EASE }} className="mt-3 font-display text-[clamp(2.2rem,5vw,4rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+            <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.9, ease: EASE }} className="mt-3 font-display text-[clamp(1.76rem,4vw,3.2rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
               {ar ? `مرحباً، ${me.firstName}.` : `Hello, ${me.firstName}.`}
             </motion.h1>
             <p className="mt-3 text-[0.92rem] text-muted">
@@ -113,7 +113,7 @@ function Orders({ orders }: { orders: AccountOrder[] }) {
   if (!orders.length)
     return (
       <div className="rounded-2xl border border-dashed border-line px-6 py-16 text-center">
-        <p className="font-serif text-[1.8rem]">{ar ? "لا توجد طلبات بعد" : "No orders yet"}</p>
+        <p className="font-serif text-[1.57rem]">{ar ? "لا توجد طلبات بعد" : "No orders yet"}</p>
         <p className="mx-auto mt-2 max-w-sm text-[0.92rem] text-muted">{ar ? "عند الطلب وأنت مسجّل الدخول، ستظهر طلباتك هنا مع حالتها." : "When you order while signed in, your orders appear here with their progress."}</p>
         <div className="mt-7"><PillLink href="/shop">{ar ? "تسوّق المجموعة" : "Explore the store"}</PillLink></div>
       </div>

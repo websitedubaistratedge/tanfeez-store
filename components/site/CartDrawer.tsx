@@ -58,7 +58,7 @@ export function CartDrawer() {
             <div className="flex-1 overflow-y-auto px-6">
               {list.length === 0 ? (
                 <div className="flex h-full flex-col items-center justify-center text-center">
-                  <p className="font-serif text-[1.8rem]">{t("cart.empty")}</p>
+                  <p className="font-serif text-[1.57rem]">{t("cart.empty")}</p>
                   <p className="mt-2 text-[0.92rem] text-muted">{t("cart.emptyD")}</p>
                   <Link href="/shop" onClick={() => setCart(false)} className="mt-8 inline-flex h-12 items-center gap-3 rounded-full bg-ink px-7 text-[0.92rem] font-medium text-white">
                     {t("cart.continue")} <CircleArrow />

@@ -180,7 +180,7 @@ export function ShopView({
       <div className="pt-4 md:hidden">
         <BackButton fallback="/" className="mx-5 mb-4" />
         <div className="flex items-end justify-between gap-4 px-5">
-          <h1 className="font-display text-[1.9rem] font-semibold leading-none tracking-[-0.03em]">
+          <h1 className="font-display text-[1.65rem] font-semibold leading-none tracking-[-0.03em]">
             {onlyWish ? (ar ? "المفضلة" : "Your wishlist") : current ? tx(current.name, lang) : ar ? "المتجر" : "Shop"}
           </h1>
           <span className="pb-0.5 text-[0.8rem] text-muted tabular-nums">{list.length} {t("v2.items")}</span>
@@ -284,7 +284,7 @@ export function ShopView({
         )}
         {list.length === 0 ? (
           <div className="py-24 text-center">
-            <p className="mx-auto max-w-md font-serif text-[1.6rem] leading-snug">{t("shop.empty")}</p>
+            <p className="mx-auto max-w-md font-serif text-[1.39rem] leading-snug">{t("shop.empty")}</p>
             <div className="mt-6 flex justify-center gap-6">
               <button onClick={clearAll} className="link-u text-[0.95rem]">{t("v2.clear")}</button>
               <ArrowLink href="/quote?service=custom">{t("shop.request")}</ArrowLink>

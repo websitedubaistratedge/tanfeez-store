@@ -51,10 +51,10 @@ export function LegalView({ kind }: { kind: LegalKind }) {
           <BackButton />
           <div className="mt-8 grid gap-6 md:mt-12 lg:grid-cols-[1.3fr_1fr] lg:items-end">
             <div>
-              <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }} className="font-serif text-[1.35rem] leading-none text-ink-2 md:text-[1.6rem]">
+              <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }} className="font-serif text-[1.35rem] leading-none text-ink-2 md:text-[1.39rem]">
                 {ar ? `آخر تحديث ${updated}` : `Last updated ${updated}`}
               </motion.p>
-              <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.9, ease: EASE }} className="mt-3 font-display text-[clamp(2.4rem,6vw,4.6rem)] font-semibold leading-[1] tracking-[-0.035em]">
+              <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.9, ease: EASE }} className="mt-3 font-display text-[clamp(1.92rem,4.8vw,3.68rem)] font-semibold leading-[1] tracking-[-0.035em]">
                 {doc.title}
               </motion.h1>
             </div>
@@ -104,7 +104,7 @@ export function LegalView({ kind }: { kind: LegalKind }) {
         <article className="min-w-0 max-w-[72ch]">
           {doc.sections.map((s, i) => (
             <section key={s.id} id={s.id} className="scroll-mt-28 border-b border-line py-8 first:pt-0 last:border-0">
-              <h2 className="flex items-baseline gap-3 font-display text-[1.35rem] font-semibold tracking-[-0.02em] md:text-[1.5rem]">
+              <h2 className="flex items-baseline gap-3 font-display text-[1.35rem] font-semibold tracking-[-0.02em] md:text-[1.3rem]">
                 <span className="font-serif text-[1.2rem] font-normal text-faint" dir="ltr">{String(i + 1).padStart(2, "0")}</span>
                 {s.title}
               </h2>

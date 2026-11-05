@@ -31,8 +31,8 @@ export function AboutView({ projectCount }: { projectCount: number }) {
         <div className="mx-auto grid max-w-[1440px] px-5 md:grid-cols-2 md:px-10">
           {pillars.map((k, i) => (
             <Reveal key={k} delay={(i % 2) * 0.08} className="border-b border-line py-10 md:py-14 md:odd:border-e md:odd:pe-12 md:even:ps-12">
-              <p className="font-serif text-[1.6rem] leading-none text-ink-2">{t(`about.${k}`)}</p>
-              <p className="mt-4 max-w-lg font-display text-[1.3rem] font-medium leading-snug tracking-tight md:text-[1.5rem]">{t(`about.${k}D`)}</p>
+              <p className="font-serif text-[1.39rem] leading-none text-ink-2">{t(`about.${k}`)}</p>
+              <p className="mt-4 max-w-lg font-display text-[1.3rem] font-medium leading-snug tracking-tight md:text-[1.3rem]">{t(`about.${k}D`)}</p>
             </Reveal>
           ))}
         </div>
@@ -41,7 +41,7 @@ export function AboutView({ projectCount }: { projectCount: number }) {
       <section className="py-16 md:py-24">
         <div className="mx-auto grid max-w-[1440px] items-center gap-12 px-5 md:px-10 lg:grid-cols-2">
           <div>
-            <h2 className="font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+            <h2 className="font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
               <SplitLines lines={[t("about.coverage")]} />
             </h2>
             <Reveal delay={0.1}><p className="mt-4 max-w-md font-serif text-[1.2rem] leading-relaxed text-ink-2">{t("about.coverageD")}</p></Reveal>

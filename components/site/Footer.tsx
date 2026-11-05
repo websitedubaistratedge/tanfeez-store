@@ -34,7 +34,7 @@ export function Footer() {
       <div className="mx-auto max-w-[1440px] px-5 pb-8 pt-16 md:px-10 md:pt-24">
         <div className="grid gap-12 lg:grid-cols-12">
           <Reveal className="lg:col-span-5">
-            <p className="font-serif text-[2rem] leading-[1.1] md:text-[2.6rem]">{t("footer.news")}</p>
+            <p className="font-serif text-[1.74rem] leading-[1.1] md:text-[2.26rem]">{t("footer.news")}</p>
             {done ? (
               <p className="mt-8 border-b border-ink/20 pb-3 text-[0.95rem]">{t("footer.joined")}</p>
             ) : (

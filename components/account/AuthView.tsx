@@ -118,7 +118,7 @@ function SignIn({ next }: { next?: string }) {
           </motion.div>
         ) : (
           <motion.div key="signin" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -6 }} transition={{ duration: 0.4, ease: EASE }}>
-            <h1 className="font-display text-[clamp(1.9rem,3vw,2.5rem)] font-semibold tracking-[-0.03em] max-lg:sr-only">{ar ? "تسجيل الدخول" : "Sign in"}</h1>
+            <h1 className="font-display text-[clamp(1.52rem,2.4vw,2rem)] font-semibold tracking-[-0.03em] max-lg:sr-only">{ar ? "تسجيل الدخول" : "Sign in"}</h1>
             <p className="text-[0.95rem] text-muted lg:mt-2">{ar ? "مرحباً بعودتك. تابع طلباتك وأكمل الشراء بسرعة." : "Welcome back. Follow your orders and check out faster."}</p>
             <form onSubmit={(e) => { e.preventDefault(); submit(new FormData(e.currentTarget)); }} className="mt-9 space-y-7">
               <TextField ref={emailRef} label={ar ? "البريد الإلكتروني" : "Email"} name="email" type="email" required autoComplete="email" dir="ltr" />
@@ -168,7 +168,7 @@ function Forgot({ initialEmail, whatsapp, onBack }: { initialEmail: string; what
         <ArrowLeft className="h-4 w-4 stroke-[1.5] transition group-hover:-translate-x-0.5 rtl:rotate-180" />
         {ar ? "العودة لتسجيل الدخول" : "Back to sign in"}
       </button>
-      <h1 className="font-display text-[clamp(1.7rem,3vw,2.3rem)] font-semibold tracking-[-0.03em]">{ar ? "نسيت كلمة المرور؟" : "Forgot your password?"}</h1>
+      <h1 className="font-display text-[clamp(1.36rem,2.4vw,1.84rem)] font-semibold tracking-[-0.03em]">{ar ? "نسيت كلمة المرور؟" : "Forgot your password?"}</h1>
       {sent === "email" ? (
         <div className="mt-6 rounded-2xl bg-white/80 p-5">
           <p className="flex items-center gap-2 font-medium"><MailCheck className="h-5 w-5 stroke-[1.6]" />{ar ? "تحقق من بريدك" : "Check your inbox"}</p>
@@ -229,7 +229,7 @@ function SignUp({ next, onSignIn }: { next?: string; onSignIn: () => void }) {
 
   return (
     <>
-      <h2 className="font-display text-[clamp(1.9rem,3vw,2.5rem)] font-semibold tracking-[-0.03em] max-lg:sr-only">{ar ? "إنشاء حساب" : "Create an account"}</h2>
+      <h2 className="font-display text-[clamp(1.52rem,2.4vw,2rem)] font-semibold tracking-[-0.03em] max-lg:sr-only">{ar ? "إنشاء حساب" : "Create an account"}</h2>
       <p className="text-[0.95rem] text-muted lg:mt-2">{ar ? "دقيقة واحدة، وتصبح كل طلباتك في مكان واحد." : "One minute, and all your orders live in one place."}</p>
       <form onSubmit={(e) => { e.preventDefault(); submit(new FormData(e.currentTarget)); }} className="mt-8 space-y-6">
         <KindChoice value={kind} onChange={setKind} ar={ar} />

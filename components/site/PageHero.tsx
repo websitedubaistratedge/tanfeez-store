@@ -31,11 +31,11 @@ export function PageHero({
         <div className="mt-8 grid gap-8 md:mt-12 lg:grid-cols-[1.3fr_1fr] lg:items-end">
           <div>
             {eyebrow && (
-              <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.8, ease: EASE }} className="font-serif text-[1.4rem] leading-none text-ink-2 md:text-[1.7rem]">
+              <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.8, ease: EASE }} className="font-serif text-[1.4rem] leading-none text-ink-2 md:text-[1.48rem]">
                 {eyebrow}
               </motion.p>
             )}
-            <h1 className="mt-2 font-display text-[clamp(2.4rem,6vw,5rem)] font-semibold leading-[1] tracking-[-0.035em]">
+            <h1 className="mt-2 font-display text-[clamp(1.92rem,4.8vw,4rem)] font-semibold leading-[1] tracking-[-0.035em]">
               <SplitLines immediate delay={0.2} lines={title} />
             </h1>
           </div>

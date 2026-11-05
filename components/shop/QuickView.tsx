@@ -86,7 +86,7 @@ export function QuickView() {
               <motion.p {...stagger(0)} className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted">
                 {p.isNew ? t("shop.new") : p.featured ? (lang === "ar" ? "الأكثر طلباً" : "Bestseller") : t("shop.madeInUAE")}
               </motion.p>
-              <motion.h2 {...stagger(1)} className="mt-2 font-display text-[1.9rem] font-semibold leading-[1.08] tracking-[-0.025em]">
+              <motion.h2 {...stagger(1)} className="mt-2 font-display text-[1.65rem] font-semibold leading-[1.08] tracking-[-0.025em]">
                 {tx(p.name, lang)}
               </motion.h2>
               <motion.div {...stagger(2)} className="mt-3 flex items-baseline gap-3">

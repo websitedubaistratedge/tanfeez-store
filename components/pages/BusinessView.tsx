@@ -53,8 +53,8 @@ export function BusinessView({ projects, pieces = [] }: { projects: Project[]; p
           <div className="mx-auto max-w-[1440px] px-5 md:px-10">
             <div className="mb-8 flex flex-wrap items-end justify-between gap-4 md:mb-12">
               <div>
-                <p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.6rem]">{ar ? "للمتاجر والضيافة" : "For shops, malls & hospitality"}</p>
-                <h2 className="mt-3 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+                <p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.39rem]">{ar ? "للمتاجر والضيافة" : "For shops, malls & hospitality"}</p>
+                <h2 className="mt-3 font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
                   <SplitLines lines={[ar ? "قطع تجارية حسب الطلب" : "Retail & reception pieces"]} />
                 </h2>
               </div>
@@ -95,8 +95,8 @@ function BizHero({ projects }: { projects: Project[] }) {
       <div className="mx-auto grid max-w-[1440px] gap-10 px-5 pb-12 pt-10 md:px-10 md:pt-14 lg:min-h-[calc(100svh-120px)] lg:grid-cols-12 lg:items-center lg:gap-8 lg:py-0">
         <motion.div style={{ y: lift }} className="lg:col-span-6">
           <BackButton className="mb-8" />
-          <p className="fade-up font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{ar ? "تنفيذ للأعمال" : "TANFEEZ for business"}</p>
-          <h1 className="mt-3 font-display text-[clamp(2.5rem,5.4vw,5rem)] font-semibold leading-[0.98] tracking-[-0.035em]">
+          <p className="fade-up font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.57rem]">{ar ? "تنفيذ للأعمال" : "TANFEEZ for business"}</p>
+          <h1 className="mt-3 font-display text-[clamp(2rem,4.32vw,4rem)] font-semibold leading-[0.98] tracking-[-0.035em]">
             <SplitLines lines={ar ? ["نبني المساحات", "التي تعيش فيها", "العلامات التجارية."] : ["We build the", "spaces brands", "live in."]} />
           </h1>
           <Reveal delay={0.3}>
@@ -149,7 +149,7 @@ function Stats({ count }: { count: number }) {
       <dl className="mx-auto grid max-w-[1440px] grid-cols-2 gap-x-6 gap-y-10 px-5 py-12 md:px-10 md:py-16 lg:grid-cols-4">
         {stats.map((s, i) => (
           <Reveal key={i} delay={i * 0.06} className="border-t border-ink pt-4">
-            <dd className="font-display text-[clamp(2.4rem,4vw,3.4rem)] font-semibold leading-none tracking-[-0.04em]">
+            <dd className="font-display text-[clamp(1.92rem,3.2vw,2.72rem)] font-semibold leading-none tracking-[-0.04em]">
               <CountUp to={s.v} suffix={s.s} />
             </dd>
             <dt className="mt-2 text-[0.88rem] text-muted">{s.l}</dt>
@@ -173,8 +173,8 @@ function Sectors({ projects }: { projects: Project[] }) {
       <div className="mx-auto max-w-[1440px] px-5 md:px-10">
         <div className="mb-10 grid gap-4 lg:grid-cols-12">
           <div className="lg:col-span-5">
-            <p className="font-serif text-[1.5rem] leading-none text-ink-2 md:text-[1.8rem]">{ar ? "القطاعات" : "Sectors"}</p>
-            <h2 className="mt-1 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em]">
+            <p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.57rem]">{ar ? "القطاعات" : "Sectors"}</p>
+            <h2 className="mt-1 font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
               <SplitLines lines={[ar ? "مساحات نعرفها جيداً" : "Spaces we know by heart"]} />
             </h2>
           </div>
@@ -190,7 +190,7 @@ function Sectors({ projects }: { projects: Project[] }) {
                   className="group grid grid-cols-[2.2rem_1fr_auto] items-center gap-4 border-b border-line py-5 md:grid-cols-[3rem_1fr_1fr_auto] md:py-7"
                 >
                   <span className="font-serif text-[1.1rem] text-muted" dir="ltr">0{i + 1}</span>
-                  <span className={clsx("font-display text-[clamp(1.5rem,3.4vw,2.9rem)] font-semibold leading-none tracking-[-0.03em] transition duration-500", hover && hover !== s.id ? "text-ink/25" : "text-ink", "group-hover:translate-x-2 rtl:group-hover:-translate-x-2")}>
+                  <span className={clsx("font-display text-[clamp(1.2rem,2.72vw,2.32rem)] font-semibold leading-none tracking-[-0.03em] transition duration-500", hover && hover !== s.id ? "text-ink/25" : "text-ink", "group-hover:translate-x-2 rtl:group-hover:-translate-x-2")}>
                     {ar ? s.ar : s.en}
                   </span>
                   <span className="hidden text-[0.92rem] text-muted md:block">{ar ? s.dAr : s.dEn}</span>
@@ -222,8 +222,8 @@ function Process() {
       <div className="mx-auto grid max-w-[1440px] gap-12 px-5 md:px-10 lg:grid-cols-12">
         <div className="lg:col-span-5">
           <div className="lg:sticky lg:top-32">
-            <p className="font-serif text-[1.5rem] leading-none text-white/60 md:text-[1.8rem]">{ar ? "كيف نعمل" : "How we work"}</p>
-            <h2 className="mt-2 font-display text-[clamp(2rem,3.6vw,3.2rem)] font-semibold leading-[1.02] tracking-[-0.03em]">
+            <p className="font-serif text-[1.3rem] leading-none text-white/60 md:text-[1.57rem]">{ar ? "كيف نعمل" : "How we work"}</p>
+            <h2 className="mt-2 font-display text-[clamp(1.6rem,2.88vw,2.56rem)] font-semibold leading-[1.02] tracking-[-0.03em]">
               <SplitLines lines={ar ? ["فريق واحد،", "من الرسم إلى التسليم."] : ["One team,", "sketch to handover."]} />
             </h2>
             <Reveal delay={0.1}>
@@ -259,7 +259,7 @@ function Step({ i, n, title, d, progress }: { i: number; n: number; title: strin
         <motion.span style={{ opacity: useTransform(on, [0, 1], [1, 0]) }} className="absolute text-white/70" dir="ltr">0{i + 1}</motion.span>
       </span>
       <motion.div style={{ opacity: dim }}>
-        <h3 className="font-display text-[clamp(1.4rem,2.2vw,1.9rem)] font-semibold tracking-[-0.02em]">{title}</h3>
+        <h3 className="font-display text-[clamp(1.12rem,1.76vw,1.52rem)] font-semibold tracking-[-0.02em]">{title}</h3>
         <p className="mt-2 max-w-lg text-[1rem] leading-relaxed text-white/70">{d}</p>
       </motion.div>
     </li>
@@ -273,7 +273,7 @@ function ClosingCTA() {
     <section className="px-4 py-16 md:px-10 md:py-24">
       <div className="relative mx-auto max-w-[1440px] overflow-hidden bg-band px-6 py-16 md:px-16 md:py-24">
         <div className="relative z-10 max-w-2xl">
-          <h2 className="font-display text-[clamp(2.2rem,4.6vw,4rem)] font-semibold leading-[1] tracking-[-0.035em]">
+          <h2 className="font-display text-[clamp(1.76rem,3.68vw,3.2rem)] font-semibold leading-[1] tracking-[-0.035em]">
             <SplitLines lines={ar ? ["تفتتح فرعاً جديداً؟", "لنبنِه معاً."] : ["Opening a new space?", "Let's build it."]} />
           </h2>
           <Reveal delay={0.1}>
@@ -287,7 +287,7 @@ function ClosingCTA() {
           </Reveal>
         </div>
         <div className="pointer-events-none absolute -bottom-10 end-[-4%] hidden w-[46%] lg:block" aria-hidden>
-          <p className="select-none font-display text-[clamp(8rem,16vw,15rem)] font-bold leading-none tracking-[-0.06em] text-ink/[0.05]" dir="ltr">تنفيذ</p>
+          <p className="select-none font-display text-[clamp(6.4rem,12.8vw,12rem)] font-bold leading-none tracking-[-0.06em] text-ink/[0.05]" dir="ltr">تنفيذ</p>
         </div>
       </div>
     </section>

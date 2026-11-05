@@ -25,7 +25,7 @@ export function ResetView({ token, valid }: { token: string; valid: boolean }) {
       <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7, ease: EASE }} className="w-full max-w-[460px] rounded-3xl bg-white p-7 md:p-10">
         <BackButton fallback="/login" className="mb-6" />
         <p className="font-serif text-[1.25rem] leading-none text-ink-2">{ar ? "حسابك في تنفيذ" : "Your TANFEEZ account"}</p>
-        <h1 className="mt-3 font-display text-[clamp(1.8rem,3vw,2.3rem)] font-semibold tracking-[-0.03em]">{ar ? "اختر كلمة مرور جديدة" : "Choose a new password"}</h1>
+        <h1 className="mt-3 font-display text-[clamp(1.44rem,2.4vw,1.84rem)] font-semibold tracking-[-0.03em]">{ar ? "اختر كلمة مرور جديدة" : "Choose a new password"}</h1>
         {valid ? (
           <form
             onSubmit={(e) => {

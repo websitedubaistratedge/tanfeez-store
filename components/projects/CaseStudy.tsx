@@ -45,10 +45,10 @@ export function CaseStudy({ project: p, next }: { project: Project; next: Projec
         <BackButton fallback="/projects" />
         <div className="mt-8 grid gap-6 md:mt-12 lg:grid-cols-[1.4fr_1fr] lg:items-end">
           <div>
-            <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.8, ease: EASE }} className="font-serif text-[1.4rem] leading-none text-ink-2 md:text-[1.7rem]">
+            <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.8, ease: EASE }} className="font-serif text-[1.4rem] leading-none text-ink-2 md:text-[1.48rem]">
               {tx(p.title, lang)} · {emirateName(p.emirate, lang)}
             </motion.p>
-            <h1 className="mt-2 font-display text-[clamp(2.6rem,7vw,6rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
+            <h1 className="mt-2 font-display text-[clamp(2.08rem,5.6vw,4.8rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
               <SplitLines immediate delay={0.2} lines={[p.client]} />
             </h1>
           </div>
@@ -94,8 +94,8 @@ export function CaseStudy({ project: p, next }: { project: Project; next: Projec
 
         <div className="mt-16 flex flex-col items-start justify-between gap-6 bg-band p-8 md:flex-row md:items-center md:p-12">
           <div>
-            <p className="font-serif text-[1.5rem] leading-none text-ink-2">{t("projects.similar")}</p>
-            <p className="mt-2 font-display text-[1.6rem] font-semibold tracking-tight">{t("v2.helpTitle")}</p>
+            <p className="font-serif text-[1.3rem] leading-none text-ink-2">{t("projects.similar")}</p>
+            <p className="mt-2 font-display text-[1.39rem] font-semibold tracking-tight">{t("v2.helpTitle")}</p>
           </div>
           <div className="flex flex-wrap gap-3">
             <PillLink href="/quote">{t("nav.quote")}</PillLink>
@@ -108,7 +108,7 @@ export function CaseStudy({ project: p, next }: { project: Project; next: Projec
         <div className="mx-auto grid max-w-[1440px] items-center gap-6 px-5 py-12 md:grid-cols-[1fr_auto] md:px-10 md:py-16">
           <div>
             <p className="text-[0.72rem] uppercase tracking-[0.18em] text-muted">{t("projects.next")}</p>
-            <p className="mt-2 font-display text-[clamp(2rem,5vw,4rem)] font-semibold leading-none tracking-[-0.03em] transition group-hover:translate-x-2 rtl:group-hover:-translate-x-2">{next.client}</p>
+            <p className="mt-2 font-display text-[clamp(1.6rem,4vw,3.2rem)] font-semibold leading-none tracking-[-0.03em] transition group-hover:translate-x-2 rtl:group-hover:-translate-x-2">{next.client}</p>
           </div>
           <div className="relative hidden aspect-[16/10] w-72 overflow-hidden bg-plate md:block">
             {next.images[0] && <Image src={next.images[0].src} alt="" fill sizes="300px" className="object-cover transition duration-1000 group-hover:scale-105" />}

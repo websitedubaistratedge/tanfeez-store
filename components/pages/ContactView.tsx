@@ -51,7 +51,7 @@ export function ContactView() {
             {sent ? (
               <motion.div key="ok" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="flex min-h-[380px] flex-col items-start justify-center">
                 <span className="flex h-14 w-14 items-center justify-center rounded-full bg-ink text-white"><Check className="h-6 w-6" /></span>
-                <p className="mt-6 max-w-md font-serif text-[1.8rem] leading-snug">{t("contact.sent")}</p>
+                <p className="mt-6 max-w-md font-serif text-[1.57rem] leading-snug">{t("contact.sent")}</p>
               </motion.div>
             ) : (
               <motion.form
