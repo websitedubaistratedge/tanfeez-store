@@ -2,20 +2,21 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
-import { AnimatePresence, motion, useScroll, useTransform, type MotionValue } from "framer-motion";
-import { Check, ShoppingBag } from "lucide-react";
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, Check, ShoppingBag } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { useCart, useUI } from "@/lib/store";
 import { money, tx } from "@/lib/i18n";
-import { EASE, Reveal, SplitLines } from "@/components/ui/motion";
+import { EASE } from "@/components/ui/motion";
 import { PageHero } from "@/components/site/PageHero";
-import { ArrowLink, CircleArrow, PillLink } from "@/components/ui/buttons";
+import { CircleArrow } from "@/components/ui/buttons";
 import { LookPin, type ResolvedLook } from "@/components/home/ShopTheLook";
 import { ROOM_KINDS } from "@/lib/looks";
 import { quickLine } from "@/lib/configurator";
 import { useUrlState } from "@/lib/url-state";
+import { BackButton } from "@/components/ui/BackButton";
 
 // A whisper of each room's palette behind its story panel.
 const TINT: Record<string, string> = {
@@ -28,42 +29,74 @@ const TINT: Record<string, string> = {
 export function InspirationView({ looks }: { looks: ResolvedLook[] }) {
   const { lang } = useSite();
   const ar = lang === "ar";
-  const stack = useRef<HTMLDivElement>(null);
-  const filters = useRef<HTMLDivElement>(null);
   const [kind, setKind] = useUrlState<string>("room", "all");
+  // One room open at a time (?look=id); Back returns to the grid.
+  const [lookId, setLookId] = useUrlState<string>("look", "", ["", ...looks.map((l) => l.id)]);
   const shown = kind === "all" ? looks : looks.filter((l) => l.room === kind);
-  const { scrollYProgress } = useScroll({ target: stack, offset: ["start start", "end end"] });
+  const open = looks.find((l) => l.id === lookId);
   const pieces = new Set(looks.flatMap((l) => l.pins.map((p) => p.product.id))).size;
   const kinds = ROOM_KINDS.filter((k) => looks.some((l) => l.room === k.id));
-  const pick = (k: string) => {
-    setKind(k);
-    const top = (filters.current?.getBoundingClientRect().top ?? 0) + window.scrollY - 70;
-    if (window.scrollY > top) window.scrollTo({ top });
+  const kindName = (id: string) => {
+    const k = ROOM_KINDS.find((x) => x.id === id);
+    return k ? (ar ? k.ar : k.en) : "";
   };
+  const openLook = (id: string) => {
+    setLookId(id);
+    window.scrollTo({ top: 0 });
+  };
+
+  if (open) {
+    // Previous / next within the same filter, so browsing a type of room stays in that type.
+    const list = shown.some((l) => l.id === open.id) ? shown : looks;
+    const at = list.findIndex((l) => l.id === open.id);
+    const prev = list[(at - 1 + list.length) % list.length];
+    const next = list[(at + 1) % list.length];
+    return (
+      <section className="mx-auto max-w-[1440px] px-4 pb-20 pt-6 md:px-10 md:pt-10">
+        <div className="mb-5 flex items-center justify-between gap-4 md:mb-8">
+          <BackButton fallback="/inspiration" />
+          <span className="text-[0.82rem] text-muted tabular-nums">
+            {kindName(open.room)} · {at + 1} / {list.length}
+          </span>
+        </div>
+        <LookCard key={open.id} look={open} />
+        {list.length > 1 && (
+          <div className="mt-6 flex items-center justify-between gap-4 text-[0.9rem]">
+            <button onClick={() => openLook(prev.id)} className="group inline-flex min-w-0 items-center gap-2 text-ink/70 hover:text-ink">
+              <ArrowLeft className="h-4 w-4 shrink-0 stroke-[1.5] rtl:rotate-180" />
+              <span className="truncate">{tx(prev.title, lang)}</span>
+            </button>
+            <button onClick={() => openLook(next.id)} className="group inline-flex min-w-0 items-center gap-2 text-ink/70 hover:text-ink">
+              <span className="truncate">{tx(next.title, lang)}</span>
+              <ArrowRight className="h-4 w-4 shrink-0 stroke-[1.5] rtl:rotate-180" />
+            </button>
+          </div>
+        )}
+      </section>
+    );
+  }
 
   return (
     <>
       <PageHero
         eyebrow={ar ? "إلهام" : "The lookbook"}
         title={ar ? ["غرف تستحق", "أن تُعاش"] : ["Rooms worth", "living in"]}
-        sub={ar ? "غرف حقيقية نسّقها فريقنا بقطع من صنعنا. اضغط على أي قطعة لتراها، أو أضف الغرفة كاملة إلى حقيبتك." : "Real rooms, styled by our team with pieces from our own workshop. Tap any piece to see it, or bring the whole room home."}
+        sub={ar ? "غرف حقيقية من تنسيق فريقنا. اختر غرفة لترى قطعها وتتسوّقها." : "Real rooms styled by our team. Pick a room to see and shop its pieces."}
       >
         <div className="flex items-center gap-6 text-[0.88rem] text-ink-2">
           <span><span className="font-semibold text-ink tabular-nums">{looks.length}</span> {ar ? "غرف" : "rooms"}</span>
           <span className="h-4 w-px bg-ink/20" />
           <span><span className="font-semibold text-ink tabular-nums">{pieces}</span> {ar ? "قطعة" : "pieces"}</span>
-          <span className="h-4 w-px bg-ink/20" />
-          <span>{ar ? "صُنعت في دبي" : "Made in Dubai"}</span>
         </div>
       </PageHero>
 
       {/* Room filter */}
-      <div ref={filters} className="sticky top-[60px] z-20 border-b border-line bg-white/85 backdrop-blur-xl">
+      <div className="sticky top-[60px] z-20 border-b border-line bg-white/85 backdrop-blur-xl">
         <div className="no-scrollbar mx-auto flex max-w-[1440px] gap-2 overflow-x-auto px-4 py-3 md:px-10">
           {[{ id: "all", en: "All rooms", ar: "كل الغرف" }, ...kinds].map((k) => {
             const n = k.id === "all" ? looks.length : looks.filter((l) => l.room === k.id).length;
             return (
-              <button key={k.id} onClick={() => pick(k.id)} className={clsx("relative h-10 shrink-0 rounded-full px-4 text-[0.88rem] transition-colors", kind === k.id ? "text-white" : "text-ink/70 hover:text-ink")}>
+              <button key={k.id} onClick={() => setKind(k.id)} className={clsx("relative h-10 shrink-0 rounded-full px-4 text-[0.88rem] transition-colors", kind === k.id ? "text-white" : "text-ink/70 hover:text-ink")}>
                 {kind === k.id && <motion.span layoutId="room-filter" className="absolute inset-0 -z-10 rounded-full bg-ink" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
                 {ar ? k.ar : k.en}
                 <span className="ms-1.5 opacity-50 tabular-nums">{n}</span>
@@ -73,33 +106,37 @@ export function InspirationView({ looks }: { looks: ResolvedLook[] }) {
         </div>
       </div>
 
-      <div ref={stack} key={kind} className="relative mx-auto max-w-[1440px] px-4 md:px-10">
-        {shown.map((look, i) => (
-          <LookCard key={look.id} look={look} i={i} n={shown.length} progress={scrollYProgress} />
-        ))}
-      </div>
-
-      <section className="border-t border-line">
-        <div className="mx-auto grid max-w-[1440px] gap-8 px-5 py-20 md:px-10 md:py-28 lg:grid-cols-2 lg:items-end">
-          <h2 className="font-display text-[clamp(2rem,4vw,3.4rem)] font-semibold leading-[1.02] tracking-[-0.03em]">
-            <SplitLines lines={ar ? ["تريد هذه الغرفة", "في منزلك؟"] : ["Want this room", "in your home?"]} />
-          </h2>
-          <Reveal delay={0.1}>
-            <p className="max-w-md font-serif text-[1.2rem] leading-relaxed text-ink-2">
-              {ar ? "يزورك مصممونا، يقيسون المساحة ويعيدون تنسيق أي إطلالة بأقمشتك ومقاساتك." : "Our designers visit, measure, and restyle any look around your floor plan, in your fabrics and sizes."}
-            </p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <PillLink href="/quote?service=furniture">{ar ? "احجز استشارة تصميم" : "Book a design consultation"}</PillLink>
-              <ArrowLink href="/shop">{ar ? "تسوّق كل القطع" : "Shop every piece"}</ArrowLink>
-            </div>
-          </Reveal>
+      {/* All rooms of this type at a glance */}
+      <section className="mx-auto max-w-[1440px] px-4 py-8 md:px-10 md:py-12">
+        <div className="grid gap-x-4 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
+          {shown.map((l, i) => (
+            <motion.button
+              key={`${kind}-${l.id}`}
+              onClick={() => openLook(l.id)}
+              initial={{ opacity: 0, y: 18 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, ease: EASE, delay: Math.min(i, 8) * 0.04 }}
+              className="group block text-start"
+            >
+              <span className="relative block aspect-[4/3] overflow-hidden rounded-xl bg-plate">
+                <Image src={l.image} alt={tx(l.title, lang)} fill sizes="(min-width:1024px) 31vw, (min-width:640px) 48vw, 100vw" className="object-cover transition duration-[1.2s] ease-out group-hover:scale-[1.04]" />
+              </span>
+              <span className="mt-3 flex items-baseline justify-between gap-3">
+                <span className="min-w-0 truncate font-display text-[1.05rem] font-semibold tracking-tight">{tx(l.title, lang)}</span>
+                <span className="shrink-0 text-[0.8rem] text-muted">
+                  {l.pins.length} {ar ? "قطع" : l.pins.length === 1 ? "piece" : "pieces"}
+                </span>
+              </span>
+              <span className="mt-0.5 block truncate text-[0.85rem] text-muted">{tx(l.mood, lang)}</span>
+            </motion.button>
+          ))}
         </div>
       </section>
     </>
   );
 }
 
-function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: number; progress: MotionValue<number> }) {
+function LookCard({ look }: { look: ResolvedLook }) {
   const { t, lang, settings } = useSite();
   const materials = settings.materials;
   const ar = lang === "ar";
@@ -108,18 +145,9 @@ function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: 
   const [active, setActive] = useState<string | null>(null);
   const [added, setAdded] = useState(false);
 
-  // As later rooms slide over, earlier ones settle back like pages in a stack.
-  // Each card settles back over the next few cards' scroll, however long the stack is.
-  const last = i === n - 1;
-  const scale = useTransform(progress, [i / n, Math.min(1, (i + 3) / n)], [1, last ? 1 : 0.9]);
-  // The stacking effect needs room; phones get a plain list of cards instead.
-  const stack = useWide();
-  const shade = useTransform(progress, [i / n, Math.min(1, (i + 1) / n)], [0, i === n - 1 ? 0 : 0.18]);
-
   const activePin = look.pins.find((p) => p.product.id === active);
   const buyable = look.pins.filter((p) => !p.product.priceOnRequest);
   const total = buyable.reduce((s, p) => s + (p.product.salePrice || p.product.price), 0);
-  const flip = i % 2 === 1;
 
   const addRoom = () => {
     buyable.forEach(({ product: p }) =>
@@ -131,17 +159,15 @@ function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: 
   };
 
   return (
-    <div className="py-2.5 md:sticky md:flex md:min-h-svh md:items-center md:py-28" style={stack ? { top: Math.min(i, 3) * 14 } : undefined}>
+    <div>
       <motion.article
-        style={stack ? { scale } : undefined}
-        initial={{ y: 60, opacity: 0 }}
-        whileInView={{ y: 0, opacity: 1 }}
-        viewport={{ once: true, margin: "-10%" }}
-        transition={{ duration: 1, ease: EASE }}
+        initial={{ y: 30, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.7, ease: EASE }}
         className="relative grid w-full origin-top overflow-hidden rounded-2xl bg-white md:rounded-none shadow-[0_30px_80px_-40px_rgba(0,0,0,0.35)] ring-1 ring-ink/5 lg:grid-cols-12"
       >
         {/* Room */}
-        <div className={clsx("relative lg:col-span-8", flip && "lg:order-2")}>
+        <div className="relative lg:col-span-8">
           <div className="relative overflow-hidden bg-plate" style={{ aspectRatio: `${look.w}/${look.h}` }}>
             <motion.div
               className="absolute inset-0"
@@ -159,11 +185,8 @@ function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: 
 
         {/* Story */}
         <div className="flex flex-col p-5 md:p-8 lg:col-span-4 lg:p-10" style={{ background: TINT[look.id] ?? "#F3F2F0" }}>
-          <div className="flex items-baseline justify-between">
-            <span className="font-serif text-[2rem] leading-none text-ink/80 md:text-[3.4rem]" dir="ltr">{String(i + 1).padStart(2, "0")}</span>
-            <span className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted" dir="ltr">{String(i + 1).padStart(2, "0")} / {String(n).padStart(2, "0")}</span>
-          </div>
-          <h2 className="mt-3 font-display text-[clamp(1.5rem,2.4vw,2.3rem)] md:mt-4 font-semibold leading-[1.05] tracking-[-0.025em]">{tx(look.title, lang)}</h2>
+          <p className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted">{ROOM_KINDS.find((k) => k.id === look.room)?.[ar ? "ar" : "en"]}</p>
+          <h1 className="mt-2 font-display text-[clamp(1.5rem,2.4vw,2.3rem)] font-semibold leading-[1.05] tracking-[-0.025em]">{tx(look.title, lang)}</h1>
           <p className="mt-2 font-serif text-[1.1rem] leading-relaxed text-ink-2">{tx(look.mood, lang)}</p>
 
           <ul className="mt-4 space-y-1 md:mt-6">
@@ -202,21 +225,7 @@ function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: 
           </div>
         </div>
 
-        {stack && <motion.div style={{ opacity: shade }} className="pointer-events-none absolute inset-0 bg-ink" />}
       </motion.article>
     </div>
   );
-}
-
-/** True from the md breakpoint up (where the stacked-cards effect has room). */
-function useWide() {
-  const [wide, setWide] = useState(false);
-  useEffect(() => {
-    const mq = window.matchMedia("(min-width: 768px)");
-    const on = () => setWide(mq.matches);
-    on();
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, []);
-  return wide;
 }
