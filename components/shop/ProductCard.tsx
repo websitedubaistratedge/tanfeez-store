@@ -10,7 +10,7 @@ import { useSite } from "@/components/providers";
 import { useCart, useHydrated, useQuickView, useUI, useWishlist } from "@/lib/store";
 import { money, tx } from "@/lib/i18n";
 import type { Product } from "@/lib/types";
-import { photographedColours } from "@/lib/configurator";
+import { photographedColours, quickLine } from "@/lib/configurator";
 
 /** Short material line like "Bouclé • curved plywood" from the materials sentence. */
 export function materialTags(p: Product, lang: "en" | "ar") {
@@ -40,15 +40,8 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
 
   const quickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
-    add({
-      productId: p.id,
-      slug: p.slug,
-      name: p.name,
-      image: p.images[0],
-      price,
-      finish: shots.length ? undefined : p.finishes[swatch] ? tx(p.finishes[swatch].name, "en") : undefined,
-      size: p.sizes[0],
-    });
+    // The colour showing on the card (or the default one), priced like the product page.
+    add(shots[shot] ? quickLine(p, settings.materials, { material: shots[shot].material, colour: shots[shot].id }) : { ...quickLine(p, settings.materials), finish: quickLine(p, settings.materials).finish ?? (p.finishes[swatch] ? tx(p.finishes[swatch].name, "en") : undefined) });
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
     setTimeout(() => setCart(true), 350);

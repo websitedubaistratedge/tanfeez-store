@@ -12,6 +12,8 @@ import { money, tx } from "@/lib/i18n";
 import { EASE } from "@/components/ui/motion";
 import { CircleArrow } from "@/components/ui/buttons";
 import { lockScroll } from "@/components/site/SmoothScroll";
+import { describeConfig, isUpholstered, photographedColours, quickLine, sizeDelta } from "@/lib/configurator";
+import { fabricStyle } from "./Configurator";
 
 const stagger = (i: number) => ({
   initial: { opacity: 0, y: 14 },
@@ -20,7 +22,8 @@ const stagger = (i: number) => ({
 });
 
 export function QuickView() {
-  const { t, lang } = useSite();
+  const { t, lang, settings } = useSite();
+  const cat = settings.materials;
   const { product: p, source, close } = useQuickView();
   const add = useCart((s) => s.add);
   const setCart = useUI((s) => s.setCart);
@@ -45,10 +48,15 @@ export function QuickView() {
     return () => window.removeEventListener("keydown", onKey);
   }, [close]);
 
-  const price = p ? p.salePrice || p.price : 0;
+  // Same data as the product page: the colours this piece is available in, each with its photo.
+  const shots = p ? photographedColours(p, cat) : [];
+  const pick = shots[finish];
+  const line = p ? quickLine(p, cat, { ...(pick ? { material: pick.material, colour: pick.id } : {}), size }) : null;
+  const price = line?.price ?? 0;
+  const image = line?.image ?? p?.images[0] ?? "";
   const onAdd = () => {
-    if (!p) return;
-    add({ productId: p.id, slug: p.slug, name: p.name, image: p.images[0], price, finish: p.finishes[finish] ? tx(p.finishes[finish].name, "en") : undefined, size: p.sizes[size] }, qty);
+    if (!p || !line) return;
+    add(line, qty);
     setAdded(true);
     setTimeout(() => {
       close();
@@ -67,7 +75,11 @@ export function QuickView() {
             <motion.div className="absolute inset-0 bg-white shadow-[0_40px_120px_-30px_rgba(0,0,0,0.35)]" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0, transition: { duration: 0.25 } }} />
 
             <motion.div layoutId={source ? `qv-${source}` : undefined} transition={{ duration: 0.7, ease: EASE }} className="relative aspect-square overflow-hidden bg-plate">
-              <Image src={p.images[0]} alt={tx(p.name, lang)} fill sizes="540px" className="object-cover" priority />
+              <AnimatePresence initial={false}>
+                <motion.div key={image} className="absolute inset-0" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.45 }}>
+                  <Image src={image} alt={tx(p.name, lang)} fill sizes="540px" className="object-cover" priority />
+                </motion.div>
+              </AnimatePresence>
             </motion.div>
 
             <div className="relative flex max-h-[min(540px,80vh)] flex-col overflow-y-auto p-8 lg:p-10" data-lenis-prevent>
@@ -92,26 +104,32 @@ export function QuickView() {
                 {tx(p.description, lang)}
               </motion.p>
 
-              {p.finishes.length > 0 && (
+              {!p.priceOnRequest && shots.length > 0 && (
                 <motion.div {...stagger(4)} className="mt-6">
                   <p className="mb-2.5 text-[0.85rem]">
-                    {t("shop.finish")}: <span className="text-muted">{tx(p.finishes[finish]?.name, lang)}</span>
+                    {shots.length > 1 ? (lang === "ar" ? "اللون" : "Colour") : lang === "ar" ? "متوفر بـ" : "Available in"}: <span className="text-muted">{line?.finish ? describeConfig(p, { material: pick?.material, colour: pick?.id }, lang, cat) : ""}</span>
                   </p>
-                  <div className="flex flex-wrap gap-2.5">
-                    {p.finishes.map((f, i) => (
-                      <button key={i} onClick={() => setFinish(i)} aria-label={tx(f.name, lang)} className={clsx("h-8 w-8 rounded-full ring-offset-[3px] transition", finish === i ? "ring-[1.5px] ring-ink" : "ring-1 ring-black/10 hover:scale-110")} style={{ background: f.hex }} />
-                    ))}
-                  </div>
+                  {shots.length > 1 && (
+                    <div className="flex flex-wrap gap-2.5">
+                      {shots.map((c, i) => (
+                        <button key={c.id} onClick={() => setFinish(i)} aria-label={tx(c.name, lang)} title={tx(c.name, lang)} className={clsx("h-8 w-8 rounded-full ring-offset-[3px] transition", finish === i ? "ring-[1.5px] ring-ink" : "ring-1 ring-black/10 hover:scale-110")} style={fabricStyle(c.hex, !isUpholstered(p))} />
+                      ))}
+                    </div>
+                  )}
                 </motion.div>
               )}
 
               {p.sizes.length > 1 && (
                 <motion.div {...stagger(5)} className="mt-5 flex flex-wrap gap-2">
-                  {p.sizes.map((s, i) => (
-                    <button key={s} onClick={() => setSize(i)} className={clsx("h-9 rounded-full border px-4 text-[0.82rem] transition", size === i ? "border-ink bg-ink text-white" : "border-line hover:border-ink")}>
-                      {s}
-                    </button>
-                  ))}
+                  {p.sizes.map((s, i) => {
+                    const more = p.priceOnRequest ? 0 : sizeDelta(p, i);
+                    return (
+                      <button key={s} onClick={() => setSize(i)} className={clsx("h-9 rounded-full border px-4 text-[0.82rem] transition", size === i ? "border-ink bg-ink text-white" : "border-line hover:border-ink")}>
+                        <bdi>{s}</bdi>
+                        {more > 0 && <span className={clsx("ms-1.5 text-[0.72rem] tabular-nums", size === i ? "text-white/70" : "text-muted")}><bdi>+{money(more, lang)}</bdi></span>}
+                      </button>
+                    );
+                  })}
                 </motion.div>
               )}
 

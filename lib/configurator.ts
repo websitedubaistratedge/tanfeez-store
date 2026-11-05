@@ -166,3 +166,23 @@ export function photographedColours(p: Pick<Product, "category" | "materialType"
   const ids = [p.photoColour, ...Object.keys(p.colourImages ?? {})].filter((x, i, a): x is string => !!x && a.indexOf(x) === i);
   return ids.map((id) => all.find((c) => c.id === id)).filter((c): c is Swatch & { material: string } => !!c).map((c) => ({ ...c, image: photoFor(p, c.id)! }));
 }
+
+/**
+ * A bag line for a quick add (cards, quick view, Shop the Look): the chosen or default
+ * available colour, with the matching photo and the same price the product page shows.
+ */
+export function quickLine(p: Product, cat: MaterialCatalog = DEFAULT_MATERIALS, pick?: Partial<{ material: string; colour: string; size: number }>) {
+  const cfg = { ...defaultConfig(p, cat), ...pick };
+  const configurable = materialsFor(p, cat).length > 0 && !p.priceOnRequest;
+  return {
+    productId: p.id,
+    slug: p.slug,
+    name: p.name,
+    image: (configurable && photoFor(p, cfg.colour)) || p.images[0],
+    price: configurable ? configPrice(p, cfg, cat).total : p.salePrice || p.price,
+    finish: configurable ? describeConfig(p, cfg, "en", cat) || undefined : undefined,
+    size: p.sizes[cfg.size ?? 0],
+    material: configurable ? cfg.material : undefined,
+    colour: configurable ? cfg.colour : undefined,
+  };
+}

@@ -120,6 +120,36 @@ const MIGRATIONS: Migration[] = [
       ],
     ],
   },
+  {
+    // Descriptions that named colours the piece isn't available in (only if still the original text).
+    id: "2026-11-05-accurate-descriptions",
+    sql: [
+      [
+        "UPDATE docs SET data = json_set(data, '$.description.ar', ?) WHERE coll = 'products' AND json_extract(data, '$.slug') = ? AND json_extract(data, '$.description.ar') = ?",
+        "تصميم إسكندنافي بهيكل من خشب الجوز يحيط بالوسادة، بجلد سرج أزرق محيطي.",
+        "nord-leather-armchair",
+        "تصميم إسكندنافي بهيكل من خشب الجوز يحيط بالوسادة. جلد سرج بالأزرق المحيطي أو الكونياك.",
+      ],
+      [
+        "UPDATE docs SET data = json_set(data, '$.description.ar', ?) WHERE coll = 'products' AND json_extract(data, '$.slug') = ? AND json_extract(data, '$.description.ar') = ?",
+        "أبواب منزلقة من الأرض للسقف بلاكر أبيض مطفي ناعم مع تجهيز داخلي كامل.",
+        "blush-sliding-wardrobe",
+        "أبواب منزلقة من الأرض للسقف بلاكر وردي ناعم مع تجهيز داخلي كامل.",
+      ],
+      [
+        "UPDATE docs SET data = json_set(data, '$.description.en', ?) WHERE coll = 'products' AND json_extract(data, '$.slug') = ? AND json_extract(data, '$.description.en') = ?",
+        "Scandinavian proportions with a solid walnut frame that wraps the cushion, in ocean-blue saddle leather.",
+        "nord-leather-armchair",
+        "Scandinavian proportions with a solid walnut frame that wraps the cushion. Saddle leather in Ocean Blue or Cognac.",
+      ],
+      [
+        "UPDATE docs SET data = json_set(data, '$.description.en', ?) WHERE coll = 'products' AND json_extract(data, '$.slug') = ? AND json_extract(data, '$.description.en') = ?",
+        "Floor-to-ceiling sliding doors in a soft matt white lacquer. The interior is fully fitted with hanging rails, drawers and shelves.",
+        "blush-sliding-wardrobe",
+        "Floor-to-ceiling sliding doors in a soft blush lacquer. The interior is fully fitted with hanging rails, drawers and shelves.",
+      ],
+    ],
+  },
 ];
 
 // Colour photos (scripts/colour-photos.mjs): added to products without touching photos an admin

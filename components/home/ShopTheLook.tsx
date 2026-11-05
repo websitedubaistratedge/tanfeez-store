@@ -12,11 +12,13 @@ import { money, tx } from "@/lib/i18n";
 import { EASE, Reveal, SplitLines } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
 import type { ResolvedLook } from "@/lib/looks";
+import { quickLine } from "@/lib/configurator";
 
 export type { ResolvedLook };
 
 export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook[]; standalone?: boolean }) {
-  const { t, lang } = useSite();
+  const { t, lang, settings } = useSite();
+  const materials = settings.materials;
   const add = useCart((s) => s.add);
   const setCart = useUI((s) => s.setCart);
   const [i, setI] = useState(0);
@@ -49,7 +51,7 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
     look.pins
       .filter((p) => picked.has(p.product.id))
       .forEach(({ product: p }) =>
-        add({ productId: p.id, slug: p.slug, name: p.name, image: p.images[0], price: p.salePrice || p.price, finish: p.finishes[0] ? tx(p.finishes[0].name, "en") : undefined, size: p.sizes[0] })
+        add(quickLine(p, materials))
       );
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);

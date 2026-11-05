@@ -14,7 +14,7 @@ import { EASE, Reveal } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
 import { ProductCard } from "./ProductCard";
 import { AnimatedPrice, Configurator, Installments, fabricStyle, type Config } from "./Configurator";
-import { configPrice, defaultConfig, describeConfig, isUpholstered, materialsFor, photoFor } from "@/lib/configurator";
+import { configPrice, defaultConfig, describeConfig, isUpholstered, materialsFor, photoFor, photographedColours } from "@/lib/configurator";
 import { BackButton } from "@/components/ui/BackButton";
 
 export function ProductView({ product: p, related, category, rooms = [], colour }: { product: Product; related: Product[]; category?: Category; rooms?: { image: string; title: string; x: number; y: number }[]; colour?: string }) {
@@ -359,7 +359,7 @@ export function ProductView({ product: p, related, category, rooms = [], colour 
             {[
               [t("shop.dimensions"), p.dimensions],
               [t("shop.materials"), tx(p.materials, lang)],
-              [lang === "ar" ? "الخيارات" : "Finishes", p.finishes.map((f) => tx(f.name, lang)).join(", ") || "—"],
+              [lang === "ar" ? "الألوان المتوفرة" : "Available in", (photographedColours(p, cat).map((c) => tx(c.name, lang)).join(", ") || p.finishes.map((f) => tx(f.name, lang)).join(", ")) || "—"],
               [t("shop.size"), p.sizes.join(" · ") || "—"],
               [lang === "ar" ? "مدة التجهيز" : "Lead time", p.priceOnRequest ? t("shop.madeToOrder") : t("shop.leadTime", { n: p.leadTimeDays })],
               [lang === "ar" ? "الضمان" : "Warranty", t("shop.warranty")],

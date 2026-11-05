@@ -14,6 +14,7 @@ import { PageHero } from "@/components/site/PageHero";
 import { ArrowLink, CircleArrow, PillLink } from "@/components/ui/buttons";
 import { LookPin, type ResolvedLook } from "@/components/home/ShopTheLook";
 import { ROOM_KINDS } from "@/lib/looks";
+import { quickLine } from "@/lib/configurator";
 
 // A whisper of each room's palette behind its story panel.
 const TINT: Record<string, string> = {
@@ -98,7 +99,8 @@ export function InspirationView({ looks }: { looks: ResolvedLook[] }) {
 }
 
 function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: number; progress: MotionValue<number> }) {
-  const { t, lang } = useSite();
+  const { t, lang, settings } = useSite();
+  const materials = settings.materials;
   const ar = lang === "ar";
   const add = useCart((s) => s.add);
   const setCart = useUI((s) => s.setCart);
@@ -120,7 +122,7 @@ function LookCard({ look, i, n, progress }: { look: ResolvedLook; i: number; n: 
 
   const addRoom = () => {
     buyable.forEach(({ product: p }) =>
-      add({ productId: p.id, slug: p.slug, name: p.name, image: p.images[0], price: p.salePrice || p.price, finish: p.finishes[0] ? tx(p.finishes[0].name, "en") : undefined, size: p.sizes[0] })
+      add(quickLine(p, materials))
     );
     setAdded(true);
     setTimeout(() => setAdded(false), 1800);

@@ -13,6 +13,7 @@ import { ProductCard, materialTags } from "@/components/shop/ProductCard";
 import { CATEGORY_SHORT, money, tx } from "@/lib/i18n";
 import { useCart, useUI } from "@/lib/store";
 import type { Category, Product, Project } from "@/lib/types";
+import { photographedColours, quickLine } from "@/lib/configurator";
 
 /* ───────────────────────── Hero ───────────────────────── */
 /** Words rise one by one from behind a mask. */
@@ -338,7 +339,8 @@ export function Categories({ categories, covers, counts }: { categories: Categor
 
 /* ───────────── The Edit: one product at a time, cinematic ───────────── */
 export function Spotlight({ products }: { products: Product[] }) {
-  const { t, lang } = useSite();
+  const { t, lang, settings } = useSite();
+  const materials = settings.materials;
   const add = useCart((s) => s.add);
   const setCart = useUI((s) => s.setCart);
   const [i, setI] = useState(0);
@@ -422,10 +424,19 @@ export function Spotlight({ products }: { products: Product[] }) {
                   <h3 key="h" className="mt-2 font-display md:mt-3 text-[clamp(2rem,3.4vw,3rem)] font-semibold leading-[1.02] tracking-[-0.03em]">{tx(p.name, lang)}</h3>,
                   <p key="d" className="mt-5 hidden max-w-md font-serif md:block text-[1.2rem] leading-relaxed text-ink-2">{tx(p.description, lang)}</p>,
                   <div key="sw" className="mt-3 flex items-center gap-2 md:mt-6">
-                    {p.finishes.map((f, k) => (
-                      <span key={k} title={tx(f.name, lang)} className="h-6 w-6 rounded-full ring-1 ring-black/10" style={{ background: f.hex }} />
-                    ))}
-                    <span className="ms-2 text-[0.82rem] text-muted">{p.finishes.length} {lang === "ar" ? "خيارات" : p.finishes.length === 1 ? "finish" : "finishes"}</span>
+                    {/* The colours this piece is actually available in */}
+                    {(() => {
+                      const shots = photographedColours(p, materials);
+                      const list = shots.length ? shots.map((c) => ({ hex: c.hex, name: c.name })) : p.finishes;
+                      return (
+                        <>
+                          {list.map((f, k) => (
+                            <span key={k} title={tx(f.name, lang)} className="h-6 w-6 rounded-full ring-1 ring-black/10" style={{ background: f.hex }} />
+                          ))}
+                          <span className="ms-2 text-[0.82rem] text-muted">{list.length} {lang === "ar" ? (list.length === 1 ? "لون" : "ألوان") : list.length === 1 ? "colour" : "colours"}</span>
+                        </>
+                      );
+                    })()}
                   </div>,
                   <dl key="spec" className="mt-7 hidden max-w-md grid-cols-2 md:grid gap-4 border-y border-ink/10 py-5 text-[0.85rem]">
                     <div><dt className="text-muted">{t("shop.dimensions")}</dt><dd className="mt-0.5">{p.dimensions}</dd></div>
@@ -437,7 +448,7 @@ export function Spotlight({ products }: { products: Product[] }) {
                     ) : (
                       <button
                         onClick={() => {
-                          add({ productId: p.id, slug: p.slug, name: p.name, image: p.images[0], price, finish: p.finishes[0] ? tx(p.finishes[0].name, "en") : undefined, size: p.sizes[0] });
+                          add(quickLine(p, materials));
                           setCart(true);
                         }}
                         className="inline-flex h-12 items-center gap-2.5 rounded-full bg-ink px-7 text-[0.92rem] font-medium text-white transition hover:bg-ink-2"
