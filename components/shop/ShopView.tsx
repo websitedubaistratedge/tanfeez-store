@@ -11,7 +11,7 @@ import { useSite } from "@/components/providers";
 import { PageHero } from "@/components/site/PageHero";
 import { ProductCard } from "./ProductCard";
 import { money, tx, CATEGORY_SHORT } from "@/lib/i18n";
-import type { Category, Product, Project } from "@/lib/types";
+import type { Category, Product } from "@/lib/types";
 import { EASE } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
 import { useHydrated, useWishlist } from "@/lib/store";
@@ -31,14 +31,12 @@ const PRICES = [
 export function ShopView({
   products,
   categories,
-  editorial,
   initialCategory,
   initialQuery,
   wishlistOnly,
 }: {
   products: Product[];
   categories: Category[];
-  editorial: Project[];
   initialCategory: string;
   initialQuery: string;
   wishlistOnly?: boolean;
@@ -129,13 +127,6 @@ export function ShopView({
   const priceLabel = (b: (typeof PRICES)[number]) =>
     b.max === Infinity ? `${money(b.min, lang)}+` : b.min === 0 ? `< ${money(b.max, lang)}` : `${money(b.min, lang)} – ${money(b.max, lang)}`;
 
-  // Build grid with an editorial tile after every 8 products
-  const cells: ({ kind: "p"; p: Product; i: number } | { kind: "e"; e: Project; k: number })[] = [];
-  list.forEach((p, i) => {
-    cells.push({ kind: "p", p, i });
-    const k = Math.floor((i + 1) / 8) - 1;
-    if ((i + 1) % 8 === 0 && editorial[k] && i < list.length - 1) cells.push({ kind: "e", e: editorial[k], k });
-  });
 
   // The filter groups, shared by the desktop side panel and the phone sheet.
   const filterGroups = (
@@ -289,25 +280,11 @@ export function ShopView({
         ) : (
           <motion.div layout className="grid grid-cols-2 gap-x-3 gap-y-7 md:grid-cols-3 md:gap-x-2 md:gap-y-10 2xl:grid-cols-4">
             <AnimatePresence mode="popLayout">
-              {cells.map((c) =>
-                c.kind === "p" ? (
-                  <motion.div key={c.p.id} layout initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.6, ease: EASE, delay: Math.min(c.i % 8, 7) * 0.04 }}>
-                    <ProductCard product={c.p} priority={c.i < 4} />
-                  </motion.div>
-                ) : (
-                  <motion.div key={`e-${c.e.id}`} layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="col-span-2 hidden md:col-span-2 md:block xl:row-span-1">
-                    <Link href={`/projects/${c.e.slug}`} className="group relative block h-full min-h-[280px] overflow-hidden bg-plate">
-                      <Image src={c.e.images[0]?.src} alt={c.e.client} fill sizes="50vw" className="object-cover transition duration-[1.4s] group-hover:scale-105" />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-                      <div className="absolute bottom-0 start-0 p-5 text-white md:p-7">
-                        <p className="font-serif text-[1.3rem] leading-none">{t("v2.projectsSerif")}</p>
-                        <p className="mt-1 font-display text-[1.6rem] font-semibold tracking-tight">{c.e.client}</p>
-                        <p className="mt-1 text-[0.85rem] text-white/80">{tx(c.e.location, lang)}</p>
-                      </div>
-                    </Link>
-                  </motion.div>
-                )
-              )}
+              {list.map((p, i) => (
+                <motion.div key={p.id} layout initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.6, ease: EASE, delay: Math.min(i % 8, 7) * 0.04 }}>
+                  <ProductCard product={p} priority={i < 4} />
+                </motion.div>
+              ))}
             </AnimatePresence>
           </motion.div>
         )}
