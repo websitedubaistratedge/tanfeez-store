@@ -164,7 +164,7 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
             ))}
             {shots.length > 6 && <span className="ms-1 text-[0.75rem] text-muted">+{shots.length - 6}</span>}
           </div>
-        ) : p.finishes.length > 0 && (
+        ) : shots.length === 0 && p.finishes.length > 0 && (
           <div className="mt-2.5 flex items-center gap-1.5 lg:mt-3">
             {p.finishes.slice(0, 5).map((f, i) => (
               <button

@@ -1,5 +1,5 @@
-import { Categories, Clients, QuickShop, Collections, Faq, HelpCTA, Hero, Heritage, ProjectsShowcase, Spotlight, Tailored } from "@/components/home/Home";
-import { getHomeCategories, getHomeProducts, getLooks, getProjects } from "@/lib/data";
+import { Categories, Clients, QuickShop, Collections, Faq, HelpCTA, Hero, Spotlight } from "@/components/home/Home";
+import { getHomeCategories, getHomeProducts, getLooks } from "@/lib/data";
 import { getLang } from "@/lib/lang";
 import { hasImage } from "@/lib/assets";
 import { resolveLooks } from "@/lib/looks";
@@ -12,7 +12,7 @@ function pick(...candidates: string[]) {
 }
 
 export default async function Home() {
-  const [products, categories, projects, lang, looks] = await Promise.all([getHomeProducts(), getHomeCategories(), getProjects(), getLang(), getLooks()]);
+  const [products, categories, lang, looks] = await Promise.all([getHomeProducts(), getHomeCategories(), getLang(), getLooks()]);
   const ar = lang === "ar";
   const bySlug = (s: string) => products.find((p) => p.slug === s);
   const pickMany = (slugs: string[]) => slugs.map(bySlug).filter((p): p is NonNullable<typeof p> => !!p);
@@ -34,15 +34,15 @@ export default async function Home() {
     <>
       <Hero image={pick("/images/lifestyle/hero.jpg", "/images/projects/vox-cinema-theatre-1.jpg")} look={bySlug("cloud-curve-sofa")} />
       <QuickShop categories={categories} covers={covers} />
-      <Categories categories={categories} covers={covers} counts={counts} />
+      {/* Phones and tablets get the quick circles above; the full category grid is for desktop. */}
+      <div className="hidden lg:block">
+        <Categories categories={categories} covers={covers} counts={counts} />
+      </div>
       <ShopTheLook looks={resolveLooks(products, looks).filter((l) => l.home)} />
       <Spotlight products={pickMany(["velluto-tufted-sofa", "blush-couture-bed", "live-edge-walnut-table", "wingback-chesterfield-chair", "ember-fireplace-wall"])} />
       <Collections groups={groups} />
-      <Tailored products={pickMany(["cloud-curve-sofa", "chesterfield-heritage-sofa", "velluto-tufted-sofa"])} />
-      <ProjectsShowcase projects={projects.filter((p) => p.featured)} />
       <Clients />
       <HelpCTA />
-      <Heritage projectCount={projects.length} />
       <Faq />
     </>
   );

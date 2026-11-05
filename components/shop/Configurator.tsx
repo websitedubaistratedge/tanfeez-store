@@ -6,7 +6,7 @@ import { Check, Info, Loader2, Package, X } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { EMIRATES, emirateName, money } from "@/lib/i18n";
-import { configPrice, isUpholstered, materialsFor, photoFor, sizeDelta, type Material, type Swatch } from "@/lib/configurator";
+import { availableColours, configPrice, isUpholstered, materialAdjust, materialsFor, sizeDelta, type Material, type Swatch } from "@/lib/configurator";
 import { requestSamples } from "@/lib/actions";
 import { EASE } from "@/components/ui/motion";
 import { lockScroll } from "@/components/site/SmoothScroll";
@@ -129,67 +129,105 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
   const wood = !isUpholstered(p);
   const [samples, setSamples] = useState(false);
 
+  // Only what's really available can be picked: colours we have a photo of (see availableColours).
+  const avail = availableColours(p);
+  const okColour = (id: string) => !avail || avail.has(id);
+  const okMat = (m: Material) => m.colours.some((c) => okColour(c.id));
+  const choices = mats.flatMap((m) => m.colours.filter((c) => okColour(c.id)).map((c) => ({ m, c })));
+  const single = choices.length === 1;
+  const sizeStep = single ? 2 : 3;
+
   return (
     <div className="mt-7 space-y-7">
-      {/* Material */}
-      <div>
-        <StepTitle n={1} title={wood ? (ar ? "الخشب والتشطيب" : "Wood & finish") : ar ? "القماش" : "Fabric"} value={tx(mat.name)} />
-        <div className="grid grid-cols-2 gap-2">
-          {mats.map((m) => {
-            const on = m.id === mat.id;
-            const add = Math.round(((p.salePrice || p.price) * m.delta) / 50) * 50;
-            return (
-              <button key={m.id} onClick={() => setCfg({ ...cfg, material: m.id, colour: (m.colours.find((c) => photoFor(p, c.id)) ?? m.colours[0]).id })} className={clsx("relative flex items-start gap-3 border p-3 text-start transition", on ? "border-ink" : "border-line hover:border-ink/40")}>
-                {on && <motion.span layoutId={`mat-${p.id}`} className="absolute inset-0 border-[1.5px] border-ink" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
-                <span className="mt-0.5 h-8 w-8 shrink-0 rounded-full ring-1 ring-black/10" style={fabricStyle(m.colours[0].hex, wood)} />
-                <span className="min-w-0">
-                  <span className="block text-[0.86rem] font-medium leading-tight">{tx(m.name)}</span>
-                  <span className="mt-0.5 block text-[0.74rem] leading-snug text-muted">{tx(m.note)}</span>
-                  <span className={clsx("mt-1 block text-[0.74rem] tabular-nums", add ? "text-ink" : "text-emerald-700")}>{add ? `+ ${money(add, lang)}` : ar ? "مشمول" : "Included"}</span>
-                </span>
-              </button>
-            );
-          })}
+      {single ? (
+        /* One finish: nothing to choose, just say what it is. */
+        <div>
+          <StepTitle n={1} title={wood ? (ar ? "التشطيب" : "Finish") : ar ? "القماش واللون" : "Fabric & colour"} value="" />
+          <div className="flex items-center gap-3 border border-line p-3">
+            <span className="h-10 w-10 shrink-0 rounded-full ring-1 ring-black/10" style={fabricStyle(choices[0].c.hex, wood)} />
+            <span className="min-w-0 flex-1">
+              <span className="block text-[0.9rem] font-medium">{tx(choices[0].m.name)} · {tx(choices[0].c.name)}</span>
+              <span className="block text-[0.76rem] text-muted">{ar ? "متوفر بهذا التشطيب كما في الصورة" : "Available in this finish, as photographed"}</span>
+            </span>
+          </div>
         </div>
-      </div>
+      ) : (
+        <>
+          {/* Material */}
+          <div>
+            <StepTitle n={1} title={wood ? (ar ? "الخشب والتشطيب" : "Wood & finish") : ar ? "القماش" : "Fabric"} value={tx(mat.name)} />
+            <div className="grid grid-cols-2 gap-2">
+              {mats.map((m) => {
+                const on = m.id === mat.id;
+                const ok = okMat(m);
+                const add = materialAdjust(p, m, settings.materials);
+                return (
+                  <button
+                    key={m.id}
+                    disabled={!ok}
+                    onClick={() => setCfg({ ...cfg, material: m.id, colour: (m.colours.find((c) => okColour(c.id)) ?? m.colours[0]).id })}
+                    className={clsx("relative flex items-start gap-3 border p-3 text-start transition", on ? "border-ink" : "border-line", ok ? !on && "hover:border-ink/40" : "cursor-not-allowed opacity-45")}
+                  >
+                    {on && <motion.span layoutId={`mat-${p.id}`} className="absolute inset-0 border-[1.5px] border-ink" transition={{ type: "spring", stiffness: 420, damping: 34 }} />}
+                    <span className="mt-0.5 h-8 w-8 shrink-0 rounded-full ring-1 ring-black/10" style={fabricStyle((m.colours.find((c) => okColour(c.id)) ?? m.colours[0]).hex, wood)} />
+                    <span className="min-w-0">
+                      <span className="block text-[0.86rem] font-medium leading-tight">{tx(m.name)}</span>
+                      <span className="mt-0.5 block text-[0.74rem] leading-snug text-muted">{tx(m.note)}</span>
+                      {ok ? (
+                        <span className={clsx("mt-1 block text-[0.74rem] tabular-nums", add > 0 ? "text-ink" : "text-emerald-700")}>{add > 0 ? `+ ${money(add, lang)}` : add < 0 ? `− ${money(-add, lang)}` : ar ? "مشمول" : "Included"}</span>
+                      ) : (
+                        <span className="mt-1 block text-[0.74rem] text-muted">{ar ? "غير متوفر لهذه القطعة" : "Not available for this piece"}</span>
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
-      {/* Colour */}
-      <div>
-        <StepTitle n={2} title={ar ? "اللون" : "Colour"} value={tx(colour.name)} />
-        <div className="flex flex-wrap gap-3">
-          <AnimatePresence mode="popLayout" initial={false}>
-            {mat.colours.map((c, k) => (
-              <motion.button
-                key={`${mat.id}-${c.id}`}
-                layout
-                initial={{ scale: 0.4, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                exit={{ scale: 0.4, opacity: 0 }}
-                transition={{ delay: k * 0.04, type: "spring", stiffness: 380, damping: 24 }}
-                onClick={() => setCfg({ ...cfg, colour: c.id })}
-                title={tx(c.name)}
-                aria-label={tx(c.name)}
-                className={clsx("relative h-11 w-11 rounded-full ring-offset-[3px] transition-shadow", c.id === colour.id ? "ring-[1.5px] ring-ink" : "ring-1 ring-black/10 hover:ring-black/30")}
-                style={fabricStyle(c.hex, wood)}
-              >
-                {/* A small dot marks colours you can see photographed. */}
-                {photoFor(p, c.id) && <span className="absolute -end-0.5 -top-0.5 h-2.5 w-2.5 rounded-full bg-brand ring-2 ring-white" />}
-              </motion.button>
-            ))}
-          </AnimatePresence>
-        </div>
-        {(p.photoColour || p.colourImages) && (
-          <p className="mt-3 flex items-center gap-2 text-[0.76rem] text-muted">
-            <span className="h-2 w-2 rounded-full bg-brand" />
-            {ar ? "ألوان مصوّرة: اختر لترى القطعة بها" : "Photographed: pick one to see the piece in it"}
-          </p>
-        )}
-      </div>
+          {/* Colour */}
+          <div>
+            <StepTitle n={2} title={ar ? "اللون" : "Colour"} value={tx(colour.name)} />
+            <div className="flex flex-wrap gap-3">
+              <AnimatePresence mode="popLayout" initial={false}>
+                {mat.colours.map((c, k) => {
+                  const ok = okColour(c.id);
+                  return (
+                    <motion.button
+                      key={`${mat.id}-${c.id}`}
+                      layout
+                      initial={{ scale: 0.4, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      exit={{ scale: 0.4, opacity: 0 }}
+                      transition={{ delay: k * 0.04, type: "spring", stiffness: 380, damping: 24 }}
+                      disabled={!ok}
+                      onClick={() => setCfg({ ...cfg, colour: c.id })}
+                      title={ok ? tx(c.name) : `${tx(c.name)} · ${ar ? "غير متوفر" : "not available"}`}
+                      aria-label={ok ? tx(c.name) : `${tx(c.name)}, ${ar ? "غير متوفر" : "not available"}`}
+                      className={clsx(
+                        "relative h-11 w-11 overflow-hidden rounded-full ring-offset-[3px] transition-shadow",
+                        c.id === colour.id ? "ring-[1.5px] ring-ink" : "ring-1 ring-black/10",
+                        ok ? "hover:ring-black/30" : "cursor-not-allowed opacity-40"
+                      )}
+                      style={fabricStyle(c.hex, wood)}
+                    >
+                      {!ok && <span className="absolute left-1/2 top-1/2 h-[1.5px] w-[140%] -translate-x-1/2 -translate-y-1/2 rotate-45 bg-white/90" />}
+                    </motion.button>
+                  );
+                })}
+              </AnimatePresence>
+            </div>
+            {avail && mat.colours.some((c) => !okColour(c.id)) && (
+              <p className="mt-3 text-[0.76rem] text-muted">{ar ? "الألوان المشطوبة غير متوفرة لهذه القطعة." : "Crossed-out colours aren't available for this piece."}</p>
+            )}
+          </div>
+        </>
+      )}
 
       {/* Size */}
       {p.sizes.length > 0 && (
         <div>
-          <StepTitle n={3} title={t("shop.size")} value={p.sizes[cfg.size]} />
+          <StepTitle n={sizeStep} title={t("shop.size")} value={p.sizes[cfg.size]} />
           <div className="flex flex-wrap gap-2">
             {p.sizes.map((s, i) => {
               const add = sizeDelta(p, i);
@@ -208,9 +246,9 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line pt-4 text-[0.8rem] text-muted">
         <span>{ar ? "السعر الأساسي" : "Base"} {money(price.base, lang)}</span>
         <AnimatePresence>
-          {price.materialAdd > 0 && (
+          {price.materialAdd !== 0 && (
             <motion.span key="m" initial={{ opacity: 0, x: -6 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0 }}>
-              + {tx(mat.name)} {money(price.materialAdd, lang)}
+              {price.materialAdd > 0 ? "+" : "−"} {tx(mat.name)} {money(Math.abs(price.materialAdd), lang)}
             </motion.span>
           )}
           {price.sizeAdd > 0 && (
@@ -221,9 +259,11 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
         </AnimatePresence>
       </div>
 
+      {/* Fabric samples: upholstered pieces only, and only in the colours this piece comes in. */}
+      {!wood && (
       <button onClick={() => setSamples(true)} className="group flex w-full items-center gap-4 bg-band p-4 text-start transition hover:bg-[#efe8dd]">
         <span className="relative flex h-12 w-12 shrink-0 items-center justify-center">
-          {mat.colours.slice(0, 3).map((c, k) => (
+          {choices.map((x) => x.c).slice(0, 3).map((c, k) => (
             <span key={c.id} className="absolute h-8 w-8 rounded-[6px] shadow-sm ring-1 ring-black/5 transition-transform duration-500 group-hover:rotate-0" style={{ ...fabricStyle(c.hex, wood), transform: `translate(${(k - 1) * 7}px, ${(k - 1) * -3}px) rotate(${(k - 1) * 12}deg)` }} />
           ))}
         </span>
@@ -233,8 +273,18 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
         </span>
         <Package className="h-5 w-5 stroke-[1.5] transition group-hover:-translate-y-0.5" />
       </button>
+      )}
 
-      <SamplesModal open={samples} onClose={() => setSamples(false)} product={p} materials={mats} initial={`${mat.id}:${colour.id}`} wood={wood} />
+      {!wood && (
+        <SamplesModal
+          open={samples}
+          onClose={() => setSamples(false)}
+          product={p}
+          materials={mats.map((m) => ({ ...m, colours: m.colours.filter((c) => okColour(c.id)) })).filter((m) => m.colours.length)}
+          initial={`${mat.id}:${colour.id}`}
+          wood={wood}
+        />
+      )}
     </div>
   );
 

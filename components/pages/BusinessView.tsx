@@ -9,7 +9,7 @@ import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { CountUp, EASE, Reveal, SplitLines } from "@/components/ui/motion";
 import { CircleArrow, OutlineLink, PillLink } from "@/components/ui/buttons";
-import { Clients, ProjectsShowcase } from "@/components/home/Home";
+import { Clients } from "@/components/home/Home";
 import type { Product, Project, Sector } from "@/lib/types";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { BackButton } from "@/components/ui/BackButton";
@@ -40,16 +40,9 @@ const STEPS = {
   ],
 };
 
-const CAPS = [
-  { href: "/services", img: "/images/projects/hovi-digital-lab-1.jpg", en: "Turnkey fit-out", ar: "تجهيز متكامل", dEn: "Design, build and handover under one contract.", dAr: "تصميم وتنفيذ وتسليم بعقد واحد." },
-  { href: "/services", img: "/images/craft/workshop.jpg", en: "Joinery & contract furniture", ar: "نجارة وأثاث للمشاريع", dEn: "Counters, display units, seating in volume.", dAr: "كاونترات ووحدات عرض ومقاعد بالكميات." },
-  { href: "/services", img: "/images/lifestyle/technical-works.jpg", en: "Technical & maintenance", ar: "الخدمات الفنية والصيانة", dEn: "MEP, AMCs and post-occupancy care.", dAr: "تمديدات وعقود صيانة ورعاية بعد التشغيل." },
-];
-
 export function BusinessView({ projects, pieces = [] }: { projects: Project[]; pieces?: Product[] }) {
   const { lang } = useSite();
   const ar = lang === "ar";
-  const featured = projects.filter((p) => p.featured);
   return (
     <>
       <BizHero projects={projects} />
@@ -80,31 +73,6 @@ export function BusinessView({ projects, pieces = [] }: { projects: Project[]; p
         </section>
       )}
       <Process />
-      <ProjectsShowcase projects={featured.length ? featured : projects} />
-
-      <section className="py-16 md:py-24">
-        <div className="mx-auto max-w-[1440px] px-5 md:px-10">
-          <h2 className="mb-6 font-display text-[clamp(1.8rem,3.2vw,2.6rem)] font-semibold tracking-[-0.02em] md:mb-10">
-            <SplitLines lines={[ar ? "قدرات تحت سقف واحد" : "Capabilities under one roof"]} />
-          </h2>
-          <div className="no-scrollbar -mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto px-5 md:mx-0 md:grid md:grid-cols-3 md:gap-5 md:overflow-visible md:px-0">
-            {CAPS.map((c, i) => (
-              <Reveal key={c.en} delay={i * 0.08} className="w-[78vw] shrink-0 snap-start md:w-auto">
-                <Link href={c.href} className="group block">
-                  <div className="relative aspect-[4/3.3] overflow-hidden bg-plate">
-                    <Image src={c.img} alt="" fill sizes="(min-width:768px) 33vw, 100vw" className="object-cover transition duration-[1600ms] ease-out group-hover:scale-[1.06]" />
-                    <span className="absolute end-4 top-4 flex h-10 w-10 items-center justify-center rounded-full bg-white opacity-0 transition duration-500 group-hover:opacity-100">
-                      <ArrowUpRight className="h-4 w-4 rtl:-scale-x-100" />
-                    </span>
-                  </div>
-                  <p className="mt-4 font-display text-[1.25rem] font-semibold tracking-tight">{ar ? c.ar : c.en}</p>
-                  <p className="mt-1 text-[0.92rem] text-muted">{ar ? c.dAr : c.dEn}</p>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
 
       <Clients />
       <ClosingCTA />

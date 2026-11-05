@@ -5,7 +5,7 @@ import { revalidatePath } from "next/cache";
 import { mutate, readDB, uid } from "./db";
 import { saveUpload } from "./uploads";
 import type { Lang, Message, Order, QuoteRequest } from "./types";
-import { configPrice, DEFAULT_MATERIALS, describeConfig } from "./configurator";
+import { configPrice, DEFAULT_MATERIALS, describeConfig, isAvailable } from "./configurator";
 import { notify } from "./notify";
 import { PROVIDER_FOR, ready, startPayment } from "./payments";
 import { currentCustomer, saveCustomer } from "./customers";
@@ -49,6 +49,8 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
       .map((it) => {
         const p = db.products.find((x) => x.id === it.productId && x.status === "active");
         if (!p || p.priceOnRequest) return null;
+        // Only colours the piece is really available in can be ordered.
+        if (it.material && !isAvailable(p, it.colour)) return null;
         // Price is always recomputed on the server from the chosen configuration.
         const sizeIndex = it.size ? Math.max(0, p.sizes.indexOf(it.size)) : 0;
         const price = it.material ? configPrice(p, { material: it.material, size: sizeIndex }, fabrics).total : p.salePrice || p.price;

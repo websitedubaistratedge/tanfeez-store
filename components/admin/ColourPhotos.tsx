@@ -44,7 +44,7 @@ export function ColourPhotos({ product: p, materials, onChange }: { product: Pro
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <h2 className="font-display font-semibold tracking-tight">Photos by colour</h2>
-          <p className="mt-1 text-sm text-muted">When a customer picks a colour, the main photo switches to it. Colours without a photo show the main photo with a note. {count > 0 && <b className="font-medium text-ink">{count} photographed.</b>}</p>
+          <p className="mt-1 text-sm text-muted">Customers can order this piece in the colour the main photo shows (★) and in every colour that has a photo here; picking one switches the photo. All other colours appear as “Not available”. {count > 0 && <b className="font-medium text-ink">{count} available.</b>}</p>
         </div>
       </div>
       <input ref={input} type="file" accept="image/*" hidden onChange={(e) => { upload(e.target.files); e.target.value = ""; }} />

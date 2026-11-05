@@ -124,24 +124,27 @@ const MIGRATIONS: Migration[] = [
 
 // Colour photos (scripts/colour-photos.mjs): added to products without touching photos an admin
 // already set. The id follows the photo list, so new photos are picked up on the next deploy.
-const photoMap = colourPhotos as Record<string, { photoColour?: string; colourImages: Record<string, string> }>;
-const photoKey = Object.entries(photoMap).map(([s, v]) => `${s}:${v.photoColour}:${Object.keys(v.colourImages).join(",")}`).join("|");
+const photoMap = colourPhotos as Record<string, { photoColour?: string; materialType?: string; colourImages: Record<string, string> }>;
+const photoKey = Object.entries(photoMap).map(([s, v]) => `${s}:${v.photoColour}:${v.materialType}:${Object.keys(v.colourImages).join(",")}`).join("|");
 let photoHash = 0;
 for (let i = 0; i < photoKey.length; i++) photoHash = (photoHash * 31 + photoKey.charCodeAt(i)) | 0;
 MIGRATIONS.push({
   id: `colour-photos-${(photoHash >>> 0).toString(36)}`,
   sql: Object.entries(photoMap)
-    .filter(([, v]) => v.photoColour || Object.keys(v.colourImages).length)
+    .filter(([, v]) => v.photoColour || v.materialType || Object.keys(v.colourImages).length)
     .map(([slug, v]): [string, ...unknown[]] => {
-    const paths: unknown[] = [];
-    if (v.photoColour) paths.push("$.photoColour", v.photoColour);
-    for (const [colour, url] of Object.entries(v.colourImages)) paths.push(`$.colourImages."${colour}"`, url);
-    const marks = Array.from({ length: paths.length / 2 }, () => "?, ?").join(", ");
-    return [
-      `UPDATE docs SET data = json_insert(json_insert(data, '$.colourImages', json('{}')), ${marks}) WHERE coll = 'products' AND json_extract(data, '$.slug') = ?`,
-      ...paths,
-      slug,
-    ];
+    // What the photo shows is a fact about our photo: set it. Colour photos are only added,
+    // so a photo an admin uploaded for a colour is kept.
+    const set: unknown[] = [];
+    if (v.photoColour) set.push("$.photoColour", v.photoColour);
+    if (v.materialType) set.push("$.materialType", v.materialType);
+    const add: unknown[] = [];
+    for (const [colour, url] of Object.entries(v.colourImages)) add.push(`$.colourImages."${colour}"`, url);
+    const marks = (n: number) => Array.from({ length: n / 2 }, () => "?, ?").join(", ");
+    let expr = "json_insert(data, '$.colourImages', json('{}'))";
+    if (add.length) expr = `json_insert(${expr}, ${marks(add.length)})`;
+    if (set.length) expr = `json_set(${expr}, ${marks(set.length)})`;
+    return [`UPDATE docs SET data = ${expr} WHERE coll = 'products' AND json_extract(data, '$.slug') = ?`, ...add, ...set, slug];
   }),
 });
 

@@ -30,6 +30,8 @@ export type Product = {
   finishes: Finish[];
   /** Which configurator colour (swatch id) the main photo shows. */
   photoColour?: string;
+  /** Overrides the fabric/wood choice the category implies (e.g. a cane-and-oak bed is wood). */
+  materialType?: "upholstery" | "wood";
   /** Photos of the piece in other colours, by swatch id; shown when that colour is picked. */
   colourImages?: Record<string, string>;
   sizes: string[];

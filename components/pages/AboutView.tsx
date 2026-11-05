@@ -1,12 +1,11 @@
 "use client";
 
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { MapPin } from "lucide-react";
 import { useSite } from "@/components/providers";
 import { PageHero } from "@/components/site/PageHero";
 import { EASE, Reveal, SplitLines } from "@/components/ui/motion";
-import { Clients, HelpCTA, Heritage } from "@/components/home/Home";
+import { HelpCTA, Heritage } from "@/components/home/Home";
 import { emirateName } from "@/lib/i18n";
 
 const PLACES = [
@@ -27,17 +26,6 @@ export function AboutView({ projectCount }: { projectCount: number }) {
   return (
     <>
       <PageHero eyebrow={t("about.meaning")} title={[t("about.title")]} sub={t("about.sub")} />
-
-      <section className="mx-auto max-w-[1440px] px-5 py-16 md:px-10 md:py-24">
-        <div className="grid gap-2 md:grid-cols-[1.4fr_1fr]">
-          <Reveal className="relative aspect-[4/3] overflow-hidden bg-plate">
-            <Image src="/images/craft/craftsman.jpg" alt="" fill sizes="60vw" className="object-cover" />
-          </Reveal>
-          <Reveal delay={0.1} className="relative aspect-[4/3] overflow-hidden bg-plate md:aspect-auto">
-            <Image src="/images/craft/workshop.jpg" alt="" fill sizes="40vw" className="object-cover" />
-          </Reveal>
-        </div>
-      </section>
 
       <section className="border-t border-line">
         <div className="mx-auto grid max-w-[1440px] px-5 md:grid-cols-2 md:px-10">
@@ -94,7 +82,6 @@ export function AboutView({ projectCount }: { projectCount: number }) {
         </div>
       </section>
 
-      <Clients />
       <Heritage projectCount={projectCount} />
       <HelpCTA />
     </>

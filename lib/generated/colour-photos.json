@@ -40,7 +40,7 @@
     }
   },
   "riviera-channel-sofa": {
-    "photoColour": "sand",
+    "photoColour": "stone",
     "colourImages": {
       "graphite": "/images/products-v2/colours/riviera-channel-sofa-graphite.jpg",
       "ink": "/images/products-v2/colours/riviera-channel-sofa-ink.jpg",
@@ -48,7 +48,7 @@
     }
   },
   "sahara-l-sofa": {
-    "photoColour": "stone",
+    "photoColour": "ivory",
     "colourImages": {
       "oat": "/images/products-v2/colours/sahara-l-sofa-oat.jpg"
     }
@@ -83,6 +83,67 @@
   },
   "atelier-storage-bed": {
     "photoColour": "stone",
+    "colourImages": {}
+  },
+  "walnut-platform-bed": {
+    "photoColour": "stone",
+    "colourImages": {}
+  },
+  "floating-oak-bed": {
+    "photoColour": "ivory",
+    "colourImages": {}
+  },
+  "cane-oak-bed": {
+    "photoColour": "raw",
+    "colourImages": {},
+    "materialType": "wood"
+  },
+  "concrete-media-wall": {
+    "photoColour": "raw",
+    "colourImages": {}
+  },
+  "slatted-media-unit": {
+    "photoColour": "raw",
+    "colourImages": {}
+  },
+  "ember-fireplace-wall": {
+    "photoColour": "walnut",
+    "colourImages": {}
+  },
+  "walnut-frame-tv-wall": {
+    "photoColour": "raw",
+    "colourImages": {}
+  },
+  "lagoon-lacquer-media": {
+    "photoColour": "lagoon",
+    "colourImages": {}
+  },
+  "blush-sliding-wardrobe": {
+    "photoColour": "white",
+    "colourImages": {}
+  },
+  "study-nook-desk": {
+    "photoColour": "white",
+    "colourImages": {}
+  },
+  "live-edge-walnut-table": {
+    "photoColour": "walnut",
+    "colourImages": {}
+  },
+  "walnut-vanity-console": {
+    "photoColour": "walnut",
+    "colourImages": {}
+  },
+  "lumiere-vanity": {
+    "photoColour": "white",
+    "colourImages": {}
+  },
+  "barn-sliding-door": {
+    "photoColour": "walnut",
+    "colourImages": {}
+  },
+  "slatted-partition-console": {
+    "photoColour": "raw",
     "colourImages": {}
   }
 }

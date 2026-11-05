@@ -72,9 +72,10 @@ export const WOOD: Material[] = [
 export const DEFAULT_MATERIALS: MaterialCatalog = { upholstery: UPHOLSTERY, wood: WOOD };
 
 const UPHOLSTERED = new Set(["sofas", "armchairs", "beds"]);
-export const isUpholstered = (p: Pick<Product, "category">) => UPHOLSTERED.has(p.category);
+export const isUpholstered = (p: Pick<Product, "category"> & { materialType?: Product["materialType"] }) =>
+  p.materialType ? p.materialType === "upholstery" : UPHOLSTERED.has(p.category);
 
-export function materialsFor(p: Pick<Product, "category">, cat: MaterialCatalog = DEFAULT_MATERIALS): Material[] {
+export function materialsFor(p: Pick<Product, "category"> & { materialType?: Product["materialType"] }, cat: MaterialCatalog = DEFAULT_MATERIALS): Material[] {
   const list = isUpholstered(p) ? cat.upholstery : cat.wood;
   return list.filter((m) => m.colours.length > 0);
 }
@@ -83,9 +84,14 @@ export function materialsFor(p: Pick<Product, "category">, cat: MaterialCatalog 
 export function defaultConfig(p: Product, cat: MaterialCatalog = DEFAULT_MATERIALS): { material: string; colour: string; size: number } {
   const mats = materialsFor(p, cat);
   if (!mats.length) return { material: "", colour: "", size: 0 };
-  // Start on the colour the main photo shows, when we know it.
+  // Start on the colour the main photo shows, when we know it; otherwise the first available one.
   const shown = p.photoColour && mats.find((m) => m.colours.some((c) => c.id === p.photoColour));
   if (shown) return { material: shown.id, colour: p.photoColour!, size: 0 };
+  const avail = availableColours(p, cat);
+  if (avail) {
+    const m = mats.find((x) => x.colours.some((c) => avail.has(c.id)));
+    if (m) return { material: m.id, colour: m.colours.find((c) => avail.has(c.id))!.id, size: 0 };
+  }
   const text = `${p.materials.en} ${p.finishes.map((f) => f.name.en).join(" ")}`.toLowerCase();
   const order = ["leather", "velvet", "bouclé", "boucle", "linen", "walnut", "lacquer", "ash", "oak"];
   const hit = order.find((k) => text.includes(k));
@@ -113,10 +119,17 @@ export function sizeDelta(p: Pick<Product, "price" | "salePrice">, i: number) {
   return i <= 0 ? 0 : round((p.salePrice || p.price) * 0.14 * i, 50);
 }
 
+/** The listed price is for the finish in the main photo; other fabrics cost more or less than that. */
+export function materialAdjust(p: Product, m: Material | undefined, cat: MaterialCatalog = DEFAULT_MATERIALS) {
+  if (!m) return 0;
+  const shown = materialsFor(p, cat).find((x) => x.colours.some((c) => c.id === p.photoColour));
+  return round((p.salePrice || p.price) * (m.delta - (shown?.delta ?? 0)), 50);
+}
+
 export function configPrice(p: Product, cfg: { material?: string; size?: number }, cat: MaterialCatalog = DEFAULT_MATERIALS) {
   const base = p.salePrice || p.price;
   const m = materialsFor(p, cat).find((x) => x.id === cfg.material);
-  const materialAdd = m ? round(base * m.delta, 50) : 0;
+  const materialAdd = materialAdjust(p, m, cat);
   const sizeAdd = sizeDelta(p, cfg.size ?? 0);
   return { base, materialAdd, sizeAdd, total: base + materialAdd + sizeAdd };
 }
@@ -134,8 +147,21 @@ export function photoFor(p: Pick<Product, "images" | "photoColour" | "colourImag
   return colour === p.photoColour ? p.images[0] : null;
 }
 
+/**
+ * What can actually be ordered: the colour the main photo shows plus every colour we have a
+ * photo of. null means the piece has no colour photos set up yet, so every colour is offered.
+ */
+export function availableColours(p: Pick<Product, "photoColour" | "colourImages">, _cat?: MaterialCatalog): Set<string> | null {
+  const ids = [p.photoColour, ...Object.keys(p.colourImages ?? {})].filter((x): x is string => !!x);
+  return ids.length ? new Set(ids) : null;
+}
+export const isAvailable = (p: Pick<Product, "photoColour" | "colourImages">, colour?: string) => {
+  const a = availableColours(p);
+  return !a || (!!colour && a.has(colour));
+};
+
 /** Every colour of this piece we have a photo of, main photo first. */
-export function photographedColours(p: Pick<Product, "category" | "images" | "photoColour" | "colourImages">, cat: MaterialCatalog = DEFAULT_MATERIALS) {
+export function photographedColours(p: Pick<Product, "category" | "materialType" | "images" | "photoColour" | "colourImages">, cat: MaterialCatalog = DEFAULT_MATERIALS) {
   const all = materialsFor(p, cat).flatMap((m) => m.colours.map((c) => ({ ...c, material: m.id })));
   const ids = [p.photoColour, ...Object.keys(p.colourImages ?? {})].filter((x, i, a): x is string => !!x && a.indexOf(x) === i);
   return ids.map((id) => all.find((c) => c.id === id)).filter((c): c is Swatch & { material: string } => !!c).map((c) => ({ ...c, image: photoFor(p, c.id)! }));

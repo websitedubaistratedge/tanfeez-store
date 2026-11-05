@@ -501,7 +501,7 @@
    "rating": 4.9,
    "reviews": 5,
    "createdAt": "2026-06-18T19:00:00.000Z",
-   "photoColour": "sand",
+   "photoColour": "stone",
    "colourImages": {
     "graphite": "/images/products-v2/colours/riviera-channel-sofa-graphite.jpg",
     "ink": "/images/products-v2/colours/riviera-channel-sofa-ink.jpg",
@@ -684,7 +684,7 @@
    "rating": 4.8,
    "reviews": 31,
    "createdAt": "2026-06-27T19:00:00.000Z",
-   "photoColour": "stone",
+   "photoColour": "ivory",
    "colourImages": {
     "oat": "/images/products-v2/colours/sahara-l-sofa-oat.jpg"
    }
@@ -985,7 +985,9 @@
    "status": "active",
    "rating": 5,
    "reviews": 41,
-   "createdAt": "2026-07-12T19:00:00.000Z"
+   "createdAt": "2026-07-12T19:00:00.000Z",
+   "photoColour": "stone",
+   "colourImages": {}
   },
   {
    "id": "prd_015",
@@ -1039,7 +1041,9 @@
    "status": "active",
    "rating": 4.8,
    "reviews": 12,
-   "createdAt": "2026-07-15T19:00:00.000Z"
+   "createdAt": "2026-07-15T19:00:00.000Z",
+   "photoColour": "ivory",
+   "colourImages": {}
   },
   {
    "id": "prd_016",
@@ -1086,7 +1090,10 @@
    "status": "active",
    "rating": 4.7,
    "reviews": 31,
-   "createdAt": "2026-07-18T19:00:00.000Z"
+   "createdAt": "2026-07-18T19:00:00.000Z",
+   "photoColour": "raw",
+   "materialType": "wood",
+   "colourImages": {}
   },
   {
    "id": "prd_017",
@@ -1249,7 +1256,9 @@
    "status": "active",
    "rating": 4.9,
    "reviews": 17,
-   "createdAt": "2026-07-27T19:00:00.000Z"
+   "createdAt": "2026-07-27T19:00:00.000Z",
+   "photoColour": "raw",
+   "colourImages": {}
   },
   {
    "id": "prd_020",
@@ -1303,7 +1312,9 @@
    "status": "active",
    "rating": 5,
    "reviews": 5,
-   "createdAt": "2026-07-30T19:00:00.000Z"
+   "createdAt": "2026-07-30T19:00:00.000Z",
+   "photoColour": "raw",
+   "colourImages": {}
   },
   {
    "id": "prd_021",
@@ -1357,7 +1368,9 @@
    "status": "active",
    "rating": 4.8,
    "reviews": 41,
-   "createdAt": "2026-08-02T19:00:00.000Z"
+   "createdAt": "2026-08-02T19:00:00.000Z",
+   "photoColour": "walnut",
+   "colourImages": {}
   },
   {
    "id": "prd_022",
@@ -1411,7 +1424,9 @@
    "status": "active",
    "rating": 4.7,
    "reviews": 12,
-   "createdAt": "2026-08-05T19:00:00.000Z"
+   "createdAt": "2026-08-05T19:00:00.000Z",
+   "photoColour": "raw",
+   "colourImages": {}
   },
   {
    "id": "prd_023",
@@ -1465,7 +1480,9 @@
    "status": "active",
    "rating": 5,
    "reviews": 31,
-   "createdAt": "2026-08-08T19:00:00.000Z"
+   "createdAt": "2026-08-08T19:00:00.000Z",
+   "photoColour": "lagoon",
+   "colourImages": {}
   },
   {
    "id": "prd_024",
@@ -1586,7 +1603,9 @@
    "status": "active",
    "rating": 4.9,
    "reviews": 22,
-   "createdAt": "2026-08-14T19:00:00.000Z"
+   "createdAt": "2026-08-14T19:00:00.000Z",
+   "photoColour": "white",
+   "colourImages": {}
   },
   {
    "id": "prd_026",
@@ -1693,7 +1712,9 @@
    "status": "active",
    "rating": 4.8,
    "reviews": 5,
-   "createdAt": "2026-08-20T19:00:00.000Z"
+   "createdAt": "2026-08-20T19:00:00.000Z",
+   "photoColour": "white",
+   "colourImages": {}
   },
   {
    "id": "prd_028",
@@ -1740,7 +1761,9 @@
    "status": "active",
    "rating": 4.7,
    "reviews": 41,
-   "createdAt": "2026-08-23T19:00:00.000Z"
+   "createdAt": "2026-08-23T19:00:00.000Z",
+   "photoColour": "walnut",
+   "colourImages": {}
   },
   {
    "id": "prd_029",
@@ -1794,7 +1817,9 @@
    "status": "active",
    "rating": 5,
    "reviews": 12,
-   "createdAt": "2026-08-26T19:00:00.000Z"
+   "createdAt": "2026-08-26T19:00:00.000Z",
+   "photoColour": "walnut",
+   "colourImages": {}
   },
   {
    "id": "prd_030",
@@ -1849,7 +1874,9 @@
    "status": "active",
    "rating": 4.9,
    "reviews": 31,
-   "createdAt": "2026-08-29T19:00:00.000Z"
+   "createdAt": "2026-08-29T19:00:00.000Z",
+   "photoColour": "white",
+   "colourImages": {}
   },
   {
    "id": "prd_031",
@@ -2071,7 +2098,9 @@
    "status": "active",
    "rating": 4.7,
    "reviews": 5,
-   "createdAt": "2026-09-10T19:00:00.000Z"
+   "createdAt": "2026-09-10T19:00:00.000Z",
+   "photoColour": "walnut",
+   "colourImages": {}
   },
   {
    "id": "prd_035",
@@ -2125,7 +2154,9 @@
    "status": "active",
    "rating": 5,
    "reviews": 41,
-   "createdAt": "2026-09-13T19:00:00.000Z"
+   "createdAt": "2026-09-13T19:00:00.000Z",
+   "photoColour": "raw",
+   "colourImages": {}
   },
   {
    "id": "prd_036",

@@ -71,7 +71,7 @@ export function ServicesView() {
   const steps = [1, 2, 3, 4, 5] as const;
   return (
     <>
-      <PageHero eyebrow={t("home.servicesEyebrow")} title={[t("home.servicesTitle")]} sub={t("about.objectivesD")} />
+      <PageHero eyebrow={t("home.servicesEyebrow")} title={[t("home.servicesTitle")]} sub={lang === "ar" ? "تجهيز داخلي وأثاث وأعمال فنية، بفريق واحد من التصميم حتى التسليم." : "Fit-out, furniture and technical works, by one team from design to handover."} />
       {(["fitout", "furniture", "technical"] as const).map((k, i) => (
         <ServiceBlock key={k} k={k} i={i} />
       ))}

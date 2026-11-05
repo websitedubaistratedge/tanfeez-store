@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { useMemo, useState, useEffect } from "react";
+import { useCallback, useMemo, useState, useEffect } from "react";
 import { ArrowDownUp, ArrowLeft, Check, SlidersHorizontal, X } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 import clsx from "clsx";
@@ -17,6 +17,7 @@ import { ArrowLink } from "@/components/ui/buttons";
 import { useHydrated, useWishlist } from "@/lib/store";
 import { lockScroll } from "@/components/site/SmoothScroll";
 import { isRoom, ROOMS, SUBSETS } from "@/lib/rooms";
+import { photographedColours } from "@/lib/configurator";
 import { BackButton } from "@/components/ui/BackButton";
 
 type Sort = "featured" | "newest" | "low" | "high";
@@ -42,7 +43,7 @@ export function ShopView({
   initialQuery: string;
   wishlistOnly?: boolean;
 }) {
-  const { t, lang } = useSite();
+  const { t, lang, settings } = useSite();
   const ar = lang === "ar";
   const wish = useWishlist((s) => s.ids);
   const hydrated = useHydrated();
@@ -62,11 +63,19 @@ export function ShopView({
 
   useEffect(() => lockScroll(sheet), [sheet]);
 
+  // Colour filter: the colours pieces are actually available in (photographed), not loose finish names.
+  const coloursOf = useCallback(
+    (p: Product) => {
+      const shots = photographedColours(p, settings.materials);
+      return shots.length ? shots.map((c) => ({ hex: c.hex, name: tx(c.name, lang) })) : p.finishes.map((f) => ({ hex: f.hex, name: tx(f.name, lang) }));
+    },
+    [settings.materials, lang]
+  );
   const colours = useMemo(() => {
     const m = new Map<string, { hex: string; name: string }>();
-    products.forEach((p) => p.finishes.forEach((f) => m.set(f.hex, { hex: f.hex, name: tx(f.name, lang) })));
-    return [...m.values()].slice(0, 16);
-  }, [products, lang]);
+    products.forEach((p) => coloursOf(p).forEach((c) => m.set(c.hex, c)));
+    return [...m.values()].slice(0, 18);
+  }, [products, coloursOf]);
 
   const list = useMemo(() => {
     const needle = q.trim().toLowerCase();
@@ -82,7 +91,7 @@ export function ShopView({
         if (inStock && (p.priceOnRequest || p.stock <= 0)) return false;
         if (madeToOrder && !p.priceOnRequest) return false;
         if (band && (p.priceOnRequest || eff(p) < band.min || eff(p) >= band.max)) return false;
-        if (colour && !p.finishes.some((f) => f.hex === colour)) return false;
+        if (colour && !coloursOf(p).some((c) => c.hex === colour)) return false;
         if (needle && ![p.name.en, p.name.ar, p.description.en, p.description.ar, p.category].join(" ").toLowerCase().includes(needle)) return false;
         return true;
       })
@@ -92,7 +101,7 @@ export function ShopView({
         if (sort === "newest") return b.createdAt.localeCompare(a.createdAt);
         return Number(b.featured) - Number(a.featured);
       });
-  }, [products, cat, q, sort, inStock, madeToOrder, price, colour, onlyWish, wish, hydrated]);
+  }, [products, cat, q, sort, inStock, madeToOrder, price, colour, onlyWish, wish, hydrated, coloursOf]);
 
   const selectCat = (slug: string) => {
     setCat(slug);
