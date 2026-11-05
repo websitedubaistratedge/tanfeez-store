@@ -134,14 +134,24 @@ export function ShopView({
   // The filter groups, shared by the desktop side panel and the phone sheet.
   const filterGroups = (
     <>
-      {(cat === "all" || isRoom(cat)) && (
+      {cat === "all" && (
         <Group title={ar ? "الفئة" : "Category"}>
-          <Row on={cat === "all"} onClick={() => selectCat("all")}>{t("shop.all")}</Row>
-          {categories
-            .filter((c) => !isRoom(cat) || products.some((p) => p.category === c.slug && ROOMS[cat].has(p)))
-            .map((c) => (
-              <Row key={c.slug} on={cat === c.slug} onClick={() => selectCat(c.slug)}>{tx(c.name, lang)}</Row>
-            ))}
+          <Row on onClick={() => selectCat("all")}>{t("shop.all")}</Row>
+          {categories.map((c) => (
+            <Row key={c.slug} on={false} onClick={() => selectCat(c.slug)}>{tx(c.name, lang)}</Row>
+          ))}
+        </Group>
+      )}
+      {/* Inside a room, "All" means everything in that room, followed by the room's own categories. */}
+      {isRoom(cat) && (
+        <Group title={ar ? "الفئة" : "Category"}>
+          <Row on onClick={() => selectCat(cat)}>{ar ? `كل ${ROOMS[cat].ar}` : `All ${ROOMS[cat].en.toLowerCase()}`}</Row>
+          {ROOMS[cat].links.map((l) => {
+            const slug = new URLSearchParams(l.href.split("?")[1]).get("c") ?? "";
+            return (
+              <Row key={l.href} on={false} onClick={() => selectCat(slug)}>{ar ? l.ar : l.en}</Row>
+            );
+          })}
         </Group>
       )}
       <Group title={ar ? "السعر" : "Price"}>
