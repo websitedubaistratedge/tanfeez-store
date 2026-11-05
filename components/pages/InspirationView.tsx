@@ -15,6 +15,7 @@ import { ArrowLink, CircleArrow, PillLink } from "@/components/ui/buttons";
 import { LookPin, type ResolvedLook } from "@/components/home/ShopTheLook";
 import { ROOM_KINDS } from "@/lib/looks";
 import { quickLine } from "@/lib/configurator";
+import { useUrlState } from "@/lib/url-state";
 
 // A whisper of each room's palette behind its story panel.
 const TINT: Record<string, string> = {
@@ -29,7 +30,7 @@ export function InspirationView({ looks }: { looks: ResolvedLook[] }) {
   const ar = lang === "ar";
   const stack = useRef<HTMLDivElement>(null);
   const filters = useRef<HTMLDivElement>(null);
-  const [kind, setKind] = useState<string>("all");
+  const [kind, setKind] = useUrlState<string>("room", "all");
   const shown = kind === "all" ? looks : looks.filter((l) => l.room === kind);
   const { scrollYProgress } = useScroll({ target: stack, offset: ["start start", "end end"] });
   const pieces = new Set(looks.flatMap((l) => l.pins.map((p) => p.product.id))).size;

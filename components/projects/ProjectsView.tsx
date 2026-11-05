@@ -10,11 +10,12 @@ import { PageHero } from "@/components/site/PageHero";
 import { tx } from "@/lib/i18n";
 import type { Project, Sector } from "@/lib/types";
 import { EASE } from "@/components/ui/motion";
+import { useUrlState } from "@/lib/url-state";
 
 export function ProjectsView({ projects, initialSector }: { projects: Project[]; initialSector?: string }) {
   const { t, lang } = useSite();
   const sectors = useMemo(() => Array.from(new Set(projects.map((p) => p.sector))), [projects]);
-  const [sector, setSector] = useState<Sector | "all">(sectors.find((s) => s === initialSector) ?? "all");
+  const [sector, setSector] = useUrlState<Sector | "all">("sector", "all", ["all", ...sectors]);
   const list = sector === "all" ? projects : projects.filter((p) => p.sector === sector);
 
   return (

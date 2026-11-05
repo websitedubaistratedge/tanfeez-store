@@ -101,13 +101,16 @@ export function ShopView({
       });
   }, [products, cat, q, sort, inStock, madeToOrder, price, colour, onlyWish, wish, hydrated, coloursOf]);
 
+  // Each category choice is its own step in the browser history, so Back returns to the
+  // previous one (e.g. Sofas → back to Living room).
   const selectCat = (slug: string) => {
+    if (slug === cat) return;
     setCat(slug);
     try {
       const url = new URL(window.location.href);
       if (slug === "all") url.searchParams.delete("c");
       else url.searchParams.set("c", slug);
-      window.history.replaceState(null, "", url);
+      window.history.pushState(null, "", url);
     } catch {}
   };
   const activeCount = [inStock, madeToOrder, !!price, !!colour, onlyWish].filter(Boolean).length;

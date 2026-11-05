@@ -15,6 +15,7 @@ import { EMIRATES, emirateName, money } from "@/lib/i18n";
 import type { AccountInfo, OrderStatus } from "@/lib/types";
 import { Check, errorText, KindChoice, PasswordField, TextField } from "./fields";
 import { BackButton } from "@/components/ui/BackButton";
+import { useUrlState } from "@/lib/url-state";
 
 export type AccountOrder = {
   number: string;
@@ -31,7 +32,7 @@ export function AccountView({ me, since, orders, initial = "orders" }: { me: Acc
   const { lang } = useSite();
   const ar = lang === "ar";
   const router = useRouter();
-  const [section, setSection] = useState<Section>(initial);
+  const [section, setSection] = useUrlState<Section>("tab", "orders", ["orders", "details", "password"]);
   const [leaving, startLeave] = useTransition();
   const nav: { id: Section; label: string; Icon: typeof Package }[] = [
     { id: "orders", label: ar ? "طلباتي" : "My orders", Icon: Package },

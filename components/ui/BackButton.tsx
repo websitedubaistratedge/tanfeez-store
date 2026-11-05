@@ -1,20 +1,22 @@
 "use client";
 
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { ArrowLeft } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 
-// Counts page views inside this visit, so Back knows whether the previous page is ours.
+// Counts page views inside this visit (including category changes in the shop), so Back
+// knows whether the previous step is ours.
 let views = 0;
 
 /** Mounted once in the site layout. */
 export function NavTracker() {
   const pathname = usePathname();
+  const query = useSearchParams().toString();
   useEffect(() => {
     views++;
-  }, [pathname]);
+  }, [pathname, query]);
   return null;
 }
 

@@ -13,6 +13,7 @@ import { Check, errorText, KindChoice, PasswordField, TextField } from "./fields
 import { safeNext } from "@/lib/safe-next";
 import { markWelcomed } from "@/components/site/WelcomeBack";
 import { BackButton } from "@/components/ui/BackButton";
+import { useUrlState } from "@/lib/url-state";
 
 type Tab = "in" | "up";
 
@@ -20,7 +21,9 @@ type Tab = "in" | "up";
 export function AuthView({ mode, next }: { mode: Tab; next?: string }) {
   const { lang } = useSite();
   const ar = lang === "ar";
-  const [tab, setTab] = useState<Tab>(mode);
+  const [modeParam, setMode] = useUrlState<"signin" | "create">("mode", "signin", ["signin", "create"]);
+  const tab: Tab = modeParam === "create" ? "up" : "in";
+  const setTab = (t: Tab) => setMode(t === "up" ? "create" : "signin");
 
   return (
     <section className="mx-auto max-w-[1440px] lg:px-10 lg:py-10">
