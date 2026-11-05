@@ -127,7 +127,10 @@ export function InspirationView({ looks }: { looks: ResolvedLook[] }) {
                   {l.pins.length} {ar ? "قطع" : l.pins.length === 1 ? "piece" : "pieces"}
                 </span>
               </span>
-              <span className="mt-0.5 block truncate text-[0.85rem] text-muted">{tx(l.mood, lang)}</span>
+              <span className="mt-2 inline-flex items-center gap-2 text-[0.86rem] font-medium text-ink">
+                <span className="link-u">{ar ? "تسوّق الغرفة" : "Shop the room"}</span>
+                <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5 rtl:rotate-180 rtl:group-hover:-translate-x-0.5" />
+              </span>
             </motion.button>
           ))}
         </div>

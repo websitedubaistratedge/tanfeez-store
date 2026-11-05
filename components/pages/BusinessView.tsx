@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useRef, useState } from "react";
-import { AnimatePresence, motion, useMotionValue, useScroll, useSpring, useTransform } from "framer-motion";
+import { motion, useScroll, useSpring, useTransform } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
@@ -160,17 +160,11 @@ function Stats({ count }: { count: number }) {
   );
 }
 
-/* Sectors: big type list; a project photo trails the cursor on hover. */
+/* Sectors: big type list; the photos show once a sector is opened. */
 function Sectors({ projects }: { projects: Project[] }) {
   const { lang } = useSite();
   const ar = lang === "ar";
   const [hover, setHover] = useState<Sector | null>(null);
-  const box = useRef<HTMLDivElement>(null);
-  const mx = useMotionValue(0);
-  const my = useMotionValue(0);
-  const x = useSpring(mx, { stiffness: 180, damping: 24 });
-  const y = useSpring(my, { stiffness: 180, damping: 24 });
-  const cover = (s: Sector) => projects.find((p) => p.sector === s && p.featured)?.images[0]?.src ?? projects.find((p) => p.sector === s)?.images[0]?.src;
   const count = (s: Sector) => projects.filter((p) => p.sector === s).length;
   const list = SECTORS.filter((s) => count(s.id) > 0);
 
@@ -186,16 +180,7 @@ function Sectors({ projects }: { projects: Project[] }) {
           </div>
         </div>
 
-        <div
-          ref={box}
-          className="relative"
-          onPointerMove={(e) => {
-            const r = box.current!.getBoundingClientRect();
-            mx.set(e.clientX - r.left);
-            my.set(e.clientY - r.top);
-          }}
-          onPointerLeave={() => setHover(null)}
-        >
+        <div onPointerLeave={() => setHover(null)}>
           <ul className="border-t border-line">
             {list.map((s, i) => (
               <li key={s.id}>
@@ -217,25 +202,6 @@ function Sectors({ projects }: { projects: Project[] }) {
               </li>
             ))}
           </ul>
-
-          {/* Cursor-trailing preview (desktop pointers only) */}
-          <motion.div style={{ x, y }} className="pointer-events-none absolute left-0 top-0 z-20 hidden lg:block">
-            <AnimatePresence>
-              {hover && (
-                <motion.div
-                  key={hover}
-                  initial={{ opacity: 0, scale: 0.6, rotate: -6 }}
-                  animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, rotate: 4 }}
-                  transition={{ duration: 0.45, ease: EASE }}
-                  className="absolute translate-x-8 -translate-y-1/2 overflow-hidden shadow-[0_30px_60px_-20px_rgba(0,0,0,0.45)]"
-                  style={{ width: 300, height: 220 }}
-                >
-                  {cover(hover) && <Image src={cover(hover)!} alt="" fill sizes="300px" className="object-cover" />}
-                </motion.div>
-              )}
-            </AnimatePresence>
-          </motion.div>
         </div>
       </div>
     </section>
