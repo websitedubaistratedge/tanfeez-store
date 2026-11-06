@@ -45,7 +45,7 @@ export function PaymentReturn({ number, state, provider, hint }: { number: strin
         {waiting ? (
           <>
             <Loader2 className="mx-auto h-8 w-8 animate-spin text-ink/40" />
-            <h1 className="mt-8 font-display text-[clamp(1.36rem,2.8vw,1.92rem)] font-semibold tracking-[-0.03em]">{ar ? "جارٍ تأكيد الدفع…" : "Confirming your payment…"}</h1>
+            <h1 className="mt-8 font-display text-[clamp(1.16rem,2.38vw,1.63rem)] font-semibold tracking-[-0.03em]">{ar ? "جارٍ تأكيد الدفع…" : "Confirming your payment…"}</h1>
             <p className="mt-3 text-muted">{ar ? `ننتظر تأكيد ${NAME[provider]}. لا تغلق هذه الصفحة.` : `We're waiting for ${NAME[provider]} to confirm. Please keep this page open.`}</p>
           </>
         ) : (
@@ -53,7 +53,7 @@ export function PaymentReturn({ number, state, provider, hint }: { number: strin
             <span className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-plate">
               <RotateCcw className="h-6 w-6 stroke-[1.5]" />
             </span>
-            <h1 className="mt-8 font-display text-[clamp(1.36rem,2.8vw,1.92rem)] font-semibold tracking-[-0.03em]">
+            <h1 className="mt-8 font-display text-[clamp(1.16rem,2.38vw,1.63rem)] font-semibold tracking-[-0.03em]">
               {state === "pending" ? (ar ? "لم يكتمل الدفع بعد" : "Payment not confirmed yet") : ar ? "لم تتم عملية الدفع" : "Payment wasn't completed"}
             </h1>
             <p className="mt-3 text-muted">

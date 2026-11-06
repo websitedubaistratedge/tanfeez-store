@@ -41,7 +41,7 @@ export function AboutView({ projectCount }: { projectCount: number }) {
       <section className="py-16 md:py-24">
         <div className="mx-auto grid max-w-[1440px] items-center gap-12 px-5 md:px-10 lg:grid-cols-2">
           <div>
-            <h2 className="font-display text-[clamp(1.44rem,2.56vw,2.08rem)] font-semibold tracking-[-0.02em]">
+            <h2 className="font-display text-[clamp(1.22rem,2.18vw,1.77rem)] font-semibold tracking-[-0.02em]">
               <SplitLines lines={[t("about.coverage")]} />
             </h2>
             <Reveal delay={0.1}><p className="mt-4 max-w-md font-serif text-[1.2rem] leading-relaxed text-ink-2">{t("about.coverageD")}</p></Reveal>

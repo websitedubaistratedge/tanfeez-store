@@ -56,7 +56,7 @@ export function AccountView({ me, since, orders, initial = "orders" }: { me: Acc
             <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }} className="font-serif text-[1.35rem] leading-none text-ink-2 md:text-[1.39rem]">
               {ar ? "حسابي" : "My account"}
             </motion.p>
-            <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.9, ease: EASE }} className="mt-3 font-display text-[clamp(1.76rem,4vw,3.2rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
+            <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1, duration: 0.9, ease: EASE }} className="mt-3 font-display text-[clamp(1.5rem,3.4vw,2.72rem)] font-semibold leading-[1.02] tracking-[-0.035em]">
               {ar ? `مرحباً، ${me.firstName}.` : `Hello, ${me.firstName}.`}
             </motion.h1>
             <p className="mt-3 text-[0.92rem] text-muted">

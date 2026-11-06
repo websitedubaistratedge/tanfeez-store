@@ -35,7 +35,7 @@ export function PageHero({
                 {eyebrow}
               </motion.p>
             )}
-            <h1 className="mt-2 font-display text-[clamp(1.92rem,4.8vw,4rem)] font-semibold leading-[1] tracking-[-0.035em]">
+            <h1 className="mt-2 font-display text-[clamp(1.63rem,4.08vw,3.4rem)] font-semibold leading-[1] tracking-[-0.035em]">
               <SplitLines immediate delay={0.2} lines={title} />
             </h1>
           </div>

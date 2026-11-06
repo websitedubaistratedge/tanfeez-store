@@ -189,7 +189,7 @@ function LookCard({ look }: { look: ResolvedLook }) {
         {/* Story */}
         <div className="flex flex-col p-5 md:p-8 lg:col-span-4 lg:p-10" style={{ background: TINT[look.id] ?? "#F3F2F0" }}>
           <p className="text-[0.72rem] font-medium uppercase tracking-[0.18em] text-muted">{ROOM_KINDS.find((k) => k.id === look.room)?.[ar ? "ar" : "en"]}</p>
-          <h1 className="mt-2 font-display text-[clamp(1.2rem,1.92vw,1.84rem)] font-semibold leading-[1.05] tracking-[-0.025em]">{tx(look.title, lang)}</h1>
+          <h1 className="mt-2 font-display text-[clamp(1.02rem,1.63vw,1.56rem)] font-semibold leading-[1.05] tracking-[-0.025em]">{tx(look.title, lang)}</h1>
           <p className="mt-2 font-serif text-[1.1rem] leading-relaxed text-ink-2">{tx(look.mood, lang)}</p>
 
           <ul className="mt-4 space-y-1 md:mt-6">

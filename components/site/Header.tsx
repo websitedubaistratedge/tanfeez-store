@@ -30,7 +30,6 @@ const BUSINESS_LINKS: NavLink[] = [
   { href: "/business", en: "Fit-out", ar: "التجهيز" },
   { href: "/projects", en: "Projects", ar: "المشاريع" },
   { href: "/services", en: "Services", ar: "الخدمات" },
-  { href: "/business#process", en: "How we work", ar: "كيف نعمل" },
   { href: "/contact", en: "Contact", ar: "تواصل" },
 ];
 export const isBusinessPath = (p: string) => /^\/(business|projects|services)/.test(p);

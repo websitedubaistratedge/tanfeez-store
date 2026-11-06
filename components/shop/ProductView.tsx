@@ -260,7 +260,7 @@ export function ProductView({ product: p, related, category, rooms = [], colour 
                 {p.isNew && <span className="border border-ink/15 px-2 py-0.5 text-[0.72rem]">{t("shop.new")}</span>}
                 {p.priceOnRequest && <span className="border border-ink/15 px-2 py-0.5 text-[0.72rem]">{t("shop.madeToOrder")}</span>}
               </div>
-              <h1 className="mt-1 font-display text-[clamp(1.4rem,2.4vw,2.08rem)] md:mt-3 font-semibold leading-[1.05] tracking-[-0.025em]">{tx(p.name, lang)}</h1>
+              <h1 className="mt-1 font-display text-[clamp(1.19rem,2.04vw,1.77rem)] md:mt-3 font-semibold leading-[1.05] tracking-[-0.025em]">{tx(p.name, lang)}</h1>
               <p className="mt-2 text-[0.88rem] text-muted">{tx(p.materials, lang)}</p>
               <div className="mt-5 flex items-baseline gap-3">
                 {p.priceOnRequest ? (
@@ -351,7 +351,7 @@ export function ProductView({ product: p, related, category, rooms = [], colour 
           <div className="lg:col-span-6">
             <Reveal><p className="font-serif text-[1.3rem] leading-none text-ink-2 md:text-[1.57rem]">{lang === "ar" ? "صُنع ليدوم" : "Made to last"}</p></Reveal>
             <Reveal delay={0.05}>
-              <h2 className="mt-2 font-display text-[clamp(1.44rem,2.4vw,2rem)] font-semibold leading-[1.08] tracking-[-0.02em]">{tx(p.name, lang)}</h2>
+              <h2 className="mt-2 font-display text-[clamp(1.22rem,2.04vw,1.7rem)] font-semibold leading-[1.08] tracking-[-0.02em]">{tx(p.name, lang)}</h2>
             </Reveal>
             <Reveal delay={0.1}><p className="mt-5 max-w-xl font-serif text-[1.3rem] leading-relaxed text-ink-2">{tx(p.description, lang)}</p></Reveal>
           </div>
@@ -379,7 +379,7 @@ export function ProductView({ product: p, related, category, rooms = [], colour 
         <section className="border-t border-line py-12 md:py-24">
           <div className="mx-auto max-w-[1440px] px-4 md:px-10">
             <div className="mb-6 flex items-end justify-between gap-4 md:mb-10">
-              <h2 className="font-display text-[clamp(1.28rem,2.08vw,1.76rem)] font-semibold tracking-[-0.02em]">{t("shop.related")}</h2>
+              <h2 className="font-display text-[clamp(1.09rem,1.77vw,1.5rem)] font-semibold tracking-[-0.02em]">{t("shop.related")}</h2>
               <ArrowLink href={`/shop?c=${p.category}`}>{t("common.viewAll")}</ArrowLink>
             </div>
             <div className="grid grid-cols-2 gap-x-3 gap-y-7 md:gap-x-2 md:gap-y-10 lg:grid-cols-4">

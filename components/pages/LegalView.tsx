@@ -54,7 +54,7 @@ export function LegalView({ kind }: { kind: LegalKind }) {
               <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, ease: EASE }} className="font-serif text-[1.35rem] leading-none text-ink-2 md:text-[1.39rem]">
                 {ar ? `آخر تحديث ${updated}` : `Last updated ${updated}`}
               </motion.p>
-              <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.9, ease: EASE }} className="mt-3 font-display text-[clamp(1.92rem,4.8vw,3.68rem)] font-semibold leading-[1] tracking-[-0.035em]">
+              <motion.h1 initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.08, duration: 0.9, ease: EASE }} className="mt-3 font-display text-[clamp(1.63rem,4.08vw,3.13rem)] font-semibold leading-[1] tracking-[-0.035em]">
                 {doc.title}
               </motion.h1>
             </div>

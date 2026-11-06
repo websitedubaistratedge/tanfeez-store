@@ -48,7 +48,7 @@ export function CaseStudy({ project: p }: { project: Project }) {
             <motion.p initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15, duration: 0.8, ease: EASE }} className="font-serif text-[1.4rem] leading-none text-ink-2 md:text-[1.48rem]">
               {tx(p.title, lang)} · {emirateName(p.emirate, lang)}
             </motion.p>
-            <h1 className="mt-2 font-display text-[clamp(2.08rem,5.6vw,4.8rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
+            <h1 className="mt-2 font-display text-[clamp(1.77rem,4.76vw,4.08rem)] font-semibold leading-[0.95] tracking-[-0.04em]">
               <SplitLines immediate delay={0.2} lines={[p.client]} />
             </h1>
           </div>
