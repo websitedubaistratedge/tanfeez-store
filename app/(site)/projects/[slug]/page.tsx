@@ -17,5 +17,5 @@ export default async function ProjectPage({ params }: Props) {
   const projects = await getProjects();
   const i = projects.findIndex((p) => p.slug === slug);
   if (i < 0) notFound();
-  return <CaseStudy project={projects[i]} next={projects[(i + 1) % projects.length]} />;
+  return <CaseStudy project={projects[i]} />;
 }

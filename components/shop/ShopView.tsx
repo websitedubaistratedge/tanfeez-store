@@ -240,22 +240,18 @@ export function ShopView({
       </div>
 
       {/* Sticky filter bar */}
-      <div className="sticky top-0 z-30 mt-4 border-y border-line bg-white/95 backdrop-blur md:mt-10">
+      <div className="sticky top-[60px] z-30 mt-4 border-y border-line bg-white/95 backdrop-blur md:mt-10">
         <div className="mx-auto flex max-w-[1440px] items-center gap-2 px-5 py-2.5 md:px-10 md:py-3">
-          <button onClick={() => setSheet(true)} className="inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-ink px-5 text-[0.88rem] font-medium text-white lg:hidden">
+          <button onClick={() => setSheet(true)} className="inline-flex h-10 shrink-0 items-center gap-2 rounded-full bg-ink px-5 text-[0.88rem] font-medium text-white">
             <SlidersHorizontal className="h-4 w-4 stroke-[1.5]" />
             {t("v2.allFilters")}
             {activeCount > 0 && <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-brand px-1 text-[11px] font-semibold text-ink">{activeCount}</span>}
           </button>
-          <p className="hidden items-center gap-2 text-[0.88rem] font-medium lg:flex">
-            <SlidersHorizontal className="h-4 w-4 stroke-[1.5]" />
-            {ar ? "تصفية" : "Filters"}
-            {activeCount > 0 && (
-              <button onClick={clearAll} className="ms-2 text-[0.8rem] font-normal text-muted underline underline-offset-2 hover:text-ink">
-                {t("v2.clear")} ({activeCount})
-              </button>
-            )}
-          </p>
+          {activeCount > 0 && (
+            <button onClick={clearAll} className="hidden text-[0.8rem] text-muted underline underline-offset-2 hover:text-ink sm:block">
+              {t("v2.clear")} ({activeCount})
+            </button>
+          )}
           <span className="ms-auto hidden shrink-0 text-[0.85rem] text-muted sm:block">
             {list.length} {t("v2.items")}
           </span>
@@ -271,11 +267,7 @@ export function ShopView({
         </div>
       </div>
 
-      <section className="mx-auto max-w-[1440px] px-4 pb-16 pt-5 md:px-10 md:pb-24 md:pt-8 lg:grid lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-10 xl:grid-cols-[250px_minmax(0,1fr)]">
-        {/* Desktop: filters in a side panel */}
-        <aside className="hidden lg:block" data-lenis-prevent>
-          <div className="no-scrollbar sticky top-24 max-h-[calc(100vh-7rem)] space-y-8 overflow-y-auto pb-6">{filterGroups}</div>
-        </aside>
+      <section className="mx-auto max-w-[1440px] px-4 pb-16 pt-5 md:px-10 md:pb-24 md:pt-8">
         <div className="min-w-0">
         {q && (
           <p className="mb-6 text-[0.95rem] text-muted">
@@ -291,7 +283,7 @@ export function ShopView({
             </div>
           </div>
         ) : (
-          <motion.div layout className="grid grid-cols-2 gap-x-3 gap-y-7 md:grid-cols-3 md:gap-x-2 md:gap-y-10 2xl:grid-cols-4">
+          <motion.div layout className="grid grid-cols-2 gap-x-3 gap-y-7 md:grid-cols-3 md:gap-x-2 md:gap-y-10 lg:grid-cols-4">
             <AnimatePresence mode="popLayout">
               {list.map((p, i) => (
                 <motion.div key={p.id} layout initial={{ opacity: 0, y: 24 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.6, ease: EASE, delay: Math.min(i % 8, 7) * 0.04 }}>

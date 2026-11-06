@@ -165,7 +165,6 @@ export function Header() {
   const pathname = usePathname();
   const { scrollY } = useScroll();
   const [collapsed, setCollapsed] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const items = useCart((s) => s.items);
   const wish = useWishlist((s) => s.ids);
   const hydrated = useHydrated();
@@ -180,12 +179,8 @@ export function Header() {
     return path === "/" ? pathname === "/" : pathname === path || (path !== "/business" && pathname.startsWith(path + "/"));
   };
 
-  useMotionValueEvent(scrollY, "change", (y) => {
-    const prev = scrollY.getPrevious() ?? 0;
-    setCollapsed(y > 60);
-    setHidden(y > 500 && y > prev + 2 && !menuOpen);
-    if (y < prev - 2) setHidden(false);
-  });
+  // The header never slides away: it only slims to one 60px row, so bars that stick under it never jump.
+  useMotionValueEvent(scrollY, "change", (y) => setCollapsed(y > 60));
   useEffect(() => setMenu(false), [pathname, setMenu]);
   const [sub, setSub] = useState<SubId | null>(null);
   useEffect(() => {
@@ -223,11 +218,7 @@ export function Header() {
 
   return (
     <>
-      <motion.header
-        className={clsx("sticky top-0 z-50 bg-white/90 backdrop-blur-xl transition-[box-shadow] duration-500 no-print", collapsed && "shadow-[0_1px_0_var(--color-line)]")}
-        animate={{ y: hidden ? "-100%" : "0%" }}
-        transition={{ duration: 0.45, ease: EASE }}
-      >
+      <header className={clsx("sticky top-0 z-50 bg-white/90 backdrop-blur-xl transition-[box-shadow] duration-500 no-print", collapsed && "shadow-[0_1px_0_var(--color-line)]")}>
         <div className="mx-auto max-w-[1440px] px-5 md:px-10">
           {/* Row 1: utility, centred logo, bag */}
           <div className={clsx("grid grid-cols-[1fr_auto_1fr] items-center transition-[height] duration-500", collapsed ? "h-[60px]" : "h-[68px] md:h-[76px]")}>
@@ -307,7 +298,7 @@ export function Header() {
             <ModeTabs />
           </motion.div>
         </div>
-      </motion.header>
+      </header>
 
       {/* Drawer menu */}
       <AnimatePresence>

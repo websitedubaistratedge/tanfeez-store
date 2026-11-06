@@ -13,7 +13,7 @@ import { OutlineLink, PillLink } from "@/components/ui/buttons";
 import { lockScroll } from "@/components/site/SmoothScroll";
 import { BackButton } from "@/components/ui/BackButton";
 
-export function CaseStudy({ project: p, next }: { project: Project; next: Project }) {
+export function CaseStudy({ project: p }: { project: Project }) {
   const { t, lang } = useSite();
   const hero = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: hero, offset: ["start end", "end start"] });
@@ -103,18 +103,6 @@ export function CaseStudy({ project: p, next }: { project: Project; next: Projec
           </div>
         </div>
       </section>
-
-      <Link href={`/projects/${next.slug}`} className="group block border-t border-line">
-        <div className="mx-auto grid max-w-[1440px] items-center gap-6 px-5 py-12 md:grid-cols-[1fr_auto] md:px-10 md:py-16">
-          <div>
-            <p className="text-[0.72rem] uppercase tracking-[0.18em] text-muted">{t("projects.next")}</p>
-            <p className="mt-2 font-display text-[clamp(1.6rem,4vw,3.2rem)] font-semibold leading-none tracking-[-0.03em] transition group-hover:translate-x-2 rtl:group-hover:-translate-x-2">{next.client}</p>
-          </div>
-          <div className="relative hidden aspect-[16/10] w-72 overflow-hidden bg-plate md:block">
-            {next.images[0] && <Image src={next.images[0].src} alt="" fill sizes="300px" className="object-cover transition duration-1000 group-hover:scale-105" />}
-          </div>
-        </div>
-      </Link>
 
       <AnimatePresence>
         {lightbox !== null && (
