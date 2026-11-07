@@ -232,7 +232,18 @@ export type NotifyConfig = {
   events: { orders: boolean; quotes: boolean; samples: boolean; messages: boolean };
   telegram: { on: boolean; token: string; chatId: string };
   whatsapp: { on: boolean; phone: string; apiKey: string }; // via CallMeBot
-  email: { on: boolean; apiKey: string; from: string; to: string; receipts: boolean }; // via Resend
+  /** Sent through the company's Microsoft 365 mailbox (Graph API) or through Resend. */
+  email: {
+    on: boolean;
+    provider?: "microsoft" | "resend";
+    apiKey: string; // Resend
+    tenant?: string; // Microsoft 365: Directory (tenant) ID
+    clientId?: string; // Microsoft 365: Application (client) ID
+    secret?: string; // Microsoft 365: client secret value
+    from: string;
+    to: string;
+    receipts: boolean;
+  };
 };
 
 export type Settings = {

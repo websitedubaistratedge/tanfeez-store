@@ -441,7 +441,11 @@ function cleanNotify(c: Partial<NotifyConfig>): NotifyConfig {
     whatsapp: { on: !!c.whatsapp?.on, phone: str(c.whatsapp?.phone, 40), apiKey: str(c.whatsapp?.apiKey, 80) },
     email: {
       on: !!c.email?.on,
+      provider: c.email?.provider === "resend" ? "resend" : c.email?.provider === "microsoft" ? "microsoft" : c.email?.apiKey ? "resend" : "microsoft",
       apiKey: str(c.email?.apiKey, 120),
+      tenant: str(c.email?.tenant, 80),
+      clientId: str(c.email?.clientId, 80),
+      secret: str(c.email?.secret, 200),
       from: str(c.email?.from, 160),
       to: str(c.email?.to, 400),
       receipts: !!c.email?.receipts,

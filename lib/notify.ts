@@ -21,7 +21,7 @@ export const EMPTY_NOTIFY: NotifyConfig = {
   events: { orders: true, quotes: true, samples: true, messages: true },
   telegram: { on: false, token: "", chatId: "" },
   whatsapp: { on: false, phone: "", apiKey: "" },
-  email: { on: false, apiKey: "", from: "", to: "", receipts: false },
+  email: { on: false, provider: "microsoft", apiKey: "", tenant: "", clientId: "", secret: "", from: "", to: "", receipts: false },
 };
 
 const EVENT_KEY = { order: "orders", quote: "quotes", samples: "samples", message: "messages" } as const;
@@ -121,7 +121,8 @@ async function check(res: Response, what: string) {
   let detail = "";
   try {
     const body = await res.text();
-    detail = (JSON.parse(body).description || JSON.parse(body).message || body).toString();
+    const j = JSON.parse(body);
+    detail = (j.description || j.message || j.error_description?.split(/\r?\n/)[0] || j.error?.message || body).toString();
   } catch {}
   throw new Error(`${what}: ${short(detail || res.statusText || String(res.status), 200)}`);
 }
@@ -216,7 +217,15 @@ function receiptEmail(o: Order, origin: string, store: Store) {
     </p>`);
 }
 
-async function resend(cfg: NotifyConfig["email"], msg: { to: string[]; subject: string; html: string; replyTo?: string }) {
+type Mail = { to: string[]; subject: string; html: string; replyTo?: string };
+
+/** "TANFEEZ <orders@tanfeez.me>" → { name, address } */
+function parseFrom(from: string) {
+  const m = from.trim().match(/^(.*)<([^>]+)>\s*$/);
+  return m ? { name: m[1].trim().replace(/^"|"$/g, ""), address: m[2].trim() } : { name: "", address: from.trim() };
+}
+
+async function resend(cfg: NotifyConfig["email"], msg: Mail) {
   const res = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: { authorization: `Bearer ${cfg.apiKey.trim()}`, "content-type": "application/json" },
@@ -224,6 +233,55 @@ async function resend(cfg: NotifyConfig["email"], msg: { to: string[]; subject: 
   });
   await check(res, "Email");
 }
+
+// Microsoft 365: an app registration with the Mail.Send application permission lets the site send
+// as a company mailbox (e.g. orders@tanfeez.me) through Microsoft Graph. Tokens last about an hour.
+const msTokens = new Map<string, { token: string; until: number }>();
+
+async function msToken(cfg: NotifyConfig["email"]) {
+  const key = `${cfg.tenant}|${cfg.clientId}|${cfg.secret}`;
+  const hit = msTokens.get(key);
+  if (hit && hit.until > Date.now()) return hit.token;
+  const res = await fetch(`https://login.microsoftonline.com/${encodeURIComponent((cfg.tenant ?? "").trim())}/oauth2/v2.0/token`, {
+    method: "POST",
+    headers: { "content-type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "client_credentials",
+      client_id: (cfg.clientId ?? "").trim(),
+      client_secret: (cfg.secret ?? "").trim(),
+      scope: "https://graph.microsoft.com/.default",
+    }),
+  });
+  await check(res, "Microsoft 365 sign-in");
+  const { access_token, expires_in } = (await res.json()) as { access_token: string; expires_in: number };
+  msTokens.set(key, { token: access_token, until: Date.now() + (expires_in - 120) * 1000 });
+  return access_token;
+}
+
+async function microsoft(cfg: NotifyConfig["email"], msg: Mail) {
+  const from = parseFrom(cfg.from);
+  const addr = (a: string) => ({ emailAddress: { address: a } });
+  const res = await fetch(`https://graph.microsoft.com/v1.0/users/${encodeURIComponent(from.address)}/sendMail`, {
+    method: "POST",
+    headers: { authorization: `Bearer ${await msToken(cfg)}`, "content-type": "application/json" },
+    body: JSON.stringify({
+      message: {
+        subject: msg.subject,
+        body: { contentType: "HTML", content: msg.html },
+        toRecipients: msg.to.map(addr),
+        ...(from.name ? { from: { emailAddress: { address: from.address, name: from.name } } } : {}),
+        ...(msg.replyTo ? { replyTo: [addr(msg.replyTo)] } : {}),
+      },
+      saveToSentItems: false,
+    }),
+  });
+  await check(res, "Email (Microsoft 365)");
+}
+
+const useMicrosoft = (e: NotifyConfig["email"]) => (e.provider ?? (e.apiKey.trim() ? "resend" : "microsoft")) === "microsoft";
+
+/** Sends through whichever service is chosen in Admin → Settings → Order alerts. */
+const mail = (cfg: NotifyConfig["email"], msg: Mail) => (useMicrosoft(cfg) ? microsoft(cfg, msg) : resend(cfg, msg));
 
 const recipients = (s: string) => s.split(/[,;\s]+/).map((x) => x.trim()).filter((x) => x.includes("@"));
 
@@ -234,13 +292,17 @@ async function sendOne(ch: Channel, cfg: NotifyConfig, ev: AlertEvent, origin: s
   if (ch === "whatsapp") return whatsapp(cfg.whatsapp, a, icon, origin);
   const to = recipients(cfg.email.to);
   if (!to.length) throw new Error("Email: add at least one address to send alerts to");
-  await resend(cfg.email, { to, subject: a.title, html: alertEmail(a, origin), replyTo: a.email?.includes("@") ? a.email : undefined });
+  await mail(cfg.email, { to, subject: a.title, html: alertEmail(a, origin), replyTo: a.email?.includes("@") ? a.email : undefined });
 }
 
-const canEmail = (cfg: NotifyConfig) => !!cfg.email.apiKey.trim() && !!cfg.email.from.trim();
+const canEmail = (cfg: NotifyConfig) => {
+  const e = cfg.email;
+  if (!parseFrom(e.from).address.includes("@")) return false;
+  return useMicrosoft(e) ? !!e.tenant?.trim() && !!e.clientId?.trim() && !!e.secret?.trim() : !!e.apiKey.trim();
+};
 
 async function sendReceipt(cfg: NotifyConfig, o: Order, origin: string, store: Store, to = o.customer.email) {
-  await resend(cfg.email, {
+  await mail(cfg.email, {
     to: [to],
     subject: `Your TANFEEZ order ${o.number} is confirmed`,
     html: receiptEmail(o, origin, store),
@@ -288,7 +350,7 @@ export async function notify(ev: AlertEvent) {
 /** A sample order sent through one channel with the settings as typed, for the "Send test" buttons. */
 export async function sendTest(ch: Channel, cfg: NotifyConfig): Promise<{ ok: true } | { ok: false; error: string }> {
   if (!ready(ch, { ...cfg, [ch]: { ...cfg[ch], on: true } }))
-    return { ok: false, error: ch === "whatsapp" ? "Add the phone number and API key first." : ch === "telegram" ? "Add the bot token and chat ID first." : "Add the API key and From address first." };
+    return { ok: false, error: ch === "whatsapp" ? "Add the phone number and API key first." : ch === "telegram" ? "Add the bot token and chat ID first." : "Fill in the email connection details and the From address first." };
   try {
     await sendOne(ch, cfg, { kind: "order", order: sampleOrder() }, await origin());
     return { ok: true };
@@ -299,7 +361,7 @@ export async function sendTest(ch: Channel, cfg: NotifyConfig): Promise<{ ok: tr
 
 /** Email the customer confirmation for a sample order to the team's address, to see what customers get. */
 export async function sendTestReceipt(cfg: NotifyConfig): Promise<{ ok: true; to: string } | { ok: false; error: string }> {
-  if (!canEmail(cfg)) return { ok: false, error: "Add the Resend API key and From address first." };
+  if (!canEmail(cfg)) return { ok: false, error: "Fill in the email connection details and the From address first." };
   const to = recipients(cfg.email.to)[0];
   if (!to) return { ok: false, error: "Add your own email under “Send alerts to” — the preview goes there." };
   try {
@@ -347,7 +409,7 @@ export async function telegramChat(token: string): Promise<{ ok: true; chatId: s
 }
 
 // ───────── Account emails ─────────
-/** Whether customer emails (receipts, password resets) can be sent: Resend key + From address. */
+/** Whether customer emails (receipts, password resets) can be sent: a connected email service + From address. */
 export async function customerEmailReady() {
   const cfg = (await readDB()).settings.notify;
   return !!cfg && canEmail(cfg);
@@ -358,7 +420,7 @@ export async function sendPasswordReset(to: string, firstName: string, link: str
   const cfg = settings.notify;
   if (!cfg || !canEmail(cfg)) return false;
   const btn = "display:inline-block;background:#1d1b19;color:#fff;text-decoration:none;padding:12px 24px;border-radius:999px;font-size:14px";
-  await resend(cfg.email, {
+  await mail(cfg.email, {
     to: [to],
     subject: "Reset your TANFEEZ password",
     html: emailShell(`

@@ -99,6 +99,7 @@ export function AlertsCard({ initial }: { initial: NotifyConfig }) {
   }, []);
 
   const patch = <K extends Channel>(k: K, v: Partial<NotifyConfig[K]>) => setC((x) => ({ ...x, [k]: { ...x[k], ...v } }));
+  const ms = (c.email.provider ?? (c.email.apiKey.trim() ? "resend" : "microsoft")) === "microsoft";
   const save = () =>
     start(async () => {
       await saveNotifications(c);
@@ -226,10 +227,25 @@ export function AlertsCard({ initial }: { initial: NotifyConfig }) {
           <p className="text-[0.74rem] text-faint">A free community service, not official WhatsApp Business — good for alerts to yourself; it can&rsquo;t message customers. Each number needs its own key.</p>
         </ChannelCard>
 
-        <ChannelCard icon={<Mail className="h-4 w-4" />} name="Email" tag="Via Resend · 3,000 free a month" on={c.email.on} onToggle={(on) => patch("email", { on })} onTest={() => test("email")} testing={testing === "email"} result={results.email ?? null}>
-          <Field label="Resend API key"><Secret value={c.email.apiKey} onChange={(apiKey) => patch("email", { apiKey })} placeholder="re_…" /></Field>
+        <ChannelCard icon={<Mail className="h-4 w-4" />} name="Email" tag={ms ? "From your Microsoft 365 mailbox · free" : "Via Resend · 3,000 free a month"} on={c.email.on} onToggle={(on) => patch("email", { on })} onTest={() => test("email")} testing={testing === "email"} result={results.email ?? null}>
+          <div className="grid grid-cols-2 gap-1 rounded-xl bg-plate p-1 text-[0.8rem]">
+            {(["microsoft", "resend"] as const).map((p) => (
+              <button key={p} type="button" onClick={() => patch("email", { provider: p })} className={clsx("rounded-lg py-2 font-medium transition", (ms ? "microsoft" : "resend") === p ? "bg-white shadow-sm" : "text-muted hover:text-ink")}>
+                {p === "microsoft" ? "Microsoft 365" : "Resend"}
+              </button>
+            ))}
+          </div>
+          {ms ? (
+            <>
+              <Field label="Directory (tenant) ID"><input className={clsx(inputCls, "font-mono text-[0.8rem]")} value={c.email.tenant ?? ""} onChange={(e) => patch("email", { tenant: e.target.value })} placeholder="xxxxxxxx-xxxx-…" /></Field>
+              <Field label="Application (client) ID"><input className={clsx(inputCls, "font-mono text-[0.8rem]")} value={c.email.clientId ?? ""} onChange={(e) => patch("email", { clientId: e.target.value })} placeholder="xxxxxxxx-xxxx-…" /></Field>
+              <Field label="Client secret value"><Secret value={c.email.secret ?? ""} onChange={(secret) => patch("email", { secret })} placeholder="Paste the secret's Value" /></Field>
+            </>
+          ) : (
+            <Field label="Resend API key"><Secret value={c.email.apiKey} onChange={(apiKey) => patch("email", { apiKey })} placeholder="re_…" /></Field>
+          )}
           <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-            <Field label="From"><input className={inputCls} value={c.email.from} onChange={(e) => patch("email", { from: e.target.value })} placeholder="TANFEEZ <orders@your-domain>" /></Field>
+            <Field label="From" hint={ms ? "a mailbox in your Microsoft 365" : undefined}><input className={inputCls} value={c.email.from} onChange={(e) => patch("email", { from: e.target.value })} placeholder={ms ? "TANFEEZ <orders@tanfeez.me>" : "TANFEEZ <orders@your-domain>"} /></Field>
             <Field label="Send alerts to" hint="comma-separated"><input className={inputCls} value={c.email.to} onChange={(e) => patch("email", { to: e.target.value })} placeholder="sales@…, owner@…" /></Field>
           </div>
           <div className="rounded-xl border border-line p-3.5">
@@ -240,11 +256,21 @@ export function AlertsCard({ initial }: { initial: NotifyConfig }) {
             </button>
             {results.receipt && <p className={clsx("mt-1 text-[0.78rem]", results.receipt.ok ? "text-emerald-700" : "text-red-600")}>{results.receipt.text}</p>}
           </div>
-          <Steps>
-            <li>Create a free account at <a className="underline" href="https://resend.com" target="_blank" rel="noreferrer">resend.com</a> and make an API key.</li>
-            <li>To try it straight away, use <code>onboarding@resend.dev</code> as From and send alerts to the email you signed up with.</li>
-            <li>To email anyone else — and for customer confirmations — add and verify your domain in Resend, then use an address on it as From.</li>
-          </Steps>
+          {ms ? (
+            <Steps>
+              <li>Sign in to <a className="underline" href="https://entra.microsoft.com/#view/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank" rel="noreferrer">Microsoft Entra → App registrations</a> with your Microsoft 365 admin account and click <b>New registration</b> (name: TANFEEZ Website, single tenant).</li>
+              <li>Copy the <b>Application (client) ID</b> and <b>Directory (tenant) ID</b> from its Overview into the fields above.</li>
+              <li><b>API permissions</b> → Add → Microsoft Graph → <b>Application permissions</b> → <code>Mail.Send</code>, then <b>Grant admin consent</b>.</li>
+              <li><b>Certificates &amp; secrets</b> → New client secret (24 months) → copy its <b>Value</b> into Client secret.</li>
+              <li>Use an existing mailbox (or a free shared mailbox like orders@tanfeez.me) as From, save, then <b>Send test</b>.</li>
+            </Steps>
+          ) : (
+            <Steps>
+              <li>Create a free account at <a className="underline" href="https://resend.com" target="_blank" rel="noreferrer">resend.com</a> and make an API key.</li>
+              <li>To try it straight away, use <code>onboarding@resend.dev</code> as From and send alerts to the email you signed up with.</li>
+              <li>To email anyone else — and for customer confirmations — add and verify your domain in Resend, then use an address on it as From.</li>
+            </Steps>
+          )}
         </ChannelCard>
       </div>
       <p className="text-[0.78rem] text-faint">Keys are stored with your admin settings and never shown on the website. Remember to save after changing anything.</p>
