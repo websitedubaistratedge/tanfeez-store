@@ -317,11 +317,19 @@ const ready = (ch: Channel, cfg: NotifyConfig) =>
       ? cfg.whatsapp.on && waNumber(cfg.whatsapp.phone).length >= 10 && !!cfg.whatsapp.apiKey.trim()
       : cfg.email.on && canEmail(cfg);
 
+/** The public address every outgoing link uses (emails, alerts, webhooks, payment returns). */
+export const SITE_URL = process.env.SITE_URL || "https://tanfeez.me";
+
+/**
+ * Links always point at the real domain, even when the admin is opened on the workers.dev address:
+ * mail filters (Microsoft 365 especially) quarantine messages whose links don't match the sender's
+ * domain, and workers.dev links look like phishing. Local development keeps its own address.
+ */
 export async function origin() {
   const h = await headers();
   const host = h.get("x-forwarded-host") ?? h.get("host") ?? "localhost:3000";
-  const proto = h.get("x-forwarded-proto") ?? (/^(localhost|127\.)/.test(host) ? "http" : "https");
-  return `${proto}://${host}`;
+  if (/^(localhost|127\.|\[::1\])/.test(host)) return `http://${host}`;
+  return SITE_URL;
 }
 
 /** Queue alerts for a new order/request/message. Runs after the response; never throws. */
