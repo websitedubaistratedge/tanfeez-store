@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useTransition } from "react";
-import { Bell, BellRing, Check, ChevronDown, Eye, EyeOff, Loader2, Mail, MessageCircle, Send, Volume2, VolumeX } from "lucide-react";
+import { Bell, BellRing, Check, ChevronDown, Eye, EyeOff, Loader2, Mail, MessageCircle, Plus, Send, Volume2, VolumeX, X } from "lucide-react";
 import clsx from "clsx";
 import { Btn, Card, Field, inputCls, Toggle } from "./ui";
 import { chime, soundOn, setSoundOn } from "./LiveAlerts";
@@ -25,6 +25,44 @@ export function Secret({ value, onChange, placeholder }: { value: string; onChan
       <input type={show ? "text" : "password"} autoComplete="off" spellCheck={false} className={clsx(inputCls, "pe-10 font-mono text-[0.8rem]")} value={value} placeholder={placeholder} onChange={(e) => onChange(e.target.value)} />
       <button type="button" onClick={() => setShow(!show)} className="absolute inset-y-0 end-0 flex w-10 items-center justify-center text-ink/40 hover:text-ink" aria-label={show ? "Hide" : "Show"}>
         {show ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+      </button>
+    </div>
+  );
+}
+
+/** One email per row; stored as a comma-separated list so nothing else changes. */
+function Recipients({ value, onChange }: { value: string; onChange: (v: string) => void }) {
+  const split = (v: string) => v.split(/[,;\s]+/).map((x) => x.trim()).filter(Boolean);
+  const [rows, setRows] = useState<string[]>(() => (split(value).length ? split(value) : [""]));
+  const update = (next: string[]) => {
+    setRows(next);
+    onChange(next.map((x) => x.trim()).filter(Boolean).join(", "));
+  };
+  const valid = (x: string) => !x.trim() || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(x.trim());
+  return (
+    <div className="space-y-2">
+      {rows.map((r, i) => (
+        <div key={i} className="flex items-center gap-2">
+          <input
+            type="email"
+            className={clsx(inputCls, "min-w-0 flex-1", !valid(r) && "border-red-400")}
+            value={r}
+            onChange={(e) => update(rows.map((x, k) => (k === i ? e.target.value : x)))}
+            placeholder="name@example.com"
+            autoComplete="off"
+          />
+          <button
+            type="button"
+            onClick={() => update(rows.length > 1 ? rows.filter((_, k) => k !== i) : [""])}
+            className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-line text-muted transition hover:border-red-300 hover:text-red-600"
+            aria-label="Remove this email"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      ))}
+      <button type="button" onClick={() => setRows([...rows, ""])} className="inline-flex items-center gap-1.5 rounded-full border border-dashed border-line px-3.5 py-1.5 text-[0.8rem] font-medium text-ink/70 transition hover:border-ink hover:text-ink">
+        <Plus className="h-3.5 w-3.5" /> Add email
       </button>
     </div>
   );
@@ -244,10 +282,10 @@ export function AlertsCard({ initial }: { initial: NotifyConfig }) {
           ) : (
             <Field label="Resend API key"><Secret value={c.email.apiKey} onChange={(apiKey) => patch("email", { apiKey })} placeholder="re_…" /></Field>
           )}
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-1">
-            <Field label="From" hint={ms ? "a mailbox in your Microsoft 365" : undefined}><input className={inputCls} value={c.email.from} onChange={(e) => patch("email", { from: e.target.value })} placeholder={ms ? "TANFEEZ <orders@tanfeez.me>" : "TANFEEZ <orders@your-domain>"} /></Field>
-            <Field label="Send alerts to" hint="comma-separated"><input className={inputCls} value={c.email.to} onChange={(e) => patch("email", { to: e.target.value })} placeholder="sales@…, owner@…" /></Field>
-          </div>
+          <Field label="From" hint={ms ? "a mailbox in your Microsoft 365" : undefined}><input className={inputCls} value={c.email.from} onChange={(e) => patch("email", { from: e.target.value })} placeholder={ms ? "TANFEEZ <orders@tanfeez.me>" : "TANFEEZ <orders@your-domain>"} /></Field>
+          <Field label="Send alerts to" hint="everyone here gets every alert ticked above">
+            <Recipients value={c.email.to} onChange={(to) => patch("email", { to })} />
+          </Field>
           <div className="rounded-xl border border-line p-3.5">
             <Toggle checked={c.email.receipts} onChange={(receipts) => patch("email", { receipts })} label="Order confirmation to customers" />
             <p className="mt-2 text-[0.76rem] leading-relaxed text-muted">Every customer who leaves an email at checkout gets a confirmation with their items, total, delivery address and a tracking link. Works even with team email alerts off.</p>
