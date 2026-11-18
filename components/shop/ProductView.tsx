@@ -14,6 +14,7 @@ import { EASE, Reveal } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
 import { ProductCard } from "./ProductCard";
 import { AnimatedPrice, Configurator, Installments, fabricStyle, type Config } from "./Configurator";
+import { AskPriceButton, useShowPrices } from "./AskPrice";
 import { configPrice, defaultConfig, describeConfig, isUpholstered, materialsFor, photoFor, photographedColours } from "@/lib/configurator";
 import { BackButton } from "@/components/ui/BackButton";
 
@@ -21,6 +22,7 @@ export function ProductView({ product: p, related, category, rooms = [], colour 
   const { t, lang, settings } = useSite();
   const cat = settings.materials;
   const add = useCart((s) => s.add);
+  const showPrices = useShowPrices();
   const setCart = useUI((s) => s.setCart);
   const wish = useWishlist();
   const hydrated = useHydrated();
@@ -87,8 +89,13 @@ export function ProductView({ product: p, related, category, rooms = [], colour 
     setTimeout(() => setCart(true), 350);
   };
 
+  // Until official prices are set, the button asks on WhatsApp for this exact configuration.
+  const askItem = { name: tx(p.name, "en"), options: [describeConfig(p, cfg, "en", cat), p.sizes[cfg.size]].filter(Boolean).join(" · "), slug: p.slug };
+
   const BuyButton = ({ compact = false }: { compact?: boolean }) =>
-    p.priceOnRequest ? (
+    !showPrices ? (
+      <AskPriceButton items={[askItem]} className={clsx("rounded-full bg-ink font-medium text-white transition hover:bg-ink-2", compact ? "h-11 px-6 text-[0.88rem]" : "h-[52px] w-full text-[0.95rem]")} />
+    ) : p.priceOnRequest ? (
       <Link href={quoteHref} className={clsx("flex items-center justify-center rounded-full bg-ink font-medium text-white transition hover:bg-ink-2", compact ? "h-11 px-6 text-[0.88rem]" : "h-[52px] w-full text-[0.95rem]")}>
         {t("shop.request")}
       </Link>
@@ -263,7 +270,9 @@ export function ProductView({ product: p, related, category, rooms = [], colour 
               <h1 className="mt-1 font-display text-[clamp(1.19rem,2.04vw,1.77rem)] md:mt-3 font-semibold leading-[1.05] tracking-[-0.025em]">{tx(p.name, lang)}</h1>
               <p className="mt-2 text-[0.88rem] text-muted">{tx(p.materials, lang)}</p>
               <div className="mt-5 flex items-baseline gap-3">
-                {p.priceOnRequest ? (
+                {!showPrices ? (
+                  <span className="text-[1.15rem] font-medium">{lang === "ar" ? "السعر عند الطلب" : "Price on request"}</span>
+                ) : p.priceOnRequest ? (
                   <span className="text-[1.3rem] font-medium">{t("shop.onRequest")}</span>
                 ) : (
                   <>
@@ -273,14 +282,14 @@ export function ProductView({ product: p, related, category, rooms = [], colour 
                   </>
                 )}
               </div>
-              {!p.priceOnRequest && <Installments price={price} />}
+              {showPrices && !p.priceOnRequest && <Installments price={price} />}
             </Reveal>
 
             {!p.priceOnRequest && materialsFor(p, cat).length > 0 && <Configurator product={p} cfg={cfg} setCfg={setCfg} />}
 
             <div ref={buyRef} className="mt-6 space-y-3 md:mt-8">
               <div className="flex gap-3">
-                {!p.priceOnRequest && (
+                {showPrices && !p.priceOnRequest && (
                   <div className="flex h-[52px] items-center rounded-full border border-line">
                     <button className="px-4" onClick={() => setQty((q) => Math.max(1, q - 1))} aria-label="-"><Minus className="h-4 w-4" /></button>
                     <span className="w-5 text-center text-[0.95rem]">{qty}</span>
@@ -408,7 +417,7 @@ export function ProductView({ product: p, related, category, rooms = [], colour 
               </div>
               <div className="min-w-0 flex-1">
                 <p className="truncate text-[0.9rem] font-medium">{tx(p.name, lang)}</p>
-                <p className="text-[0.85rem] text-muted">{p.priceOnRequest ? t("shop.onRequest") : money(price, lang)}</p>
+                <p className="text-[0.85rem] text-muted">{!showPrices ? (lang === "ar" ? "السعر عند الطلب" : "Price on request") : p.priceOnRequest ? t("shop.onRequest") : money(price, lang)}</p>
               </div>
               <BuyButton compact />
             </div>

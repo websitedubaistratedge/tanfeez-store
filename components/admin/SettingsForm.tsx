@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { Check, Eraser, Loader2, RotateCcw } from "lucide-react";
-import { Btn, Card, Field, inputCls, PageHeader } from "./ui";
+import { Btn, Card, Field, inputCls, PageHeader, Toggle } from "./ui";
 import { AlertsCard } from "./AlertsCard";
 import { clearDemoActivity, resetDemoData, saveSettings } from "@/lib/admin-actions";
 import type { NotifyConfig, Settings } from "@/lib/types";
@@ -46,6 +46,13 @@ export function SettingsForm({ settings, notify }: { settings: Settings; notify:
         </Card>
 
         <div className="space-y-4">
+          <Card className="space-y-3">
+            <h2 className="font-display font-semibold tracking-tight">Prices on the website</h2>
+            <Toggle checked={s.showPrices === true} onChange={(v) => set("showPrices", v)} label={s.showPrices ? "Prices shown · customers can order online" : "Hidden · every piece shows \u201cAsk for price\u201d"} />
+            <p className="text-[0.8rem] leading-relaxed text-muted">
+              While hidden, each product, quick view and room shows <b className="font-medium text-ink">Ask for price</b>, which opens WhatsApp with the piece and the colour, fabric and size already written in. Online checkout (and Tabby) is paused. Switch on once official prices are entered in Products, then save.
+            </p>
+          </Card>
           <Card className="space-y-4">
             <h2 className="font-display font-semibold tracking-tight">Store announcement</h2>
             <Field label="English"><input className={inputCls} value={s.announcement.en} onChange={(e) => set("announcement", { ...s.announcement, en: e.target.value })} /></Field>

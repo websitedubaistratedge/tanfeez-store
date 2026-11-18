@@ -257,6 +257,8 @@ export type Settings = {
   announcement: L10n;
   freeDeliveryOver: number;
   deliveryFees: Record<string, number>;
+  /** Off (the default until official prices are set): every product shows "Ask for price" → WhatsApp and online checkout pauses. */
+  showPrices?: boolean;
   bank: { name: string; iban: string; account: string };
   materials?: MaterialCatalog;
   notify?: NotifyConfig;

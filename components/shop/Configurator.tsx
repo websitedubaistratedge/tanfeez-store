@@ -174,7 +174,9 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
                       <span className="block text-[0.86rem] font-medium leading-tight">{tx(m.name)}</span>
                       <span className="mt-0.5 block text-[0.74rem] leading-snug text-muted">{tx(m.note)}</span>
                       {ok ? (
-                        <span className={clsx("mt-1 block text-[0.74rem] tabular-nums", add > 0 ? "text-ink" : "text-emerald-700")}>{add > 0 ? `+ ${money(add, lang)}` : add < 0 ? `− ${money(-add, lang)}` : ar ? "مشمول" : "Included"}</span>
+                        !settings.showPrices ? (
+                          <span className="mt-1 block text-[0.74rem] text-emerald-700">{ar ? "متوفر" : "Available"}</span>
+                        ) : <span className={clsx("mt-1 block text-[0.74rem] tabular-nums", add > 0 ? "text-ink" : "text-emerald-700")}>{add > 0 ? `+ ${money(add, lang)}` : add < 0 ? `− ${money(-add, lang)}` : ar ? "مشمول" : "Included"}</span>
                       ) : (
                         <span className="mt-1 block text-[0.74rem] text-muted">{ar ? "غير متوفر لهذه القطعة" : "Not available for this piece"}</span>
                       )}
@@ -234,7 +236,7 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
               return (
                 <button key={s} onClick={() => setCfg({ ...cfg, size: i })} className={clsx("relative h-11 rounded-full border px-4 text-[0.85rem] transition", cfg.size === i ? "border-ink bg-ink text-white" : "border-line hover:border-ink")}>
                   <bdi>{s}</bdi>
-                  {add > 0 && <span className={clsx("ms-2 text-[0.75rem] tabular-nums", cfg.size === i ? "text-white/70" : "text-muted")}><bdi>+{money(add, lang)}</bdi></span>}
+                  {settings.showPrices && add > 0 && <span className={clsx("ms-2 text-[0.75rem] tabular-nums", cfg.size === i ? "text-white/70" : "text-muted")}><bdi>+{money(add, lang)}</bdi></span>}
                 </button>
               );
             })}
@@ -243,7 +245,7 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
       )}
 
       {/* Breakdown */}
-      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line pt-4 text-[0.8rem] text-muted">
+      {settings.showPrices && <div className="flex flex-wrap items-center gap-x-3 gap-y-1 border-t border-line pt-4 text-[0.8rem] text-muted">
         <span>{ar ? "السعر الأساسي" : "Base"} {money(price.base, lang)}</span>
         <AnimatePresence>
           {price.materialAdd !== 0 && (
@@ -257,7 +259,7 @@ export function Configurator({ product: p, cfg, setCfg }: { product: Product; cf
             </motion.span>
           )}
         </AnimatePresence>
-      </div>
+      </div>}
 
       {/* Fabric samples: upholstered pieces only, and only in the colours this piece comes in. */}
       {!wood && (

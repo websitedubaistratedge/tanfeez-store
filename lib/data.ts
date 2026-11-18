@@ -19,6 +19,7 @@ export async function getPublicSettings(lang: Lang): Promise<PublicSettings> {
     hours: tx(s.hours, lang),
     announcement: tx(s.announcement, lang),
     freeDeliveryOver: s.freeDeliveryOver,
+    showPrices: s.showPrices === true,
     deliveryFees: s.deliveryFees,
     materials: s.materials ?? DEFAULT_MATERIALS,
     company: { licence: s.company?.licence ?? "", authority: s.company?.authority ?? "", trn: s.company?.trn ?? "" },

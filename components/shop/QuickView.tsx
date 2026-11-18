@@ -8,6 +8,7 @@ import { Check, Clock, Minus, Plus, Truck, X } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { useCart, useQuickView, useUI } from "@/lib/store";
+import { AskPriceButton } from "./AskPrice";
 import { money, tx } from "@/lib/i18n";
 import { EASE } from "@/components/ui/motion";
 import { CircleArrow } from "@/components/ui/buttons";
@@ -90,7 +91,9 @@ export function QuickView() {
                 {tx(p.name, lang)}
               </motion.h2>
               <motion.div {...stagger(2)} className="mt-3 flex items-baseline gap-3">
-                {p.priceOnRequest ? (
+                {!settings.showPrices ? (
+                  <span className="text-[1.05rem]">{lang === "ar" ? "السعر عند الطلب" : "Price on request"}</span>
+                ) : p.priceOnRequest ? (
                   <span className="text-[1.15rem]">{t("shop.onRequest")}</span>
                 ) : (
                   <>
@@ -122,7 +125,7 @@ export function QuickView() {
               {p.sizes.length > 1 && (
                 <motion.div {...stagger(5)} className="mt-5 flex flex-wrap gap-2">
                   {p.sizes.map((s, i) => {
-                    const more = p.priceOnRequest ? 0 : sizeDelta(p, i);
+                    const more = p.priceOnRequest || !settings.showPrices ? 0 : sizeDelta(p, i);
                     return (
                       <button key={s} onClick={() => setSize(i)} className={clsx("h-9 rounded-full border px-4 text-[0.82rem] transition", size === i ? "border-ink bg-ink text-white" : "border-line hover:border-ink")}>
                         <bdi>{s}</bdi>
@@ -134,7 +137,9 @@ export function QuickView() {
               )}
 
               <motion.div {...stagger(6)} className="mt-auto pt-7">
-                {p.priceOnRequest ? (
+                {!settings.showPrices ? (
+                  <AskPriceButton items={[{ name: tx(p.name, "en"), options: [line?.finish, p.sizes.length > 1 ? p.sizes[size] : ""].filter(Boolean).join(" · "), slug: p.slug }]} className="h-12 w-full rounded-full bg-ink text-[0.92rem] font-medium text-white transition hover:bg-ink-2" />
+                ) : p.priceOnRequest ? (
                   <Link href={`/quote?service=custom&product=${encodeURIComponent(p.name.en)}`} onClick={close} className="flex h-12 items-center justify-center rounded-full bg-ink text-[0.92rem] font-medium text-white">
                     {t("shop.request")}
                   </Link>

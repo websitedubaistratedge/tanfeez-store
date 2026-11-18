@@ -11,6 +11,7 @@ import { money } from "@/lib/i18n";
 import { EASE } from "@/components/ui/motion";
 import { CircleArrow } from "@/components/ui/buttons";
 import { TabbyBadge } from "@/components/shop/Configurator";
+import { AskPriceButton } from "@/components/shop/AskPrice";
 import { lockScroll } from "./SmoothScroll";
 
 export function CartDrawer() {
@@ -46,7 +47,7 @@ export function CartDrawer() {
               </button>
             </header>
 
-            {list.length > 0 && (
+            {list.length > 0 && settings.showPrices && (
               <div className="border-b border-line px-6 py-4">
                 <p className="mb-2.5 text-[0.85rem]">{remaining > 0 ? t("cart.away", { n: money(remaining, lang) }) : t("cart.free")}</p>
                 <div className="h-[2px] bg-line">
@@ -75,7 +76,7 @@ export function CartDrawer() {
                         <div className="flex min-w-0 flex-1 flex-col">
                           <div className="flex items-start justify-between gap-2">
                             <p className="text-[0.95rem] leading-snug">{i.name[lang]}</p>
-                            <span className="shrink-0 text-[0.92rem] font-medium">{money(i.price * i.qty, lang)}</span>
+                            {settings.showPrices && <span className="shrink-0 text-[0.92rem] font-medium">{money(i.price * i.qty, lang)}</span>}
                           </div>
                           <p className="mt-0.5 text-[0.8rem] text-muted">{[i.finish, i.size].filter(Boolean).join(" · ")}</p>
                           <div className="mt-auto flex items-center justify-between pt-3">
@@ -94,7 +95,17 @@ export function CartDrawer() {
               )}
             </div>
 
-            {list.length > 0 && (
+            {list.length > 0 && !settings.showPrices && (
+              <footer className="border-t border-line px-6 py-5">
+                <AskPriceButton
+                  items={list.map((i) => ({ name: `${i.qty > 1 ? `${i.qty} × ` : ""}${i.name.en}`, options: [i.finish, i.size].filter(Boolean).join(" · "), slug: i.slug }))}
+                  label={lang === "ar" ? "اسأل عن الأسعار عبر واتساب" : "Ask for prices on WhatsApp"}
+                  className="h-[52px] w-full rounded-full bg-ink text-[0.95rem] font-medium text-white transition hover:bg-ink-2"
+                />
+                <button onClick={() => setCart(false)} className="mt-3 w-full text-center text-[0.85rem] text-muted hover:text-ink">{t("cart.continue")}</button>
+              </footer>
+            )}
+            {list.length > 0 && settings.showPrices && (
               <footer className="border-t border-line px-6 py-5">
                 <div className="flex items-baseline justify-between">
                   <span className="text-[0.92rem] text-muted">{t("cart.subtotal")}</span>

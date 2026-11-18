@@ -154,11 +154,13 @@ export function ShopView({
           })}
         </Group>
       )}
-      <Group title={ar ? "السعر" : "Price"}>
-        {PRICES.map((b) => (
-          <Row key={b.id} on={price === b.id} onClick={() => setPrice(price === b.id ? null : b.id)}>{priceLabel(b)}</Row>
-        ))}
-      </Group>
+      {settings.showPrices && (
+        <Group title={ar ? "السعر" : "Price"}>
+          {PRICES.map((b) => (
+            <Row key={b.id} on={price === b.id} onClick={() => setPrice(price === b.id ? null : b.id)}>{priceLabel(b)}</Row>
+          ))}
+        </Group>
+      )}
       <Group title={ar ? "اللون" : "Colour"}>
         <div className="flex flex-wrap gap-2.5">
           {colours.map((c) => (
@@ -260,8 +262,8 @@ export function ShopView({
             <select value={sort} onChange={(e) => setSort(e.target.value as Sort)} className="cursor-pointer appearance-none bg-transparent pe-1 outline-none" aria-label={t("shop.sort")}>
               <option value="featured">{t("shop.featured")}</option>
               <option value="newest">{t("shop.newest")}</option>
-              <option value="low">{t("shop.priceLow")}</option>
-              <option value="high">{t("shop.priceHigh")}</option>
+              {settings.showPrices && <option value="low">{t("shop.priceLow")}</option>}
+              {settings.showPrices && <option value="high">{t("shop.priceHigh")}</option>}
             </select>
           </label>
         </div>
@@ -315,7 +317,7 @@ export function ShopView({
               </div>
               <div className="flex-1 space-y-8 overflow-y-auto px-6 py-6">
                 <Group title={t("shop.sort")}>
-                  {(["featured", "newest", "low", "high"] as Sort[]).map((s) => (
+                  {((settings.showPrices ? ["featured", "newest", "low", "high"] : ["featured", "newest"]) as Sort[]).map((s) => (
                     <Row key={s} on={sort === s} onClick={() => setSort(s)}>
                       {t(({ featured: "shop.featured", newest: "shop.newest", low: "shop.priceLow", high: "shop.priceHigh" } as const)[s])}
                     </Row>

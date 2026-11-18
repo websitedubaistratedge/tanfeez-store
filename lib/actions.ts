@@ -36,7 +36,9 @@ export async function placeOrder(input: CheckoutInput): Promise<{ ok: true; numb
   if (!input.items?.length) return { ok: false, error: "empty" };
   if (!input.agreed) return { ok: false, error: "terms" };
   const me = await currentCustomer();
-  const pay = (await readDB()).settings.payments;
+  const { payments: pay, showPrices } = (await readDB()).settings;
+  // While prices are hidden (Admin → Settings), nothing can be ordered online: customers ask on WhatsApp.
+  if (showPrices !== true) return { ok: false, error: "paused" };
   if (input.payment === "card" && !ready(pay, "ziina")) return { ok: false, error: "gateway" };
   // Online payment when the chosen method's provider is switched on in Admin → Payments;
   // otherwise Tabby/Tamara orders are arranged by the team as before.

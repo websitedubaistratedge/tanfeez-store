@@ -19,6 +19,8 @@ export type PublicSettings = {
   company: { licence: string; authority: string; trn: string };
   /** Online payment methods switched on in Admin → Payments. */
   payments: { tabby: boolean; tamara: boolean; card: boolean };
+  /** False: prices are hidden and every product offers "Ask for price" on WhatsApp. */
+  showPrices: boolean;
 };
 
 type Ctx = {

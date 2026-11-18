@@ -8,6 +8,7 @@ import { Check, Plus, ShoppingBag } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { useCart, useQuickView, useUI } from "@/lib/store";
+import { AskPriceButton } from "@/components/shop/AskPrice";
 import { money, tx } from "@/lib/i18n";
 import { EASE, Reveal, SplitLines } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
@@ -127,7 +128,7 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
                         </Link>
                         <Link href={`/shop/${p.slug}`} className="min-w-0 flex-1">
                           <span className="block truncate text-[0.85rem]">{tx(p.name, lang)}</span>
-                          <span className="block text-[0.78rem] text-muted tabular-nums">{p.priceOnRequest ? t("shop.onRequest") : money(p.salePrice || p.price, lang)}</span>
+                          <span className="block truncate text-[0.78rem] text-muted tabular-nums">{!settings.showPrices ? quickLine(p, materials).finish : p.priceOnRequest ? t("shop.onRequest") : money(p.salePrice || p.price, lang)}</span>
                         </Link>
                         {!p.priceOnRequest && (
                           <button onClick={() => toggle(p.id)} className={clsx("flex h-6 w-6 shrink-0 items-center justify-center rounded-full border transition", on ? "border-ink bg-ink text-white" : "border-ink/25")} aria-label="Select" aria-pressed={on}>
@@ -163,7 +164,7 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
                         </Link>
                         <div className="min-w-0 flex-1">
                           <Link href={`/shop/${p.slug}`} className="block truncate text-[0.92rem] hover:underline">{tx(p.name, lang)}</Link>
-                          <p className="text-[0.8rem] text-muted tabular-nums">{p.priceOnRequest ? t("shop.onRequest") : money(p.salePrice || p.price, lang)}</p>
+                          <p className="truncate text-[0.8rem] text-muted tabular-nums">{!settings.showPrices ? quickLine(p, materials).finish : p.priceOnRequest ? t("shop.onRequest") : money(p.salePrice || p.price, lang)}</p>
                         </div>
                       </li>
                     );
@@ -175,8 +176,15 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
                     <>
                       <div className="mb-4 flex items-baseline justify-between">
                         <span className="text-[0.88rem] text-muted">{lang === "ar" ? `${picked.size} قطع مختارة` : `${picked.size} selected`}</span>
-                        <motion.span key={total} initial={{ opacity: 0.3, y: 6 }} animate={{ opacity: 1, y: 0 }} className="text-[1.3rem] font-semibold tabular-nums">{money(total, lang)}</motion.span>
+                        {settings.showPrices && <motion.span key={total} initial={{ opacity: 0.3, y: 6 }} animate={{ opacity: 1, y: 0 }} className="text-[1.3rem] font-semibold tabular-nums">{money(total, lang)}</motion.span>}
                       </div>
+                      {!settings.showPrices ? (
+                        <AskPriceButton
+                          items={look.pins.filter((x) => picked.has(x.product.id)).map(({ product: x }) => ({ name: tx(x.name, "en"), options: quickLine(x, materials).finish, slug: x.slug }))}
+                          label={lang === "ar" ? "اسأل عن أسعار القطع المختارة" : "Ask for prices"}
+                          className={clsx("h-[52px] w-full rounded-full bg-ink text-[0.92rem] font-medium text-white transition hover:bg-ink-2", picked.size === 0 && "pointer-events-none opacity-40")}
+                        />
+                      ) : (
                       <button onClick={addLook} disabled={picked.size === 0} className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink text-[0.92rem] font-medium text-white transition hover:bg-ink-2 disabled:opacity-40">
                         <AnimatePresence mode="wait" initial={false}>
                           <motion.span key={String(added)} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} className="flex items-center gap-2">
@@ -185,6 +193,7 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
                           </motion.span>
                         </AnimatePresence>
                       </button>
+                      )}
                     </>
                   ) : (
                     <>
@@ -225,7 +234,7 @@ type Pin = ResolvedLook["pins"][number];
 
 /** A pulsing "+" on a room photo that morphs into a name/price pill; click opens QuickView. */
 export function LookPin({ pin, lookId, index, active, setActive, delay = 0.7 }: { pin: Pin; lookId: string; index: number; active: string | null; setActive: (id: string | null) => void; delay?: number }) {
-  const { t, lang } = useSite();
+  const { t, lang, settings } = useSite();
   const openQuickView = useQuickView((s) => s.open);
   const on = active === pin.product.id;
   const dim = active && !on;
@@ -255,7 +264,7 @@ export function LookPin({ pin, lookId, index, active, setActive, delay = 0.7 }: 
           {on && (
             <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.12 }} className="whitespace-nowrap text-[0.8rem]">
               <span className="font-medium">{tx(pin.product.name, lang)}</span>
-              <span className="ms-2 text-muted tabular-nums">{pin.product.priceOnRequest ? t("shop.onRequest") : money(pin.product.salePrice || pin.product.price, lang)}</span>
+              {settings.showPrices && <span className="ms-2 text-muted tabular-nums">{pin.product.priceOnRequest ? t("shop.onRequest") : money(pin.product.salePrice || pin.product.price, lang)}</span>}
             </motion.span>
           )}
         </motion.span>

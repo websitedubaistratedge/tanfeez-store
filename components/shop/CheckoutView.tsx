@@ -15,8 +15,55 @@ import { CircleArrow, OutlineLink, PillLink } from "@/components/ui/buttons";
 import { TabbyBadge, TamaraBadge } from "@/components/shop/Configurator";
 import type { Order } from "@/lib/types";
 import { BackButton } from "@/components/ui/BackButton";
+import { AskPriceButton } from "@/components/shop/AskPrice";
 
+/** Online checkout runs only while prices are shown; otherwise the bag goes to WhatsApp. */
 export function CheckoutView() {
+  const { settings } = useSite();
+  return settings.showPrices ? <CheckoutForm /> : <CheckoutPaused />;
+}
+
+function CheckoutPaused() {
+  const { lang } = useSite();
+  const ar = lang === "ar";
+  const items = useCart((s) => s.items);
+  const hydrated = useHydrated();
+  const list = hydrated ? items : [];
+  return (
+    <section className="mx-auto max-w-[720px] px-5 pb-24 pt-8 md:px-10 md:pt-12">
+      <BackButton fallback="/shop" />
+      <h1 className="mt-8 font-display text-[clamp(1.4rem,2.6vw,2rem)] font-semibold tracking-[-0.02em]">{ar ? "اسأل عن السعر" : "Ask for price"}</h1>
+      <p className="mt-3 max-w-xl text-[0.98rem] leading-relaxed text-ink-2">
+        {ar
+          ? "نُعدّ كل قطعة حسب الطلب، لذا نشارك الأسعار مباشرة. أرسل لنا القطع التي اخترتها عبر واتساب وسيرد فريقنا بالسعر ومدة التجهيز."
+          : "Every piece is made to order, so we share prices directly. Send us the pieces you picked on WhatsApp and our team will reply with the price and lead time."}
+      </p>
+      {list.length > 0 && (
+        <ul className="mt-8 divide-y divide-line border-y border-line">
+          {list.map((i) => (
+            <li key={i.key} className="flex items-center gap-4 py-4">
+              <span className="relative h-16 w-16 shrink-0 overflow-hidden bg-plate"><Image src={i.image} alt="" fill sizes="64px" className="object-cover" /></span>
+              <span className="min-w-0">
+                <span className="block text-[0.95rem]">{i.qty > 1 ? `${i.qty} × ` : ""}{i.name[lang]}</span>
+                <span className="block text-[0.8rem] text-muted">{[i.finish, i.size].filter(Boolean).join(" · ")}</span>
+              </span>
+            </li>
+          ))}
+        </ul>
+      )}
+      <div className="mt-8 flex flex-wrap gap-3">
+        <AskPriceButton
+          items={list.map((i) => ({ name: `${i.qty > 1 ? `${i.qty} × ` : ""}${i.name.en}`, options: [i.finish, i.size].filter(Boolean).join(" · "), slug: i.slug }))}
+          label={ar ? "اسأل عن الأسعار عبر واتساب" : "Ask for prices on WhatsApp"}
+          className="h-12 rounded-full bg-ink px-7 text-[0.92rem] font-medium text-white transition hover:bg-ink-2"
+        />
+        <OutlineLink href="/shop">{ar ? "متابعة التسوق" : "Keep browsing"}</OutlineLink>
+      </div>
+    </section>
+  );
+}
+
+function CheckoutForm() {
   const { t, lang, settings, account: me } = useSite();
   const ar = lang === "ar";
   const { items, clear } = useCart();

@@ -12,6 +12,7 @@ import { ArrowLink, CircleArrow, Eyebrow, OutlineLink, PillLink } from "@/compon
 import { ProductCard, materialTags } from "@/components/shop/ProductCard";
 import { CATEGORY_SHORT, money, tx } from "@/lib/i18n";
 import { useCart, useUI } from "@/lib/store";
+import { AskPriceButton, AskPriceLabel } from "@/components/shop/AskPrice";
 import type { Category, Product, Project } from "@/lib/types";
 import { photographedColours, quickLine } from "@/lib/configurator";
 
@@ -58,7 +59,7 @@ function useCoverPoint(ref: React.RefObject<HTMLElement | null>, img: { w: numbe
 }
 
 export function Hero({ image, look }: { image: string; look?: Product }) {
-  const { t, lang } = useSite();
+  const { t, lang, settings } = useSite();
   const ref = useRef<HTMLElement>(null);
   const frame = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
@@ -131,7 +132,7 @@ export function Hero({ image, look }: { image: string; look?: Product }) {
                     </span>
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-[0.85rem] font-medium">{tx(look.name, lang)}</span>
-                      <span className="block text-[0.8rem] text-muted tabular-nums">{money(look.salePrice || look.price, lang)}</span>
+                      <span className="block text-[0.8rem] text-muted tabular-nums">{settings.showPrices ? money(look.salePrice || look.price, lang) : <AskPriceLabel />}</span>
                     </span>
                     <CircleArrow className="transition group-hover:translate-x-0.5" />
                   </Link>
@@ -443,7 +444,9 @@ export function Spotlight({ products }: { products: Product[] }) {
                     <div><dt className="text-muted">{lang === "ar" ? "مدة التجهيز" : "Lead time"}</dt><dd className="mt-0.5">{p.priceOnRequest ? t("shop.madeToOrder") : t("shop.leadTime", { n: p.leadTimeDays })}</dd></div>
                   </dl>,
                   <div key="cta" className="mt-5 flex flex-wrap items-center gap-3 md:mt-7">
-                    {p.priceOnRequest ? (
+                    {!settings.showPrices ? (
+                      <AskPriceButton items={[{ name: tx(p.name, "en"), options: quickLine(p, materials).finish, slug: p.slug }]} className="h-12 rounded-full bg-ink px-7 text-[0.92rem] font-medium text-white transition hover:bg-ink-2" />
+                    ) : p.priceOnRequest ? (
                       <PillLink href={`/quote?service=custom&product=${encodeURIComponent(p.name.en)}`}>{t("shop.request")}</PillLink>
                     ) : (
                       <button
