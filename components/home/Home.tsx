@@ -12,7 +12,7 @@ import { ArrowLink, CircleArrow, Eyebrow, OutlineLink, PillLink } from "@/compon
 import { ProductCard, materialTags } from "@/components/shop/ProductCard";
 import { CATEGORY_SHORT, money, tx } from "@/lib/i18n";
 import { useCart, useUI } from "@/lib/store";
-import { AskPriceButton, AskPriceLabel } from "@/components/shop/AskPrice";
+import { AskPriceLabel } from "@/components/shop/AskPrice";
 import type { Category, Product, Project } from "@/lib/types";
 import { photographedColours, quickLine } from "@/lib/configurator";
 
@@ -444,9 +444,7 @@ export function Spotlight({ products }: { products: Product[] }) {
                     <div><dt className="text-muted">{lang === "ar" ? "مدة التجهيز" : "Lead time"}</dt><dd className="mt-0.5">{p.priceOnRequest ? t("shop.madeToOrder") : t("shop.leadTime", { n: p.leadTimeDays })}</dd></div>
                   </dl>,
                   <div key="cta" className="mt-5 flex flex-wrap items-center gap-3 md:mt-7">
-                    {!settings.showPrices ? (
-                      <AskPriceButton items={[{ name: tx(p.name, "en"), options: quickLine(p, materials).finish, slug: p.slug }]} className="h-12 rounded-full bg-ink px-7 text-[0.92rem] font-medium text-white transition hover:bg-ink-2" />
-                    ) : p.priceOnRequest ? (
+                    {p.priceOnRequest ? (
                       <PillLink href={`/quote?service=custom&product=${encodeURIComponent(p.name.en)}`}>{t("shop.request")}</PillLink>
                     ) : (
                       <button
@@ -456,7 +454,7 @@ export function Spotlight({ products }: { products: Product[] }) {
                         }}
                         className="inline-flex h-12 items-center gap-2.5 rounded-full bg-ink px-7 text-[0.92rem] font-medium text-white transition hover:bg-ink-2"
                       >
-                        <Plus className="h-4 w-4" /> {lang === "ar" ? "أضف للحقيبة" : "Add to bag"} · <span className="tabular-nums">{money(price, lang)}</span>
+                        <Plus className="h-4 w-4" /> {lang === "ar" ? "أضف للحقيبة" : "Add to bag"}{settings.showPrices && <> · <span className="tabular-nums">{money(price, lang)}</span></>}
                       </button>
                     )}
                     <OutlineLink href={`/shop/${p.slug}`}>{lang === "ar" ? "التفاصيل" : "View details"}</OutlineLink>

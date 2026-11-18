@@ -8,7 +8,6 @@ import { ArrowLeft, ArrowRight, Check, ShoppingBag } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { useCart, useUI } from "@/lib/store";
-import { AskPriceButton } from "@/components/shop/AskPrice";
 import { money, tx } from "@/lib/i18n";
 import { EASE } from "@/components/ui/motion";
 import { PageHero } from "@/components/site/PageHero";
@@ -208,19 +207,12 @@ function LookCard({ look }: { look: ResolvedLook }) {
           </ul>
 
           <div className="mt-auto pt-6">
-            {!settings.showPrices ? (
-              <div className="border-t border-ink/10 pt-4">
-                <AskPriceButton
-                  items={look.pins.map(({ product: x }) => ({ name: tx(x.name, "en"), options: quickLine(x, materials).finish, slug: x.slug }))}
-                  label={ar ? "اسأل عن أسعار هذه الغرفة" : "Ask for the room's prices"}
-                  className="h-12 w-full rounded-full bg-ink text-[0.9rem] font-medium text-white transition hover:bg-ink-2"
-                />
-              </div>
-            ) : (<>
+            {settings.showPrices ? (
             <div className="mb-3 flex items-baseline justify-between border-t border-ink/10 pt-4">
               <span className="text-[0.85rem] text-muted">{ar ? "الغرفة كاملة" : "The full room"}</span>
               <span className="text-[1.2rem] font-semibold tabular-nums">{buyable.length ? money(total, lang) : t("shop.onRequest")}</span>
             </div>
+            ) : <div className="mb-3 border-t border-ink/10" />}
             {buyable.length ? (
               <button onClick={addRoom} className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-ink text-[0.9rem] font-medium text-white transition hover:bg-ink-2">
                 <AnimatePresence mode="wait" initial={false}>
@@ -235,7 +227,6 @@ function LookCard({ look }: { look: ResolvedLook }) {
                 {ar ? "اطلب عرض سعر لهذه الغرفة" : "Request a quote for this room"} <CircleArrow className="h-4 w-4" />
               </Link>
             )}
-            </>)}
           </div>
         </div>
 

@@ -8,7 +8,6 @@ import { Check, Clock, Minus, Plus, Truck, X } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { useCart, useQuickView, useUI } from "@/lib/store";
-import { AskPriceButton } from "./AskPrice";
 import { money, tx } from "@/lib/i18n";
 import { EASE } from "@/components/ui/motion";
 import { CircleArrow } from "@/components/ui/buttons";
@@ -137,9 +136,7 @@ export function QuickView() {
               )}
 
               <motion.div {...stagger(6)} className="mt-auto pt-7">
-                {!settings.showPrices ? (
-                  <AskPriceButton items={[{ name: tx(p.name, "en"), options: [line?.finish, p.sizes.length > 1 ? p.sizes[size] : ""].filter(Boolean).join(" · "), slug: p.slug }]} className="h-12 w-full rounded-full bg-ink text-[0.92rem] font-medium text-white transition hover:bg-ink-2" />
-                ) : p.priceOnRequest ? (
+                {p.priceOnRequest ? (
                   <Link href={`/quote?service=custom&product=${encodeURIComponent(p.name.en)}`} onClick={close} className="flex h-12 items-center justify-center rounded-full bg-ink text-[0.92rem] font-medium text-white">
                     {t("shop.request")}
                   </Link>
@@ -154,7 +151,7 @@ export function QuickView() {
                       <AnimatePresence mode="wait" initial={false}>
                         <motion.span key={String(added)} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} className="flex items-center gap-2 whitespace-nowrap">
                           {added && <Check className="h-4 w-4" />}
-                          {added ? t("shop.added") : `${lang === "ar" ? "أضف للحقيبة" : "Add to bag"} · ${money(price * qty, lang)}`}
+                          {added ? t("shop.added") : `${lang === "ar" ? "أضف للحقيبة" : "Add to bag"}${settings.showPrices ? ` · ${money(price * qty, lang)}` : ""}`}
                         </motion.span>
                       </AnimatePresence>
                     </button>

@@ -8,7 +8,6 @@ import { Check, Plus, ShoppingBag } from "lucide-react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { useCart, useQuickView, useUI } from "@/lib/store";
-import { AskPriceButton } from "@/components/shop/AskPrice";
 import { money, tx } from "@/lib/i18n";
 import { EASE, Reveal, SplitLines } from "@/components/ui/motion";
 import { ArrowLink } from "@/components/ui/buttons";
@@ -178,13 +177,6 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
                         <span className="text-[0.88rem] text-muted">{lang === "ar" ? `${picked.size} قطع مختارة` : `${picked.size} selected`}</span>
                         {settings.showPrices && <motion.span key={total} initial={{ opacity: 0.3, y: 6 }} animate={{ opacity: 1, y: 0 }} className="text-[1.3rem] font-semibold tabular-nums">{money(total, lang)}</motion.span>}
                       </div>
-                      {!settings.showPrices ? (
-                        <AskPriceButton
-                          items={look.pins.filter((x) => picked.has(x.product.id)).map(({ product: x }) => ({ name: tx(x.name, "en"), options: quickLine(x, materials).finish, slug: x.slug }))}
-                          label={lang === "ar" ? "اسأل عن أسعار القطع المختارة" : "Ask for prices"}
-                          className={clsx("h-[52px] w-full rounded-full bg-ink text-[0.92rem] font-medium text-white transition hover:bg-ink-2", picked.size === 0 && "pointer-events-none opacity-40")}
-                        />
-                      ) : (
                       <button onClick={addLook} disabled={picked.size === 0} className="flex h-[52px] w-full items-center justify-center gap-2 rounded-full bg-ink text-[0.92rem] font-medium text-white transition hover:bg-ink-2 disabled:opacity-40">
                         <AnimatePresence mode="wait" initial={false}>
                           <motion.span key={String(added)} initial={{ y: 10, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: -10, opacity: 0 }} className="flex items-center gap-2">
@@ -193,7 +185,6 @@ export function ShopTheLook({ looks, standalone = false }: { looks: ResolvedLook
                           </motion.span>
                         </AnimatePresence>
                       </button>
-                      )}
                     </>
                   ) : (
                     <>

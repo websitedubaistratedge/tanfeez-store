@@ -8,7 +8,7 @@ import { useId, useState } from "react";
 import clsx from "clsx";
 import { useSite } from "@/components/providers";
 import { useCart, useHydrated, useQuickView, useUI, useWishlist } from "@/lib/store";
-import { AskPriceButton, AskPriceLabel, useShowPrices, type AskItem } from "./AskPrice";
+import { AskPriceLabel, useShowPrices } from "./AskPrice";
 import { money, tx } from "@/lib/i18n";
 import type { Product } from "@/lib/types";
 import { photographedColours, quickLine } from "@/lib/configurator";
@@ -47,12 +47,6 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
     setAdded(true);
     setTimeout(() => setAdded(false), 1500);
     setTimeout(() => setCart(true), 350);
-  };
-
-  // What "Ask for price" names in the WhatsApp message: the piece in the colour on show.
-  const askItem = (): AskItem => {
-    const line = shots[shot] ? quickLine(p, settings.materials, { material: shots[shot].material, colour: shots[shot].id }) : quickLine(p, settings.materials);
-    return { name: tx(p.name, "en"), options: line.finish, slug: p.slug };
   };
 
   const imgSizes = sizes ?? "(min-width: 1280px) 25vw, (min-width: 768px) 33vw, 50vw";
@@ -104,12 +98,7 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
         >
           <Eye className="h-4 w-4 stroke-[1.5]" /> {lang === "ar" ? "عرض سريع" : "Quick view"}
         </button>
-        {!showPrices ? (
-          <AskPriceButton
-            items={[askItem()]}
-            className="pointer-events-auto h-10 flex-1 translate-y-3 bg-ink text-[0.8rem] font-medium text-white opacity-0 transition-all delay-[60ms] duration-500 ease-[cubic-bezier(.16,1,.3,1)] hover:bg-ink-2 group-hover:translate-y-0 group-hover:opacity-100"
-          />
-        ) : p.priceOnRequest ? (
+        {p.priceOnRequest ? (
           <Link
             href={`/quote?service=custom&product=${encodeURIComponent(p.name.en)}`}
             className="pointer-events-auto flex h-10 flex-1 translate-y-3 items-center justify-center bg-ink text-[0.8rem] font-medium text-white opacity-0 transition-all delay-[60ms] duration-500 ease-[cubic-bezier(.16,1,.3,1)] hover:bg-ink-2 group-hover:translate-y-0 group-hover:opacity-100"
@@ -132,9 +121,7 @@ export function ProductCard({ product: p, priority = false, sizes }: { product: 
       </div>
 
       {/* Mobile: compact add button */}
-      {!showPrices ? (
-        <AskPriceButton items={[askItem()]} label="" className="absolute bottom-2 end-2 h-8 w-8 rounded-full bg-white/95 shadow-sm md:hidden" />
-      ) : !p.priceOnRequest && (
+      {!p.priceOnRequest && (
         <button onClick={quickAdd} className="absolute bottom-2 end-2 flex h-8 w-8 items-center justify-center rounded-full bg-white/95 shadow-sm md:hidden" aria-label={t("v2.quickAdd")}>
           {added ? <Check className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
         </button>
